@@ -97,6 +97,30 @@
       border-color: var(--primary);
     }
 
+    .sort-select {
+      height: 44px;
+      min-width: 8.5rem;
+      padding: 0 16px;
+      border-radius: 9999px;
+      font-size: 17px;
+      line-height: 1;
+      font-family: inherit;
+      border: 1px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .sort-select:active {
+      transform: scale(0.95);
+    }
+
+    .sort-select:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
     main {
       margin-top: 52px;
     }
@@ -127,6 +151,119 @@
       gap: 10px;
       margin-left: auto;
       flex-shrink: 0;
+    }
+
+    .filter-wrap {
+      position: relative;
+    }
+
+    .filter-btn.is-active {
+      background: rgba(0, 102, 204, 0.08);
+    }
+
+    .filter-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 50;
+      min-width: 220px;
+      max-width: min(320px, calc(100vw - 32px));
+      padding: 14px 16px 16px;
+      background: var(--canvas);
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-panel[hidden] {
+      display: none !important;
+    }
+
+    .filter-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .filter-swatch {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      flex-shrink: 0;
+    }
+
+    .filter-swatch:hover {
+      transform: scale(1.06);
+    }
+
+    .filter-swatch:active {
+      transform: scale(0.95);
+    }
+
+    .filter-swatch:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .filter-swatch--light {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .filter-swatch.is-selected {
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--primary);
+    }
+
+    .filter-swatch.filter-swatch--light.is-selected {
+      box-shadow: 0 0 0 2px var(--primary), 0 0 0 4px var(--primary);
+    }
+
+    .filter-panel-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-panel-action {
+      flex: 1;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      line-height: 1.2;
+      cursor: pointer;
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      color: #fff;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+    }
+
+    .filter-panel-action:hover {
+      opacity: 0.92;
+    }
+
+    .filter-panel-action:active {
+      transform: scale(0.98);
+    }
+
+    .filter-panel-action:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .filter-panel-action--ghost {
+      background: transparent;
+      color: var(--primary);
     }
 
     .search-input {
@@ -201,71 +338,6 @@
       line-height: 1.7;
     }
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.32);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 60;
-      padding: 16px;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-panel {
-      width: min(460px, 100%);
-      background: var(--canvas);
-      border-radius: 18px;
-      border: 1px solid var(--hairline);
-      padding: 24px;
-    }
-
-    .modal-title {
-      margin: 0 0 16px;
-      font-size: 34px;
-      line-height: 1.2;
-      font-weight: 600;
-      letter-spacing: -0.37px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 12px;
-      text-align: left;
-    }
-
-    .field label {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.22px;
-    }
-
-    .field input {
-      height: 44px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      border-radius: 9999px;
-      padding: 0 16px;
-      font-size: 17px;
-    }
-
-    .field input:focus-visible {
-      outline: 2px solid var(--primary-focus);
-      outline-offset: 2px;
-    }
-
-    .modal-actions {
-      margin-top: 18px;
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-    }
-
     @media (max-width: 1068px) {
       .grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -286,15 +358,17 @@
         padding: 10px 18px;
         font-size: 14px;
       }
+
+      .sort-select {
+        height: 42px;
+        padding: 0 14px;
+        font-size: 14px;
+      }
     }
 
     @media (max-width: 640px) {
       .grid {
         grid-template-columns: 1fr;
-      }
-
-      .sub-nav-actions .button-secondary {
-        display: none;
       }
     }
   </style>
@@ -303,7 +377,6 @@
   <div class="sub-nav">
     <div class="sub-nav-inner">
       <div class="sub-nav-actions">
-        <button id="open-add-modal-btn" class="button-secondary" type="button">新增色卡</button>
         <button id="go-catalog-btn" class="button-primary" type="button">查看色库</button>
       </div>
     </div>
@@ -315,8 +388,32 @@
         <div class="catalog-head">
           <input id="search-input" class="search-input" type="search" placeholder="搜索色名或 HEX">
           <div class="catalog-toolbar-right">
-            <button id="filter-btn" class="button-secondary" type="button">筛选</button>
-            <button id="sort-btn" class="button-secondary" type="button">排序</button>
+            <div class="filter-wrap" id="filter-wrap">
+              <button
+                id="filter-btn"
+                class="button-secondary filter-btn"
+                type="button"
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-controls="filter-panel"
+              >
+                筛选
+              </button>
+              <div id="filter-panel" class="filter-panel" role="region" aria-label="按色系筛选" hidden>
+                <div class="filter-swatches" id="filter-swatches" role="group" aria-label="色系多选"></div>
+                <div class="filter-panel-footer">
+                  <button type="button" id="filter-select-all" class="filter-panel-action">全选</button>
+                  <button type="button" id="filter-clear-all" class="filter-panel-action filter-panel-action--ghost">
+                    清空选项
+                  </button>
+                </div>
+              </div>
+            </div>
+            <select id="sort-select" class="sort-select" aria-label="排序">
+              <option value="default">默认顺序</option>
+              <option value="light-to-dark">由浅至深</option>
+              <option value="dark-to-light">由深至浅</option>
+            </select>
           </div>
         </div>
         <section class="grid" id="color-grid"></section>
@@ -327,63 +424,41 @@
   <footer class="footer">
     <div class="footer-inner">
       传统色卡 · Apple 风格设计实验站点。<br>
-      使用 `colors.json` 作为数据源，支持新增并实时写回本地文件。
+      色卡数据来自 `colors.json`，可直接编辑该文件后刷新页面。
     </div>
   </footer>
 
-  <div id="add-color-modal" class="modal" aria-hidden="true">
-    <div class="modal-panel">
-      <h2 class="modal-title">新增色卡</h2>
-      <form id="add-color-form">
-        <div class="field">
-          <label for="color-name-input">色名</label>
-          <input id="color-name-input" type="text" placeholder="例如：海棠红" required>
-        </div>
-        <div class="field">
-          <label for="color-hex-input">HEX 颜色</label>
-          <input id="color-hex-input" type="text" placeholder="例如：#A1B2C3" required>
-        </div>
-        <div class="modal-actions">
-          <button id="cancel-add-btn" class="button-secondary" type="button">取消</button>
-          <button class="button-primary" type="submit">保存</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <script>
     const DATA_FILE = "colors.json";
-    const GROUP_TITLE = "传统色卡";
-    let colorData = [{ groupTitle: GROUP_TITLE, colors: [] }];
     let colors = [];
-    let fileHandle = null;
     let searchKeyword = "";
+    /** @type {"default" | "light-to-dark" | "dark-to-light"} */
+    let sortMode = "default";
 
-    const modal = document.getElementById("add-color-modal");
-    const addForm = document.getElementById("add-color-form");
-    const colorNameInput = document.getElementById("color-name-input");
-    const colorHexInput = document.getElementById("color-hex-input");
+    const FAMILIES = [
+      { id: "red", label: "红", swatch: "#c41e3a" },
+      { id: "orange", label: "橙", swatch: "#e07020" },
+      { id: "yellow", label: "黄", swatch: "#e6b800" },
+      { id: "green", label: "绿", swatch: "#2d8640" },
+      { id: "cyan", label: "青", swatch: "#0d9488" },
+      { id: "blue", label: "蓝", swatch: "#2563eb" },
+      { id: "purple", label: "紫", swatch: "#6d28d9" },
+      { id: "pink", label: "粉", swatch: "#db2777" },
+      { id: "brown", label: "棕", swatch: "#7c4a32" },
+      { id: "gray", label: "灰", swatch: "#9ca3af" },
+      { id: "white", label: "白", swatch: "#f5f5f5", light: true },
+      { id: "black", label: "黑", swatch: "#1a1a1a" },
+    ];
+
+    const selectedFamilies = new Set();
+
     const searchInput = document.getElementById("search-input");
     const colorGrid = document.getElementById("color-grid");
     const catalogSection = document.getElementById("catalog");
-
-    function normalizeHex(value) {
-      const hex = value.trim().toUpperCase();
-      const normalized = hex.startsWith("#") ? hex : `#${hex}`;
-      return /^#[0-9A-F]{6}$/.test(normalized) ? normalized : null;
-    }
-
-    function openModal() {
-      modal.classList.add("show");
-      modal.setAttribute("aria-hidden", "false");
-      colorNameInput.focus();
-    }
-
-    function closeModal() {
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden", "true");
-      addForm.reset();
-    }
+    const filterWrap = document.getElementById("filter-wrap");
+    const filterBtn = document.getElementById("filter-btn");
+    const filterPanel = document.getElementById("filter-panel");
+    const filterSwatches = document.getElementById("filter-swatches");
 
     function matchesSearch(color) {
       if (!searchKeyword) return true;
@@ -391,11 +466,89 @@
       return text.includes(searchKeyword);
     }
 
+    function parseHexToRgb(hex) {
+      let h = String(hex).trim().replace("#", "");
+      if (h.length === 3) {
+        h = h.split("").map((c) => c + c).join("");
+      }
+      const n = parseInt(h, 16);
+      if (!Number.isFinite(n) || h.length !== 6) return null;
+      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+    }
+
+    function rgbToHsv(r, g, b) {
+      const rn = r / 255;
+      const gn = g / 255;
+      const bn = b / 255;
+      const max = Math.max(rn, gn, bn);
+      const min = Math.min(rn, gn, bn);
+      const d = max - min;
+      let h = 0;
+      if (d !== 0) {
+        if (max === rn) {
+          h = ((gn - bn) / d + (gn < bn ? 6 : 0)) / 6;
+        } else if (max === gn) {
+          h = ((bn - rn) / d + 2) / 6;
+        } else {
+          h = ((rn - gn) / d + 4) / 6;
+        }
+      }
+      h *= 360;
+      const s = max === 0 ? 0 : d / max;
+      const v = max;
+      return { h, s, v };
+    }
+
+    /** 将 HEX 归入与筛选色圈一致的色系 id */
+    function hexToFamily(hex) {
+      const rgb = parseHexToRgb(hex);
+      if (!rgb) return null;
+      const { h, s, v } = rgbToHsv(rgb.r, rgb.g, rgb.b);
+      if (v < 0.1) return "black";
+      if (s < 0.08 && v > 0.9) return "white";
+      if (s < 0.12) return "gray";
+      if (h >= 15 && h <= 48 && s > 0.18 && v < 0.62 && v > 0.1) return "brown";
+      if (h < 22 || h >= 340) return "red";
+      if (h < 48) return "orange";
+      if (h < 72) return "yellow";
+      if (h < 158) return "green";
+      if (h < 185) return "cyan";
+      if (h < 258) return "blue";
+      if (h < 292) return "purple";
+      if (h < 340) return "pink";
+      return "red";
+    }
+
+    function matchesFilter(color) {
+      if (selectedFamilies.size === 0) return true;
+      const fam = hexToFamily(color.hex);
+      return fam !== null && selectedFamilies.has(fam);
+    }
+
+    /** WCAG 2.1 relative luminance (sRGB), 0–1 */
+    function relativeLuminance(hex) {
+      const rgb = parseHexToRgb(hex);
+      if (!rgb) return 0;
+      const linear = [rgb.r, rgb.g, rgb.b].map((c) => {
+        const x = c / 255;
+        return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+    }
+
     function renderColors() {
-      const filtered = colors.filter(matchesSearch);
+      const filtered = colors.filter((c) => matchesSearch(c) && matchesFilter(c));
+      const rows =
+        sortMode === "default"
+          ? filtered.slice()
+          : filtered.slice().sort((a, b) => {
+              const la = relativeLuminance(a.hex);
+              const lb = relativeLuminance(b.hex);
+              return sortMode === "light-to-dark" ? lb - la : la - lb;
+            });
       colorGrid.innerHTML = "";
 
-      filtered.forEach((color) => {
+      rows.forEach((color) => {
         const card = document.createElement("article");
         card.className = "card";
         card.innerHTML = `
@@ -415,92 +568,104 @@
         if (!Array.isArray(data) || !data[0] || !Array.isArray(data[0].colors)) {
           throw new Error("colors.json 格式不正确");
         }
-        colorData = data;
-        colors = colorData[0].colors;
+        colors = data[0].colors;
       } catch (error) {
         alert(`加载色卡失败：${error.message}`);
       }
       renderColors();
     }
 
-    async function ensureFileHandle() {
-      if (fileHandle) return fileHandle;
-      if (!window.showOpenFilePicker) {
-        throw new Error("当前浏览器不支持直接写入本地文件，请使用 Chromium 内核浏览器");
-      }
+    function closeFilterPanel() {
+      filterPanel.hidden = true;
+      filterBtn.setAttribute("aria-expanded", "false");
+    }
 
-      const [handle] = await window.showOpenFilePicker({
-        multiple: false,
-        types: [
-          {
-            description: "JSON 文件",
-            accept: { "application/json": [".json"] }
-          }
-        ]
+    function toggleFilterPanel() {
+      const open = filterPanel.hidden;
+      filterPanel.hidden = !open;
+      filterBtn.setAttribute("aria-expanded", String(open));
+    }
+
+    function syncFilterSwatchUi() {
+      filterSwatches.querySelectorAll(".filter-swatch").forEach((btn) => {
+        const id = btn.dataset.family;
+        const on = selectedFamilies.has(id);
+        btn.classList.toggle("is-selected", on);
+        btn.setAttribute("aria-pressed", String(on));
       });
-
-      if (handle.name.toLowerCase() !== DATA_FILE) {
-        throw new Error("请选择 colors.json 文件");
-      }
-
-      fileHandle = handle;
-      return handle;
+      filterBtn.classList.toggle("is-active", selectedFamilies.size > 0);
     }
 
-    async function writeColorsToFile() {
-      colorData[0].groupTitle = colorData[0].groupTitle || GROUP_TITLE;
-      colorData[0].colors = colors;
-      const handle = await ensureFileHandle();
-      const writable = await handle.createWritable();
-      await writable.write(JSON.stringify(colorData, null, 2));
-      await writable.close();
-    }
-
-    async function addColor(name, hex) {
-      const newColor = { name: name.trim(), hex };
-      colors.push(newColor);
-      renderColors();
-
-      try {
-        await writeColorsToFile();
-        closeModal();
-      } catch (error) {
-        colors.pop();
+    FAMILIES.forEach((f) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "filter-swatch" + (f.light ? " filter-swatch--light" : "");
+      btn.dataset.family = f.id;
+      btn.title = f.label;
+      btn.setAttribute("aria-label", `${f.label}色系`);
+      btn.setAttribute("aria-pressed", "false");
+      btn.style.background = f.swatch;
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (selectedFamilies.has(f.id)) {
+          selectedFamilies.delete(f.id);
+        } else {
+          selectedFamilies.add(f.id);
+        }
+        syncFilterSwatchUi();
         renderColors();
-        alert(`写入 colors.json 失败：${error.message}`);
-      }
-    }
+      });
+      filterSwatches.appendChild(btn);
+    });
 
-    document.getElementById("open-add-modal-btn").addEventListener("click", openModal);
-    document.getElementById("cancel-add-btn").addEventListener("click", closeModal);
-    modal.addEventListener("click", (event) => {
-      if (event.target === modal) closeModal();
+    filterWrap.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    filterBtn.addEventListener("click", () => {
+      toggleFilterPanel();
+    });
+
+    document.getElementById("filter-select-all").addEventListener("click", (e) => {
+      e.stopPropagation();
+      FAMILIES.forEach((f) => selectedFamilies.add(f.id));
+      syncFilterSwatchUi();
+      renderColors();
+    });
+
+    document.getElementById("filter-clear-all").addEventListener("click", (e) => {
+      e.stopPropagation();
+      selectedFamilies.clear();
+      syncFilterSwatchUi();
+      renderColors();
+    });
+
+    document.addEventListener("click", () => {
+      closeFilterPanel();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeFilterPanel();
+      }
     });
 
     document.getElementById("go-catalog-btn").addEventListener("click", () => {
       catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    addForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const name = colorNameInput.value.trim();
-      const hex = normalizeHex(colorHexInput.value);
-
-      if (!name) {
-        alert("请输入色名");
-        return;
-      }
-      if (!hex) {
-        alert("颜色格式不正确，请输入 6 位 HEX，例如 #A1B2C3");
-        return;
-      }
-
-      await addColor(name, hex);
-    });
-
     searchInput.addEventListener("input", (event) => {
       searchKeyword = event.target.value.trim().toLowerCase();
       renderColors();
+    });
+
+    const sortSelect = document.getElementById("sort-select");
+    sortSelect.addEventListener("change", () => {
+      const v = sortSelect.value;
+      if (v === "light-to-dark" || v === "dark-to-light" || v === "default") {
+        sortMode = v;
+        renderColors();
+      }
     });
 
     loadColors();

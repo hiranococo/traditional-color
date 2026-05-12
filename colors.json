@@ -15,7 +15,12 @@
       { "name": "花青", "hex": "#132143" },
       { "name": "甘石", "hex": "#C7B8B8" },
       { "name": "窃蓝", "hex": "#89AAD9" },
-      { "name": "嫩鹅黄", "hex": "#F4C867" }
+      { "name": "嫩鹅黄", "hex": "#F4C867" },
+      { "name": "雪白", "hex": "#F0FCFF" },
+      { "name": "莹白", "hex": "#E3F9FD" },
+      { "name": "月白", "hex": "#D6ECF0" },
+      { "name": "霜色", "hex": "#E9F1F6" },
+      { "name": "浅云", "hex": "#EAEEF1" }
     ]
   }
 ]
