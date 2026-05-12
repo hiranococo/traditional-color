@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>传统色卡</title>
+  <style>
+    :root {
+      --primary: #0066cc;
+      --primary-focus: #0071e3;
+      --primary-on-dark: #2997ff;
+      --canvas: #ffffff;
+      --canvas-parchment: #f5f5f7;
+      --surface-pearl: #fafafc;
+      --surface-tile-1: #272729;
+      --surface-tile-2: #2a2a2c;
+      --ink: #1d1d1f;
+      --body-muted: #cccccc;
+      --hairline: #e0e0e0;
+      --divider-soft: #f0f0f0;
+      --section-padding: 80px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--canvas-parchment);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .sub-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      backdrop-filter: saturate(180%) blur(20px);
+      background: rgba(245, 245, 247, 0.8);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      z-index: 35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+    }
+
+    .sub-nav-inner {
+      width: min(1440px, 100%);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .sub-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button-primary,
+    .button-secondary {
+      border-radius: 9999px;
+      padding: 11px 22px;
+      font-size: 17px;
+      line-height: 1;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .button-primary:active,
+    .button-secondary:active {
+      transform: scale(0.95);
+    }
+
+    .button-primary:focus-visible,
+    .button-secondary:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .button-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .button-secondary {
+      background: transparent;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    main {
+      margin-top: 52px;
+    }
+
+    .catalog-section {
+      background: var(--canvas-parchment);
+      padding: 64px 24px 80px;
+    }
+
+    .catalog-inner {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+    }
+
+    .catalog-head {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .catalog-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .search-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 340px;
+      width: 100%;
+      height: 44px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 9999px;
+      padding: 0 20px;
+      font-size: 17px;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .search-input:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0 0 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .card-preview {
+      aspect-ratio: 2 / 1;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 12px 0;
+    }
+
+    .card-name {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.37px;
+      line-height: 1.24;
+    }
+
+    .card-hex {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.37px;
+      line-height: 1.47;
+      color: #333;
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    .footer {
+      background: var(--canvas-parchment);
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 64px 24px;
+      color: #7a7a7a;
+      font-size: 12px;
+    }
+
+    .footer-inner {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.32);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+      padding: 16px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: min(460px, 100%);
+      background: var(--canvas);
+      border-radius: 18px;
+      border: 1px solid var(--hairline);
+      padding: 24px;
+    }
+
+    .modal-title {
+      margin: 0 0 16px;
+      font-size: 34px;
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: -0.37px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .field label {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.22px;
+    }
+
+    .field input {
+      height: 44px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 9999px;
+      padding: 0 16px;
+      font-size: 17px;
+    }
+
+    .field input:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .modal-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1068px) {
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 833px) {
+      :root {
+        --section-padding: 56px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .button-primary,
+      .button-secondary {
+        padding: 10px 18px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sub-nav-actions .button-secondary {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sub-nav">
+    <div class="sub-nav-inner">
+      <div class="sub-nav-actions">
+        <button id="open-add-modal-btn" class="button-secondary" type="button">新增色卡</button>
+        <button id="go-catalog-btn" class="button-primary" type="button">查看色库</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="catalog-section" id="catalog">
+      <div class="catalog-inner">
+        <div class="catalog-head">
+          <input id="search-input" class="search-input" type="search" placeholder="搜索色名或 HEX">
+          <div class="catalog-toolbar-right">
+            <button id="filter-btn" class="button-secondary" type="button">筛选</button>
+            <button id="sort-btn" class="button-secondary" type="button">排序</button>
+          </div>
+        </div>
+        <section class="grid" id="color-grid"></section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      传统色卡 · Apple 风格设计实验站点。<br>
+      使用 `colors.json` 作为数据源，支持新增并实时写回本地文件。
+    </div>
+  </footer>
+
+  <div id="add-color-modal" class="modal" aria-hidden="true">
+    <div class="modal-panel">
+      <h2 class="modal-title">新增色卡</h2>
+      <form id="add-color-form">
+        <div class="field">
+          <label for="color-name-input">色名</label>
+          <input id="color-name-input" type="text" placeholder="例如：海棠红" required>
+        </div>
+        <div class="field">
+          <label for="color-hex-input">HEX 颜色</label>
+          <input id="color-hex-input" type="text" placeholder="例如：#A1B2C3" required>
+        </div>
+        <div class="modal-actions">
+          <button id="cancel-add-btn" class="button-secondary" type="button">取消</button>
+          <button class="button-primary" type="submit">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const DATA_FILE = "colors.json";
+    const GROUP_TITLE = "传统色卡";
+    let colorData = [{ groupTitle: GROUP_TITLE, colors: [] }];
+    let colors = [];
+    let fileHandle = null;
+    let searchKeyword = "";
+
+    const modal = document.getElementById("add-color-modal");
+    const addForm = document.getElementById("add-color-form");
+    const colorNameInput = document.getElementById("color-name-input");
+    const colorHexInput = document.getElementById("color-hex-input");
+    const searchInput = document.getElementById("search-input");
+    const colorGrid = document.getElementById("color-grid");
+    const catalogSection = document.getElementById("catalog");
+
+    function normalizeHex(value) {
+      const hex = value.trim().toUpperCase();
+      const normalized = hex.startsWith("#") ? hex : `#${hex}`;
+      return /^#[0-9A-F]{6}$/.test(normalized) ? normalized : null;
+    }
+
+    function openModal() {
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      colorNameInput.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      addForm.reset();
+    }
+
+    function matchesSearch(color) {
+      if (!searchKeyword) return true;
+      const text = `${color.name} ${color.hex}`.toLowerCase();
+      return text.includes(searchKeyword);
+    }
+
+    function renderColors() {
+      const filtered = colors.filter(matchesSearch);
+      colorGrid.innerHTML = "";
+
+      filtered.forEach((color) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-preview" style="background:${color.hex};"></div>
+          <h3 class="card-name">${color.name}</h3>
+          <p class="card-hex">${color.hex}</p>
+        `;
+        colorGrid.appendChild(card);
+      });
+    }
+
+    async function loadColors() {
+      try {
+        const response = await fetch(DATA_FILE);
+        if (!response.ok) throw new Error("读取 colors.json 失败");
+        const data = await response.json();
+        if (!Array.isArray(data) || !data[0] || !Array.isArray(data[0].colors)) {
+          throw new Error("colors.json 格式不正确");
+        }
+        colorData = data;
+        colors = colorData[0].colors;
+      } catch (error) {
+        alert(`加载色卡失败：${error.message}`);
+      }
+      renderColors();
+    }
+
+    async function ensureFileHandle() {
+      if (fileHandle) return fileHandle;
+      if (!window.showOpenFilePicker) {
+        throw new Error("当前浏览器不支持直接写入本地文件，请使用 Chromium 内核浏览器");
+      }
+
+      const [handle] = await window.showOpenFilePicker({
+        multiple: false,
+        types: [
+          {
+            description: "JSON 文件",
+            accept: { "application/json": [".json"] }
+          }
+        ]
+      });
+
+      if (handle.name.toLowerCase() !== DATA_FILE) {
+        throw new Error("请选择 colors.json 文件");
+      }
+
+      fileHandle = handle;
+      return handle;
+    }
+
+    async function writeColorsToFile() {
+      colorData[0].groupTitle = colorData[0].groupTitle || GROUP_TITLE;
+      colorData[0].colors = colors;
+      const handle = await ensureFileHandle();
+      const writable = await handle.createWritable();
+      await writable.write(JSON.stringify(colorData, null, 2));
+      await writable.close();
+    }
+
+    async function addColor(name, hex) {
+      const newColor = { name: name.trim(), hex };
+      colors.push(newColor);
+      renderColors();
+
+      try {
+        await writeColorsToFile();
+        closeModal();
+      } catch (error) {
+        colors.pop();
+        renderColors();
+        alert(`写入 colors.json 失败：${error.message}`);
+      }
+    }
+
+    document.getElementById("open-add-modal-btn").addEventListener("click", openModal);
+    document.getElementById("cancel-add-btn").addEventListener("click", closeModal);
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.getElementById("go-catalog-btn").addEventListener("click", () => {
+      catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    addForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const name = colorNameInput.value.trim();
+      const hex = normalizeHex(colorHexInput.value);
+
+      if (!name) {
+        alert("请输入色名");
+        return;
+      }
+      if (!hex) {
+        alert("颜色格式不正确，请输入 6 位 HEX，例如 #A1B2C3");
+        return;
+      }
+
+      await addColor(name, hex);
+    });
+
+    searchInput.addEventListener("input", (event) => {
+      searchKeyword = event.target.value.trim().toLowerCase();
+      renderColors();
+    });
+
+    loadColors();
+  </script>
+</body>
+</html>
