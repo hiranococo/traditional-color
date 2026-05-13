@@ -6,11 +6,42 @@
   <title>配置 · 传统色卡</title>
   <style>
     :root {
-      --primary: #0066cc;
+      --primary-color: #0066cc;
       --primary-focus: #0071e3;
+      --canvas-color: #ffffff;
+      --ink-color: #1d1d1f;
       --canvas-parchment: #f5f5f7;
-      --canvas: #ffffff;
-      --ink: #1d1d1f;
+      /* 与预览槽位一致：{colors.*} 令牌默认值 */
+      --colors-primary: #0066cc;
+      --colors-primary-variant: #0071e3;
+      --colors-link: #0066cc;
+      --colors-canvas-primary: #ffffff;
+      --colors-canvas-secondary: #f5f5f7;
+      --colors-component-bg: #f5f5f7;
+      --colors-ink-main: #1d1d1f;
+      --colors-ink-secondary: #6e6e73;
+      --colors-border: rgba(0, 0, 0, 0.12);
+      --colors-overlay-alpha: rgba(0, 0, 0, 0.45);
+      /* 候选池色卡与映射槽共用，改一处即可两边对齐 */
+      --mapping-chip-swatch-size: 32px;
+      --mapping-chip-swatch-radius: 8px;
+      --mapping-chip-pad-y: 6px;
+      --mapping-chip-pad-x-start: 6px;
+      --mapping-chip-pad-x-end: 10px;
+      --mapping-chip-gap: 8px;
+      --mapping-chip-name-max: 14rem;
+      /* 与两行文案行高一致，保证槽位总高与候选色卡 border-box 一致 */
+      --mapping-chip-border-w: 1px;
+      --mapping-chip-name-line-height: 20px;
+      --mapping-chip-hex-line-height: 16px;
+      --mapping-chip-meta-gap: 2px;
+      --mapping-chip-text-col-h: calc(
+        var(--mapping-chip-name-line-height) + var(--mapping-chip-meta-gap) + var(--mapping-chip-hex-line-height)
+      );
+      --mapping-chip-inner-h: max(var(--mapping-chip-swatch-size), var(--mapping-chip-text-col-h));
+      --mapping-chip-outer-min-h: calc(
+        2 * var(--mapping-chip-border-w) + 2 * var(--mapping-chip-pad-y) + var(--mapping-chip-inner-h)
+      );
     }
 
     * {
@@ -22,7 +53,7 @@
       margin: 0;
       padding: 0;
       background: var(--canvas-parchment);
-      color: var(--ink);
+      color: var(--ink-color);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -68,9 +99,9 @@
       font-weight: 500;
       font-family: inherit;
       border-radius: 9999px;
-      border: 1px solid var(--primary);
+      border: 1px solid var(--primary-color);
       background: transparent;
-      color: var(--primary);
+      color: var(--primary-color);
       text-decoration: none;
       cursor: pointer;
       transition: transform 0.12s ease;
@@ -96,30 +127,655 @@
     }
 
     .page-inner {
-      width: min(720px, 100%);
+      width: min(1200px, 100%);
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 28px;
+      align-items: start;
     }
 
     .card {
-      background: var(--canvas);
+      background: var(--canvas-color);
       border-radius: 14px;
       border: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 24px 22px;
+      padding: 28px 24px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     }
 
-    .card h1 {
-      margin: 0 0 12px;
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
+    .card > .candidate-section:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
     }
 
-    .card p {
+    .candidate-section {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .candidate-section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .candidate-section-head .candidate-heading {
       margin: 0;
+    }
+
+    .candidate-heading {
+      margin: 0 0 12px;
       font-size: 15px;
+      font-weight: 600;
+      color: var(--ink-color);
+      letter-spacing: -0.01em;
+    }
+
+    .add-custom-candidate-btn {
+      flex-shrink: 0;
+      margin: 0;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      background: var(--canvas-parchment);
+      color: var(--ink-color);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+    }
+
+    .add-custom-candidate-btn:hover {
+      border-color: rgba(0, 0, 0, 0.28);
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .add-custom-candidate-btn:active {
+      transform: scale(0.98);
+    }
+
+    .add-custom-candidate-btn:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .candidate-color-input-anchor {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .candidate-alert {
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: #7a4a00;
+      background: rgba(234, 179, 8, 0.14);
+      border: 1px solid rgba(234, 179, 8, 0.35);
+    }
+
+    .candidate-alert[hidden] {
+      display: none !important;
+    }
+
+    .candidate-pool {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .candidate-pool[hidden] {
+      display: none !important;
+    }
+
+    .candidate-chip {
+      display: flex;
+      align-items: center;
+      gap: var(--mapping-chip-gap);
+      min-width: 0;
+      padding: var(--mapping-chip-pad-y) var(--mapping-chip-pad-x-end) var(--mapping-chip-pad-y)
+        var(--mapping-chip-pad-x-start);
+      border-radius: 10px;
+      background: var(--canvas-parchment);
+      border: var(--mapping-chip-border-w) solid rgba(0, 0, 0, 0.08);
+      height: var(--mapping-chip-outer-min-h);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      cursor: grab;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+      text-align: left;
+      font-family: inherit;
+      color: inherit;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .candidate-chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(0, 0, 0, 0.16);
+    }
+
+    .candidate-chip:active {
+      cursor: grabbing;
+    }
+
+    .candidate-chip:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .candidate-chip.is-dragging {
+      opacity: 0.55;
+    }
+
+    .candidate-chip-swatch {
+      width: var(--mapping-chip-swatch-size);
+      height: var(--mapping-chip-swatch-size);
+      border-radius: var(--mapping-chip-swatch-radius);
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+    }
+
+    .candidate-chip-text {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--mapping-chip-meta-gap);
+    }
+
+    .candidate-chip-name {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      line-height: var(--mapping-chip-name-line-height);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: var(--mapping-chip-name-max);
+    }
+
+    .candidate-chip-hex {
+      margin: 0;
+      font-size: 12px;
+      line-height: var(--mapping-chip-hex-line-height);
+      font-family: Consolas, "Courier New", monospace;
+      color: #666;
+    }
+
+    .candidate-chip--custom .candidate-chip-hex {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: var(--mapping-chip-name-line-height);
+      color: var(--ink-color);
+    }
+
+    .color-slot-hex--solo {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: var(--mapping-chip-name-line-height);
+      color: var(--ink-color);
+    }
+
+    .mapping-section {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .mapping-slots {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .mapping-slot-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 8px 10px;
+    }
+
+    .mapping-slot-group + .mapping-slot-group {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+
+    .mapping-slot-group-title {
+      flex: 0 0 100%;
+      width: 100%;
+      margin: 0 0 2px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #666;
+    }
+
+    .color-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .color-slot-title {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+
+    .color-slot-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink-color);
+    }
+
+    .color-slot-drop {
+      /* 与候选色卡同宽：随内容收缩，不占满一栏 */
+      width: fit-content;
+      max-width: 100%;
+      /* 与候选色卡同高（border-box，含 1px 边框） */
+      height: var(--mapping-chip-outer-min-h);
+      border-radius: 10px;
+      border: var(--mapping-chip-border-w) dashed rgba(0, 0, 0, 0.18);
+      background: rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      gap: var(--mapping-chip-gap);
+      padding: var(--mapping-chip-pad-y) var(--mapping-chip-pad-x-end) var(--mapping-chip-pad-y)
+        var(--mapping-chip-pad-x-start);
+      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .color-slot-drop.is-empty {
+      justify-content: center;
+    }
+
+    .color-slot-drop.is-drag-over {
+      border-color: var(--primary-color);
+      background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 18%, transparent);
+    }
+
+    .color-slot-drop:not(.is-empty) {
+      cursor: grab;
+      user-select: none;
+    }
+
+    .color-slot-drop:not(.is-empty):active {
+      cursor: grabbing;
+    }
+
+    .color-slot-drop.is-slot-dragging {
+      opacity: 0.55;
+    }
+
+    .color-slot-placeholder {
+      margin: 0;
+      font-size: 13px;
+      line-height: var(--mapping-chip-inner-h);
+      color: #888;
+      text-align: center;
+    }
+
+    .color-slot-swatch {
+      width: var(--mapping-chip-swatch-size);
+      height: var(--mapping-chip-swatch-size);
+      border-radius: var(--mapping-chip-swatch-radius);
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+    }
+
+    .color-slot-meta {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--mapping-chip-meta-gap);
+    }
+
+    .color-slot-name {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      line-height: var(--mapping-chip-name-line-height);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: var(--mapping-chip-name-max);
+    }
+
+    .color-slot-hex {
+      margin: 0;
+      font-size: 12px;
+      line-height: var(--mapping-chip-hex-line-height);
+      font-family: Consolas, "Courier New", monospace;
+      color: #666;
+    }
+
+    .mapping-status {
+      margin: 12px 0 0;
+      font-size: 13px;
+      color: #666;
+      min-height: 1.4em;
+    }
+
+    .mapping-actions {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mapping-trash-slot {
+      flex: 0 0 auto;
+      width: 52px;
+      min-height: 44px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(0, 0, 0, 0.22);
+      border-radius: 10px;
+      background: transparent;
+      color: #666;
+      cursor: default;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.12s ease;
+      user-select: none;
+    }
+
+    .mapping-trash-slot.is-drag-over {
+      border-color: var(--primary-color);
+      background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 18%, transparent);
+      color: var(--primary-color);
+    }
+
+    .mapping-trash-icon {
+      width: 22px;
+      height: 22px;
+      opacity: 0.72;
+    }
+
+    .mapping-trash-slot.is-drag-over .mapping-trash-icon {
+      opacity: 1;
+    }
+
+    .reset-preview-btn {
+      margin-top: 0;
+      flex: 1;
+      min-width: 0;
+      border: 1px dashed rgba(0, 0, 0, 0.22);
+      background: transparent;
+      color: #444;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+    }
+
+    .reset-preview-btn:hover {
+      border-color: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .reset-preview-btn:active {
+      transform: scale(0.99);
+    }
+
+    .reset-preview-btn:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .preview-card {
+      --preview-border-width: 1px;
+      position: sticky;
+      top: 84px;
+    }
+
+    /* 右侧预览卡片外框：与通用 .card 区分，边框粗细由变量控制 */
+    .card.preview-card {
+      border: var(--preview-border-width) solid rgba(0, 0, 0, 0.08);
+    }
+
+    .preview-title {
+      margin: 0 0 14px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .preview-surface {
+      border-radius: 12px;
+      padding: 22px 18px;
+      border: var(--preview-border-width) solid var(--colors-border);
+      background: var(--colors-canvas-primary);
+      color: var(--colors-ink-main);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .preview-panel {
+      border: var(--preview-border-width) solid var(--colors-border);
+      border-radius: 10px;
+      padding: 14px 14px 16px;
+      background: var(--colors-canvas-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .preview-heading {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--colors-ink-main);
+    }
+
+    .preview-lead {
+      margin: 0;
+      font-size: 14px;
       line-height: 1.6;
-      color: #555;
+      color: var(--colors-ink-secondary);
+    }
+
+    .preview-body {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--colors-ink-main);
+    }
+
+    .preview-body .preview-link {
+      display: inline;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: default;
+      font: inherit;
+      color: var(--colors-link);
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .preview-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .preview-btn-primary {
+      border: var(--preview-border-width) solid color-mix(in srgb, #ffffff 40%, var(--colors-primary));
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      color: #fff;
+      background: var(--colors-primary);
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--colors-primary) 28%, transparent);
+      cursor: pointer;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .preview-btn-primary:hover {
+      background: var(--colors-primary-variant);
+      box-shadow: 0 3px 10px color-mix(in srgb, var(--colors-primary-variant) 32%, transparent);
+    }
+
+    .preview-btn-primary:focus-visible {
+      outline: 2px solid var(--colors-primary-variant);
+      outline-offset: 2px;
+    }
+
+    .preview-btn-ghost {
+      border: var(--preview-border-width) solid var(--colors-border);
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--colors-ink-main);
+      background: var(--colors-component-bg);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .preview-btn-ghost:hover {
+      background: color-mix(in srgb, var(--colors-component-bg) 88%, var(--colors-ink-main));
+    }
+
+    .preview-search {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      border: var(--preview-border-width) solid var(--colors-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--colors-ink-main);
+      background: var(--colors-component-bg);
+    }
+
+    .preview-search::placeholder {
+      color: var(--colors-ink-secondary);
+    }
+
+    .preview-media {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: var(--preview-border-width) solid var(--colors-border);
+      min-height: 76px;
+    }
+
+    .preview-media-shim {
+      height: 76px;
+      background: linear-gradient(
+        125deg,
+        var(--colors-canvas-secondary),
+        color-mix(in srgb, var(--colors-primary) 22%, var(--colors-canvas-secondary))
+      );
+    }
+
+    .preview-media-floating {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .preview-media-floating .preview-overlay-btn {
+      pointer-events: auto;
+      border: none;
+      border-radius: 9999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      color: #fff;
+      background: var(--colors-overlay-alpha);
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+    }
+
+    .preview-footer {
+      margin: 0 -18px -22px;
+      padding: 12px 18px 14px;
+      border-top: var(--preview-border-width) solid var(--colors-border);
+      background: var(--colors-canvas-secondary);
+      border-radius: 0 0 11px 11px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--colors-ink-secondary);
+    }
+
+    @media (max-width: 980px) {
+      .page-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .preview-card {
+        position: static;
+      }
+    }
+
+    .border-slider-section {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .border-slider-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 12px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .border-slider-value {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    #preview-border-slider {
+      display: block;
+      width: 100%;
+      margin: 0;
+      accent-color: var(--primary-color);
     }
   </style>
 </head>
@@ -135,10 +791,813 @@
   <main>
     <div class="page-inner">
       <div class="card">
-        <h1>配置中心</h1>
-        <p>此处可扩展为导出配色、主题预设或数据源设置等选项。当前为独立页面骨架，便于后续接入功能。</p>
+        <div class="candidate-section">
+          <div class="candidate-section-head">
+            <h2 class="candidate-heading">颜色候选池</h2>
+            <input
+              id="add-custom-candidate-picker"
+              class="candidate-color-input-anchor"
+              type="color"
+              value="#4488cc"
+              aria-label="选择要加入候选池的自定义颜色"
+              tabindex="-1"
+            />
+            <button type="button" class="add-custom-candidate-btn" id="add-custom-candidate-btn">
+              添加自定义颜色
+            </button>
+          </div>
+          <p id="candidate-alert" class="candidate-alert" hidden role="status"></p>
+          <div id="candidate-pool" class="candidate-pool" hidden aria-label="候选池中的颜色"></div>
+        </div>
+        <div class="mapping-section">
+          <h2 class="candidate-heading">颜色映射</h2>
+          <div class="mapping-slots" id="mapping-slots">
+            <div class="mapping-slot-group">
+              <h3 class="mapping-slot-group-title">品牌与交互</h3>
+              <div class="color-slot" data-css-var="--colors-primary">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">主品牌色</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="主品牌色槽位，从候选池拖入颜色"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-primary-variant">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">主色变体</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="主色变体槽位，用于悬停、聚焦等"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-link">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">链接色</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="链接色槽位"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+            </div>
+            <div class="mapping-slot-group">
+              <h3 class="mapping-slot-group-title">表面与背景</h3>
+              <div class="color-slot" data-css-var="--colors-canvas-primary">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">第一背景</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="第一背景槽位"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-canvas-secondary">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">第二背景</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="第二背景槽位"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-component-bg">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">组件背景</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="组件背景槽位"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+            </div>
+            <div class="mapping-slot-group">
+              <h3 class="mapping-slot-group-title">文字系统</h3>
+              <div class="color-slot" data-css-var="--colors-ink-main">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">标题与正文</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="标题与正文槽位"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-ink-secondary">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">副文与描述</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="副文与描述槽位"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+            </div>
+            <div class="mapping-slot-group">
+              <h3 class="mapping-slot-group-title">功能线</h3>
+              <div class="color-slot" data-css-var="--colors-border">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">边框与分割线</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="边框与分割线槽位，可使用 hex 或 rgba"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-overlay-alpha">
+                <span class="color-slot-title">
+                  <span class="color-slot-label">叠加层</span>
+                </span>
+                <div
+                  class="color-slot-drop is-empty"
+                  data-slot-role="drop"
+                  tabindex="0"
+                  role="group"
+                  aria-label="叠加层槽位，建议 rgba；拖入 hex 时自动生成半透明"
+                >
+                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mapping-actions">
+            <div
+              id="mapping-trash-slot"
+              class="mapping-trash-slot"
+              role="img"
+              aria-label="垃圾桶：将已映射槽位中的色块拖到这里可移除该槽位"
+            >
+              <svg class="mapping-trash-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18" />
+                <path d="M8 6V4h8v2" />
+                <path d="M19 6l-1 14H6L5 6" />
+                <path d="M10 11v6M14 11v6" />
+              </svg>
+            </div>
+            <button class="reset-preview-btn" id="reset-preview-btn" type="button">重置预览</button>
+          </div>
+          <p id="mapping-status" class="mapping-status" role="status"></p>
+        </div>
+        <div class="border-slider-section">
+          <h2 class="candidate-heading">预览边框粗细</h2>
+          <label class="border-slider-label" for="preview-border-slider">
+            边框宽度
+            <span class="border-slider-value"><span id="preview-border-value">1</span> px</span>
+          </label>
+          <input
+            id="preview-border-slider"
+            type="range"
+            min="0"
+            max="8"
+            step="1"
+            value="1"
+            aria-valuemin="0"
+            aria-valuemax="8"
+            aria-valuenow="1"
+            aria-label="预览区域边框宽度"
+          />
+        </div>
       </div>
+      <aside class="card preview-card" aria-label="实时预览">
+        <h2 class="preview-title">实时预览</h2>
+        <div class="preview-surface">
+          <div class="preview-panel">
+            <h1 class="preview-heading">传统色 · 标题与正文</h1>
+            <p class="preview-lead">副标题与描述文案预览，对应 {colors.ink-secondary}。</p>
+            <p class="preview-body">
+              正文与内联
+              <button type="button" class="preview-link">链接示例</button>
+              ，对应 {colors.link} 与 {colors.ink-main}。
+            </p>
+            <div class="preview-actions">
+              <button type="button" class="preview-btn-primary">主行动按钮</button>
+              <button type="button" class="preview-btn-ghost">幽灵按钮</button>
+            </div>
+            <input
+              class="preview-search"
+              type="text"
+              readonly
+              value="搜索框 / 输入框背景"
+              aria-label="组件背景与边框预览"
+            />
+            <div class="preview-media" aria-hidden="true">
+              <div class="preview-media-shim"></div>
+              <div class="preview-media-floating">
+                <button type="button" class="preview-overlay-btn">叠加层按钮</button>
+              </div>
+            </div>
+          </div>
+          <p class="preview-footer">页脚 / 次级表面：{colors.canvas-secondary} · 边框与分割：{colors.border}</p>
+        </div>
+      </aside>
     </div>
   </main>
+  <script>
+    const SELECTED_COLORS_SESSION_KEY = "selectedColors";
+    const CONFIG_CUSTOM_CANDIDATES_SESSION_KEY = "configCustomCandidateHexes";
+
+    /**
+     * @param {string} hex
+     * @returns {string | null} 规范为 #RRGGBB 大写，非法则 null
+     */
+    function normalizeHexToFullUpper(hex) {
+      let h = String(hex).trim().replace("#", "").toUpperCase();
+      if (h.length === 3 && /^[0-9A-F]{3}$/.test(h)) h = h.split("").map((ch) => ch + ch).join("");
+      if (!/^[0-9A-F]{6}$/.test(h)) return null;
+      return `#${h}`;
+    }
+
+    /**
+     * @param {unknown} raw
+     * @returns {string[]}
+     */
+    function normalizeCustomCandidateHexes(raw) {
+      if (!Array.isArray(raw)) return [];
+      const out = [];
+      const seen = new Set();
+      for (const item of raw) {
+        const hex =
+          typeof item === "string"
+            ? normalizeHexToFullUpper(item)
+            : item && typeof item === "object"
+              ? normalizeHexToFullUpper(String(/** @type {{ hex?: unknown }} */ (item).hex ?? ""))
+              : null;
+        if (!hex || seen.has(hex)) continue;
+        seen.add(hex);
+        out.push(hex);
+      }
+      return out;
+    }
+
+    function loadCustomCandidatesFromSession() {
+      try {
+        const s = sessionStorage.getItem(CONFIG_CUSTOM_CANDIDATES_SESSION_KEY);
+        if (s == null || s === "") return [];
+        return normalizeCustomCandidateHexes(JSON.parse(s));
+      } catch {
+        return [];
+      }
+    }
+
+    /**
+     * @param {string[]} hexes
+     */
+    function saveCustomCandidatesToSession(hexes) {
+      const list = normalizeCustomCandidateHexes(hexes);
+      sessionStorage.setItem(CONFIG_CUSTOM_CANDIDATES_SESSION_KEY, JSON.stringify(list));
+    }
+
+    /**
+     * @param {unknown} raw
+     * @returns {{ name: string; hex: string }[]}
+     */
+    function normalizeSelectedColors(raw) {
+      if (!Array.isArray(raw)) return [];
+      const out = [];
+      for (const item of raw) {
+        if (!item || typeof item !== "object") continue;
+        const name = String(/** @type {{ name?: unknown }} */ (item).name ?? "").trim();
+        const hex = String(/** @type {{ hex?: unknown }} */ (item).hex ?? "").trim().toUpperCase();
+        if (!name || !hex) continue;
+        if (!/^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(hex)) continue;
+        out.push({ name, hex });
+      }
+      return out;
+    }
+
+    function loadSelectedColorsFromSession() {
+      try {
+        const s = sessionStorage.getItem(SELECTED_COLORS_SESSION_KEY);
+        if (s == null || s === "") return [];
+        const data = JSON.parse(s);
+        return normalizeSelectedColors(data);
+      } catch {
+        return [];
+      }
+    }
+
+    const PREVIEW_THEME_VARS = [
+      "--colors-primary",
+      "--colors-primary-variant",
+      "--colors-link",
+      "--colors-canvas-primary",
+      "--colors-canvas-secondary",
+      "--colors-component-bg",
+      "--colors-ink-main",
+      "--colors-ink-secondary",
+      "--colors-border",
+      "--colors-overlay-alpha",
+    ];
+
+    /** @typedef {{ name: string; hex: string; css?: string; customCandidate?: boolean }} MappedColor */
+
+    /** @type {Record<string, MappedColor | null>} */
+    const slotAssignments = Object.fromEntries(PREVIEW_THEME_VARS.map((v) => [v, null]));
+
+    /** @type {MappedColor | null} */
+    let activeDragColor = null;
+
+    /** 从映射槽位内拖出时为该槽的 CSS 变量名；从候选池拖出时为 null */
+    /** @type {string | null} */
+    let activeDragSlotCssVar = null;
+
+    const SLOT_LABELS = {
+      "--colors-primary": "主品牌色",
+      "--colors-primary-variant": "主色变体",
+      "--colors-link": "链接色",
+      "--colors-canvas-primary": "第一背景",
+      "--colors-canvas-secondary": "第二背景",
+      "--colors-component-bg": "组件背景",
+      "--colors-ink-main": "标题与正文",
+      "--colors-ink-secondary": "副文与描述",
+      "--colors-border": "边框与分割线",
+      "--colors-overlay-alpha": "叠加层",
+    };
+
+    /**
+     * @param {string} hex
+     * @param {number} alpha
+     */
+    function hexToRgba(hex, alpha) {
+      let h = hex.replace("#", "").toUpperCase();
+      if (h.length === 3) h = h.split("").map((ch) => ch + ch).join("");
+      if (!/^[0-9A-F]{6}$/.test(h)) return hex;
+      const n = parseInt(h, 16);
+      const r = (n >> 16) & 255;
+      const g = (n >> 8) & 255;
+      const b = n & 255;
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+
+    /**
+     * @param {string} cssVar
+     * @param {MappedColor} color
+     */
+    function resolveSlotCssValue(cssVar, color) {
+      if (cssVar === "--colors-overlay-alpha") {
+        if (color.css && /^rgba?\(/i.test(color.css)) return color.css;
+        return hexToRgba(color.hex, 0.55);
+      }
+      if (color.css && /^rgba?\(/i.test(color.css)) return color.css;
+      return color.hex;
+    }
+
+    /**
+     * @param {string} s
+     * @returns {MappedColor | null}
+     */
+    function parseRgbFunctionColor(s) {
+      const t = s.trim();
+      if (!/^rgba?\(\s*[\d.]+\s*,/i.test(t) || !/\)\s*$/.test(t)) return null;
+      return { name: t.length > 56 ? `${t.slice(0, 53)}…` : t, hex: "#808080", css: t };
+    }
+
+    /**
+     * @param {DataTransfer} dt
+     * @returns {MappedColor | null}
+     */
+    function parseColorFromDataTransfer(dt) {
+      const json = dt.getData("application/json");
+      if (json) {
+        try {
+          const o = JSON.parse(json);
+          if (o && typeof o === "object") {
+            const customCandidate = /** @type {{ customCandidate?: unknown }} */ (o).customCandidate === true;
+            const name = String(/** @type {{ name?: unknown }} */ (o).name ?? "").trim();
+            const hex = String(/** @type {{ hex?: unknown }} */ (o).hex ?? "").trim().toUpperCase();
+            const css = /** @type {{ css?: unknown }} */ (o).css != null ? String(o.css).trim() : "";
+            if (customCandidate) {
+              const full = normalizeHexToFullUpper(hex);
+              if (full) return { name: full, hex: full, customCandidate: true };
+            }
+            if (css && /^rgba?\(/i.test(css)) {
+              const goodHex = /^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(hex) ? hex : "#808080";
+              return { name: name || css.slice(0, 44), hex: goodHex, css };
+            }
+            if (name && /^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(hex)) {
+              /** @type {MappedColor} */
+              const mc = { name, hex };
+              if (customCandidate) mc.customCandidate = true;
+              return mc;
+            }
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+      const plain = dt.getData("text/plain").trim();
+      const funcColor = parseRgbFunctionColor(plain);
+      if (funcColor) return funcColor;
+      const upper = plain.toUpperCase();
+      if (/^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(upper)) return { name: upper, hex: upper };
+      return null;
+    }
+
+    /**
+     * @param {HTMLElement} dropEl
+     * @param {string} cssVar
+     */
+    function renderSlotDropContent(dropEl, cssVar) {
+      const assignment = slotAssignments[cssVar] ?? null;
+      dropEl.innerHTML = "";
+      dropEl.classList.toggle("is-empty", !assignment);
+      dropEl.draggable = Boolean(assignment);
+      if (!assignment) {
+        const p = document.createElement("p");
+        p.className = "color-slot-placeholder";
+        p.textContent = "拖入候选颜色";
+        dropEl.appendChild(p);
+        return;
+      }
+      const display = assignment.css || assignment.hex;
+      const sw = document.createElement("div");
+      sw.className = "color-slot-swatch";
+      sw.style.background = display;
+      const meta = document.createElement("div");
+      meta.className = "color-slot-meta";
+      if (assignment.customCandidate) {
+        const hexP = document.createElement("p");
+        hexP.className = "color-slot-hex color-slot-hex--solo";
+        hexP.textContent = display;
+        meta.appendChild(hexP);
+      } else {
+        const nameP = document.createElement("p");
+        nameP.className = "color-slot-name";
+        nameP.textContent = assignment.name;
+        const hexP = document.createElement("p");
+        hexP.className = "color-slot-hex";
+        hexP.textContent = display;
+        meta.appendChild(nameP);
+        meta.appendChild(hexP);
+      }
+      dropEl.appendChild(sw);
+      dropEl.appendChild(meta);
+    }
+
+    function refreshAllSlots() {
+      document.querySelectorAll(".color-slot").forEach((slot) => {
+        const cssVar = slot.getAttribute("data-css-var");
+        const drop = slot.querySelector("[data-slot-role='drop']");
+        if (!cssVar || !(drop instanceof HTMLElement)) return;
+        renderSlotDropContent(drop, cssVar);
+      });
+    }
+
+    /**
+     * @param {string} cssVar
+     * @param {MappedColor} color
+     */
+    function applyColorToSlot(cssVar, color) {
+      const previewSurfaceEl = document.querySelector(".preview-surface");
+      const statusEl = document.getElementById("mapping-status");
+      if (!previewSurfaceEl || !PREVIEW_THEME_VARS.includes(cssVar)) return;
+      const value = resolveSlotCssValue(cssVar, color);
+      /** @type {MappedColor} */
+      const stored = { name: color.name, hex: color.hex };
+      if (color.css) stored.css = color.css;
+      else if (value !== color.hex) stored.css = value;
+      if (color.customCandidate) stored.customCandidate = true;
+      slotAssignments[cssVar] = stored;
+      previewSurfaceEl.style.setProperty(cssVar, value);
+      refreshAllSlots();
+      const label = SLOT_LABELS[/** @type {keyof typeof SLOT_LABELS} */ (cssVar)] ?? "槽位";
+      if (statusEl) {
+        const tail = stored.customCandidate ? stored.css || stored.hex : `${stored.name} ${stored.css || stored.hex}`;
+        statusEl.textContent = `${label}：${tail}`;
+      }
+    }
+
+    /**
+     * @param {string} cssVar
+     */
+    function clearSlotAssignment(cssVar) {
+      const previewSurfaceEl = document.querySelector(".preview-surface");
+      const statusEl = document.getElementById("mapping-status");
+      if (!previewSurfaceEl || !PREVIEW_THEME_VARS.includes(cssVar)) return;
+      slotAssignments[cssVar] = null;
+      previewSurfaceEl.style.removeProperty(cssVar);
+      refreshAllSlots();
+      const label = SLOT_LABELS[/** @type {keyof typeof SLOT_LABELS} */ (cssVar)] ?? "槽位";
+      if (statusEl) statusEl.textContent = `已移除「${label}」映射。`;
+    }
+
+    function finishColorDrag() {
+      activeDragColor = null;
+      activeDragSlotCssVar = null;
+      document.querySelectorAll(".color-slot-drop.is-drag-over").forEach((el) => {
+        el.classList.remove("is-drag-over");
+      });
+      document.querySelectorAll(".color-slot-drop.is-slot-dragging").forEach((el) => {
+        el.classList.remove("is-slot-dragging");
+      });
+      const trashEl = document.getElementById("mapping-trash-slot");
+      if (trashEl) trashEl.classList.remove("is-drag-over");
+    }
+
+    function renderCandidatePool() {
+      const alertEl = document.getElementById("candidate-alert");
+      const poolEl = document.getElementById("candidate-pool");
+      const paletteColors = loadSelectedColorsFromSession();
+      const customHexList = loadCustomCandidatesFromSession();
+
+      poolEl.innerHTML = "";
+
+      if (paletteColors.length === 0 && customHexList.length === 0) {
+        alertEl.hidden = false;
+        alertEl.textContent =
+          "候选池为空。请返回色卡页将颜色加入调色筐，或点击「添加自定义颜色」从拾色器选取颜色。";
+        poolEl.hidden = true;
+        return;
+      }
+
+      alertEl.hidden = true;
+      poolEl.hidden = false;
+      poolEl.setAttribute("role", "list");
+      poolEl.setAttribute("aria-label", "候选池中的颜色，可拖入下方映射槽位");
+
+      paletteColors.forEach((c) => {
+        const chip = document.createElement("div");
+        chip.className = "candidate-chip";
+        chip.setAttribute("role", "listitem");
+        chip.draggable = true;
+        chip.title = `拖动 ${c.name} ${c.hex} 到左侧任意映射槽位`;
+        const sw = document.createElement("div");
+        sw.className = "candidate-chip-swatch";
+        sw.style.background = normalizeHexToFullUpper(c.hex) || c.hex;
+        const text = document.createElement("div");
+        text.className = "candidate-chip-text";
+        const nameP = document.createElement("p");
+        nameP.className = "candidate-chip-name";
+        nameP.textContent = c.name;
+        const hexP = document.createElement("p");
+        hexP.className = "candidate-chip-hex";
+        hexP.textContent = c.hex;
+        text.appendChild(nameP);
+        text.appendChild(hexP);
+        chip.appendChild(sw);
+        chip.appendChild(text);
+        chip.addEventListener("dragstart", (e) => {
+          activeDragSlotCssVar = null;
+          activeDragColor = { name: c.name, hex: c.hex };
+          chip.classList.add("is-dragging");
+          const dt = e.dataTransfer;
+          if (!dt) return;
+          dt.setData("application/json", JSON.stringify({ name: c.name, hex: c.hex }));
+          dt.setData("text/plain", c.hex);
+          dt.effectAllowed = "copy";
+        });
+        chip.addEventListener("dragend", () => {
+          chip.classList.remove("is-dragging");
+          finishColorDrag();
+        });
+        poolEl.appendChild(chip);
+      });
+
+      customHexList.forEach((hex) => {
+        const chip = document.createElement("div");
+        chip.className = "candidate-chip candidate-chip--custom";
+        chip.setAttribute("role", "listitem");
+        chip.draggable = true;
+        chip.title = `拖动 ${hex} 到左侧任意映射槽位`;
+        const sw = document.createElement("div");
+        sw.className = "candidate-chip-swatch";
+        sw.style.background = hex;
+        const text = document.createElement("div");
+        text.className = "candidate-chip-text";
+        const hexP = document.createElement("p");
+        hexP.className = "candidate-chip-hex";
+        hexP.textContent = hex;
+        text.appendChild(hexP);
+        chip.appendChild(sw);
+        chip.appendChild(text);
+        chip.addEventListener("dragstart", (e) => {
+          activeDragSlotCssVar = null;
+          activeDragColor = { name: hex, hex, customCandidate: true };
+          chip.classList.add("is-dragging");
+          const dt = e.dataTransfer;
+          if (!dt) return;
+          dt.setData("application/json", JSON.stringify({ hex, customCandidate: true }));
+          dt.setData("text/plain", hex);
+          dt.effectAllowed = "copy";
+        });
+        chip.addEventListener("dragend", () => {
+          chip.classList.remove("is-dragging");
+          finishColorDrag();
+        });
+        poolEl.appendChild(chip);
+      });
+    }
+
+    function bindAddCustomCandidateControl() {
+      const btn = document.getElementById("add-custom-candidate-btn");
+      const picker = document.getElementById("add-custom-candidate-picker");
+      const statusEl = document.getElementById("mapping-status");
+      if (!(btn instanceof HTMLButtonElement) || !(picker instanceof HTMLInputElement)) return;
+
+      btn.addEventListener("click", () => {
+        picker.click();
+      });
+
+      picker.addEventListener("change", () => {
+        const hex = normalizeHexToFullUpper(picker.value);
+        if (!hex) return;
+        const palette = loadSelectedColorsFromSession();
+        const existingCustom = loadCustomCandidatesFromSession();
+        const inPalette = palette.some((c) => (normalizeHexToFullUpper(c.hex) || c.hex.toUpperCase()) === hex);
+        const inCustom = existingCustom.includes(hex);
+        if (inPalette || inCustom) {
+          if (statusEl) statusEl.textContent = "该颜色已在候选池中。";
+          return;
+        }
+        saveCustomCandidatesToSession([...existingCustom, hex]);
+        renderCandidatePool();
+        if (statusEl) statusEl.textContent = `已将 ${hex} 加入候选池。`;
+      });
+    }
+
+    /** 与槽位映射一致：仅清除预览容器上的内联覆盖，恢复继承 :root 默认值 */
+    const PREVIEW_BORDER_VAR = "--preview-border-width";
+    const DEFAULT_PREVIEW_BORDER_PX = 1;
+
+    function resetPreviewTheme() {
+      const previewSurfaceEl = document.querySelector(".preview-surface");
+      const previewCardEl = document.querySelector(".preview-card");
+      const statusEl = document.getElementById("mapping-status");
+      const slider = document.getElementById("preview-border-slider");
+      const borderValueEl = document.getElementById("preview-border-value");
+      if (!previewSurfaceEl) return;
+      PREVIEW_THEME_VARS.forEach((name) => previewSurfaceEl.style.removeProperty(name));
+      PREVIEW_THEME_VARS.forEach((v) => {
+        slotAssignments[v] = null;
+      });
+      refreshAllSlots();
+      if (previewCardEl) previewCardEl.style.removeProperty(PREVIEW_BORDER_VAR);
+      if (slider) {
+        slider.value = String(DEFAULT_PREVIEW_BORDER_PX);
+        slider.setAttribute("aria-valuenow", String(DEFAULT_PREVIEW_BORDER_PX));
+      }
+      if (borderValueEl) borderValueEl.textContent = String(DEFAULT_PREVIEW_BORDER_PX);
+      if (statusEl) statusEl.textContent = "预览已恢复为默认配色与边框。";
+    }
+
+    function bindPreviewBorderSlider() {
+      const slider = document.getElementById("preview-border-slider");
+      const previewCardEl = document.querySelector(".preview-card");
+      const borderValueEl = document.getElementById("preview-border-value");
+      if (!slider || !previewCardEl) return;
+
+      function apply(px) {
+        previewCardEl.style.setProperty(PREVIEW_BORDER_VAR, `${px}px`);
+        if (borderValueEl) borderValueEl.textContent = String(px);
+        slider.setAttribute("aria-valuenow", String(px));
+      }
+
+      slider.addEventListener("input", () => {
+        apply(Number(slider.value));
+      });
+      apply(DEFAULT_PREVIEW_BORDER_PX);
+    }
+
+    function bindColorSlots() {
+      document.querySelectorAll(".color-slot [data-slot-role='drop']").forEach((dropEl) => {
+        if (!(dropEl instanceof HTMLElement)) return;
+        const slot = dropEl.closest(".color-slot");
+        const cssVar = slot?.getAttribute("data-css-var");
+        if (!cssVar) return;
+
+        dropEl.addEventListener("dragenter", (e) => {
+          e.preventDefault();
+          if (activeDragColor) dropEl.classList.add("is-drag-over");
+        });
+
+        dropEl.addEventListener("dragleave", (e) => {
+          const rel = /** @type {Node | null} */ (e.relatedTarget);
+          if (!rel || !dropEl.contains(rel)) dropEl.classList.remove("is-drag-over");
+        });
+
+        dropEl.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = activeDragColor ? "copy" : "none";
+        });
+
+        dropEl.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropEl.classList.remove("is-drag-over");
+          const color = parseColorFromDataTransfer(e.dataTransfer);
+          if (!color) return;
+          applyColorToSlot(cssVar, color);
+        });
+      });
+    }
+
+    function bindMappedSlotDragSource() {
+      const slotsRoot = document.getElementById("mapping-slots");
+      if (!slotsRoot) return;
+      slotsRoot.addEventListener("dragstart", (e) => {
+        const t = e.target;
+        if (!(t instanceof Element)) return;
+        const drop = t.closest(".color-slot-drop");
+        if (!drop || !slotsRoot.contains(drop) || drop.classList.contains("is-empty")) return;
+        const slot = drop.closest(".color-slot");
+        const cssVar = slot?.getAttribute("data-css-var");
+        if (!cssVar || !PREVIEW_THEME_VARS.includes(cssVar)) return;
+        const c = slotAssignments[cssVar];
+        if (!c || !e.dataTransfer) return;
+        activeDragColor = c;
+        activeDragSlotCssVar = cssVar;
+        drop.classList.add("is-slot-dragging");
+        e.dataTransfer.setData("application/json", JSON.stringify(c));
+        e.dataTransfer.setData("text/plain", c.css || c.hex);
+        e.dataTransfer.effectAllowed = "copyMove";
+      });
+      slotsRoot.addEventListener("dragend", (e) => {
+        const t = e.target;
+        if (t instanceof Element) {
+          const drop = t.closest(".color-slot-drop");
+          if (drop && slotsRoot.contains(drop)) drop.classList.remove("is-slot-dragging");
+        }
+        finishColorDrag();
+      });
+    }
+
+    function bindTrashSlot() {
+      const trash = document.getElementById("mapping-trash-slot");
+      if (!trash) return;
+      trash.addEventListener("dragenter", (e) => {
+        e.preventDefault();
+        if (activeDragSlotCssVar) trash.classList.add("is-drag-over");
+      });
+      trash.addEventListener("dragleave", (e) => {
+        const rel = /** @type {Node | null} */ (e.relatedTarget);
+        if (!rel || !trash.contains(rel)) trash.classList.remove("is-drag-over");
+      });
+      trash.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = activeDragSlotCssVar ? "move" : "none";
+        if (activeDragSlotCssVar) trash.classList.add("is-drag-over");
+      });
+      trash.addEventListener("drop", (e) => {
+        e.preventDefault();
+        trash.classList.remove("is-drag-over");
+        const fromVar = activeDragSlotCssVar;
+        if (!fromVar) return;
+        clearSlotAssignment(fromVar);
+      });
+    }
+
+    bindPreviewBorderSlider();
+    bindColorSlots();
+    bindMappedSlotDragSource();
+    bindTrashSlot();
+    bindAddCustomCandidateControl();
+    const resetBtn = document.getElementById("reset-preview-btn");
+    if (resetBtn) resetBtn.addEventListener("click", () => resetPreviewTheme());
+    renderCandidatePool();
+  </script>
 </body>
 </html>

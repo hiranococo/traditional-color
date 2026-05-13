@@ -727,40 +727,204 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    .card-preview-wrap {
+      position: relative;
+      margin-bottom: 8px;
+      transform-origin: center center;
+      transition: transform 0.14s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
     .card-preview {
       aspect-ratio: 2 / 1;
       border-radius: 10px;
       box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 12px 0;
-      margin-bottom: 8px;
-      transform-origin: center center;
-      transition: transform 0.14s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s ease;
+      margin-bottom: 0;
+      transition: box-shadow 0.14s ease;
+    }
+
+    .card-favorite {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      z-index: 2;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.16s ease, transform 0.12s ease, color 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .card-favorite:hover {
+      color: #f4dd8f;
+      background: transparent;
+    }
+
+    .card-favorite:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card-favorite svg {
+      width: 28px;
+      height: 28px;
+      display: block;
+      transition: transform 0.14s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .card-favorite .card-favorite-star-fill {
+      display: none;
+    }
+
+    .card-favorite.is-on {
+      color: #f4dd8f;
+    }
+
+    .card-favorite.is-on .card-favorite-star-fill {
+      display: block;
+    }
+
+    .card-favorite .card-favorite-star-stroke {
+      stroke: rgba(0, 0, 0, 0.45);
+    }
+
+    .card-favorite.is-on .card-favorite-star-stroke {
+      stroke: rgba(0, 0, 0, 0.45);
+    }
+
+    .card-favorite:hover svg,
+    .card-favorite:focus-visible svg {
+      transform: scale(1.1);
+    }
+
+    .card-favorite:active svg {
+      transform: scale(0.92);
+    }
+
+
+
+    @keyframes favorite-star-click {
+      0% {
+        transform: scale(1);
+      }
+      55% {
+        transform: scale(1.06);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .card:hover:not(.card--pressing) .card-preview {
+      .card-preview-wrap:hover .card-favorite,
+      .card:focus-within .card-favorite {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .card-favorite.is-on {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .card:not(.card--pressing) .card-preview-wrap:hover,
+      .card:focus-within:not(.card--pressing) .card-preview-wrap {
         transform: translateY(-2px) scale(1.02);
+      }
+
+      .card:not(.card--pressing) .card-preview-wrap:hover .card-preview,
+      .card:focus-within:not(.card--pressing) .card-preview-wrap .card-preview {
         box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 16px 0;
       }
     }
 
-    .card.card--pressing .card-preview {
+    @media (hover: none), (pointer: coarse) {
+      .card-favorite {
+        opacity: 0.55;
+        pointer-events: auto;
+      }
+
+      .card-favorite.is-on {
+        opacity: 1;
+      }
+    }
+
+    .card.card--pressing .card-preview-wrap {
       transform: scale(0.98);
+    }
+
+    .card.card--pressing .card-preview {
       box-shadow: rgba(0, 0, 0, 0.16) 1px 2px 8px 0;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .card-preview {
+      .card-preview-wrap {
         transition: none;
       }
 
-      .card:hover:not(.card--pressing) .card-preview,
-      .card.card--pressing .card-preview {
+      .card-favorite svg {
+        transition: none;
+      }
+
+      .card-favorite.is-clicked svg {
+        animation: none;
+      }
+
+      .card:not(.card--pressing) .card-preview-wrap:hover,
+      .card:focus-within:not(.card--pressing) .card-preview-wrap,
+      .card.card--pressing .card-preview-wrap {
         transform: none;
       }
 
       .card.card--pressing .card-preview {
         box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 12px 0;
       }
+    }
+
+    .favorites-filter-btn {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .favorites-filter-btn svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+
+    .favorites-filter-btn .favorites-filter-fill {
+      display: none;
+    }
+
+    .favorites-filter-btn.is-active {
+      color: #9a7b0d;
+      background: rgba(201, 162, 39, 0.16);
+    }
+
+    .favorites-filter-btn.is-active .favorites-filter-stroke {
+      stroke: currentColor;
+    }
+
+    .favorites-filter-btn.is-active .favorites-filter-fill {
+      display: block;
     }
 
     .card-name {
@@ -798,10 +962,10 @@
 
     .copy-toast {
       position: fixed;
-      bottom: 28px;
+      top: calc(var(--top-shell-h, 52px) + 12px);
       left: 50%;
       z-index: 100;
-      transform: translateX(-50%) translateY(12px);
+      transform: translateX(-50%) translateY(-20px);
       padding: 12px 20px;
       border-radius: 9999px;
       font-size: 15px;
@@ -859,6 +1023,18 @@
       .search-input {
         height: 42px;
         font-size: 15px;
+      }
+
+      .favorites-filter-btn {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        padding: 0;
+      }
+
+      .favorites-filter-btn svg {
+        width: 22px;
+        height: 22px;
       }
     }
   </style>
@@ -923,7 +1099,7 @@
           <p id="palette-basket-empty" class="palette-basket-empty">点击色卡可将颜色加入此处</p>
         </div>
         <div class="palette-basket-footer">
-          <a href="config.html" class="palette-basket-config-link">前往配置</a>
+          <a href="config.html" id="palette-basket-config-link" class="palette-basket-config-link">前往配置</a>
         </div>
       </div>
     </div>
@@ -949,6 +1125,30 @@
             <span id="cols-slider-value" class="catalog-density-value" aria-hidden="true">4</span>
           </div>
           <div class="catalog-toolbar-right">
+            <button
+              type="button"
+              id="favorites-filter-btn"
+              class="button-secondary favorites-filter-btn"
+              aria-pressed="false"
+              aria-label="仅显示已收藏色卡"
+              title="仅显示已收藏"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  class="favorites-filter-fill"
+                  fill="currentColor"
+                  d="M12 3l2.45 4.95 5.48.8-3.97 3.87.94 5.47L12 15.9l-4.9 2.57.94-5.47-3.97-3.87 5.48-.8L12 3z"
+                />
+                <path
+                  class="favorites-filter-stroke"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1"
+                  stroke-linejoin="round"
+                  d="M12 3l2.45 4.95 5.48.8-3.97 3.87.94 5.47L12 15.9l-4.9 2.57.94-5.47-3.97-3.87 5.48-.8L12 3z"
+                />
+              </svg>
+            </button>
             <div class="filter-wrap" id="filter-wrap">
               <button
                 id="filter-btn"
@@ -1019,8 +1219,14 @@
     let familyOptions = [];
 
     const selectedFamilies = new Set();
+    /** @type {Set<string>} */
+    const favorites = new Set();
+    let showFavoritesOnly = false;
 
     const COLS_STORAGE_KEY = "traditional-color-catalog-cols";
+    const FAVORITES_STORAGE_KEY = "traditional-color-favorites";
+    /** 与 config.html 共用：跨页传递当前调色筐选色 */
+    const SELECTED_COLORS_SESSION_KEY = "selectedColors";
     const COLS_MIN = 1;
     const COLS_MAX = 8;
     const COLS_DEFAULT = 4;
@@ -1046,6 +1252,7 @@
     const filterBtn = document.getElementById("filter-btn");
     const filterPanel = document.getElementById("filter-panel");
     const filterSwatches = document.getElementById("filter-swatches");
+    const favoritesFilterBtn = document.getElementById("favorites-filter-btn");
     const copyToast = document.getElementById("copy-toast");
     const topShell = document.getElementById("top-shell");
     const paletteBasketToggle = document.getElementById("palette-basket-toggle");
@@ -1057,8 +1264,11 @@
     const paletteBasketEmpty = document.getElementById("palette-basket-empty");
     const paletteBasketClear = document.getElementById("palette-basket-clear");
     const paletteBasketPin = document.getElementById("palette-basket-pin");
+    const paletteBasketConfigLink = document.getElementById("palette-basket-config-link");
     /** @type {ReturnType<typeof setTimeout> | null} */
     let copyToastHideTimer = null;
+    /** @type {ReturnType<typeof setTimeout> | null} */
+    let favoriteToggleRenderTimer = null;
     /** 色卡按压态（article 上 :active 在点击子元素时不稳定，用 pointer 驱动） */
     /** @type {HTMLElement | null} */
     let pressedCatalogCard = null;
@@ -1068,6 +1278,19 @@
         pressedCatalogCard.classList.remove("card--pressing");
         pressedCatalogCard = null;
       }
+    }
+
+    /**
+     * 点击落在星星按钮覆盖矩形内时，色卡不响应点击/按压。
+     * @param {PointerEvent | MouseEvent} e
+     * @param {Element | null} card
+     */
+    function isInFavoriteButtonArea(e, card) {
+      if (!card) return false;
+      const favoriteBtn = card.querySelector(".card-favorite");
+      if (!(favoriteBtn instanceof HTMLElement)) return false;
+      const r = favoriteBtn.getBoundingClientRect();
+      return e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
     }
 
     /** @type {{ name: string; hex: string }[]} */
@@ -1145,6 +1368,11 @@
       closeBasketPanel();
     }
 
+    /** 与配置页读取逻辑一致：至少一条有效 name + hex */
+    function hasSelectedColorsForConfig() {
+      return basket.some((x) => String(x.name ?? "").trim() !== "" && String(x.hex ?? "").trim() !== "");
+    }
+
     function renderBasket() {
       paletteBasketList.innerHTML = "";
       const n = basket.length;
@@ -1190,6 +1418,11 @@
         chip.appendChild(rm);
         paletteBasketList.appendChild(chip);
       });
+      try {
+        sessionStorage.setItem(SELECTED_COLORS_SESSION_KEY, JSON.stringify(basket));
+      } catch {
+        /* ignore private mode / quota */
+      }
       requestAnimationFrame(() => syncTopShellHeight());
     }
 
@@ -1225,6 +1458,56 @@
     function matchesFilter(color) {
       if (selectedFamilies.size === 0) return true;
       return selectedFamilies.has(color.groupTitle);
+    }
+
+    /**
+     * @param {{ name: string; hex: string }} color
+     */
+    function colorKey(color) {
+      return `${String(color.name ?? "").trim()}\0${String(color.hex ?? "").trim().toLowerCase()}`;
+    }
+
+    function loadFavoritesFromStorage() {
+      favorites.clear();
+      try {
+        const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+        if (raw == null) return;
+        const data = JSON.parse(raw);
+        if (!Array.isArray(data)) return;
+        for (const item of data) {
+          if (typeof item === "string") favorites.add(item);
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+
+    function persistFavorites() {
+      try {
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify([...favorites]));
+      } catch {
+        /* ignore */
+      }
+    }
+
+    function syncFavoritesFilterBtn() {
+      favoritesFilterBtn.classList.toggle("is-active", showFavoritesOnly);
+      favoritesFilterBtn.setAttribute("aria-pressed", String(showFavoritesOnly));
+    }
+
+    /**
+     * @param {HTMLButtonElement} btn
+     * @param {boolean} isFav
+     */
+    function syncCardFavoriteBtnUi(btn, isFav) {
+      btn.classList.toggle("is-on", isFav);
+      btn.setAttribute("aria-pressed", String(isFav));
+      btn.setAttribute("aria-label", isFav ? "取消收藏" : "加入收藏");
+    }
+
+    function matchesFavoritesFilter(color) {
+      if (!showFavoritesOnly) return true;
+      return favorites.has(colorKey(color));
     }
 
     function buildFamilyOptions(groups) {
@@ -1379,20 +1662,73 @@
     }
 
     colorGrid.addEventListener("pointerdown", (e) => {
+      const favoriteBtn = e.target.closest(".card-favorite");
+      if (favoriteBtn && colorGrid.contains(favoriteBtn)) {
+        return;
+      }
       const card = e.target.closest(".card");
       if (!card || !colorGrid.contains(card)) return;
+      if (isInFavoriteButtonArea(e, card)) return;
       if (e.pointerType === "mouse" && e.button !== 0) return;
       clearCatalogCardPress();
       pressedCatalogCard = card;
       card.classList.add("card--pressing");
     });
 
-    document.addEventListener("pointerup", clearCatalogCardPress);
-    document.addEventListener("pointercancel", clearCatalogCardPress);
+    document.addEventListener("pointerup", () => {
+      clearCatalogCardPress();
+    });
+    document.addEventListener("pointercancel", () => {
+      clearCatalogCardPress();
+    });
 
     colorGrid.addEventListener("click", (e) => {
+      const favBtn = e.target.closest(".card-favorite");
+      if (favBtn && colorGrid.contains(favBtn)) {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!(favBtn instanceof HTMLButtonElement)) return;
+        const name = favBtn.dataset.name?.trim() ?? "";
+        const hex = favBtn.dataset.hex?.trim() ?? "";
+        const k = colorKey({ name, hex });
+        let isFav = false;
+        if (favorites.has(k)) {
+          favorites.delete(k);
+          isFav = false;
+        } else {
+          favorites.add(k);
+          isFav = true;
+        }
+        persistFavorites();
+        syncFavoritesFilterBtn();
+        syncCardFavoriteBtnUi(favBtn, isFav);
+        favBtn.classList.remove("is-clicked");
+        void favBtn.offsetWidth;
+        favBtn.classList.add("is-clicked");
+        // 鼠标点击后移除按钮焦点，避免 card:focus-within 让色块持续保持 hover 态。
+        if (e.detail > 0 && document.activeElement === favBtn) {
+          favBtn.blur();
+        }
+        // 仅在“仅收藏”模式下需要重建列表；否则就地更新可避免 hover 丢失导致的卡片闪动。
+        if (!showFavoritesOnly) {
+          if (favoriteToggleRenderTimer != null) {
+            clearTimeout(favoriteToggleRenderTimer);
+            favoriteToggleRenderTimer = null;
+          }
+          return;
+        }
+        if (favoriteToggleRenderTimer != null) {
+          clearTimeout(favoriteToggleRenderTimer);
+        }
+        favoriteToggleRenderTimer = setTimeout(() => {
+          favoriteToggleRenderTimer = null;
+          renderColors();
+        }, 180);
+        return;
+      }
       const card = e.target.closest(".card");
       if (!card || !colorGrid.contains(card)) return;
+      if (isInFavoriteButtonArea(e, card)) return;
       const hexEl = card.querySelector(".card-hex");
       const nameEl = card.querySelector(".card-name");
       const hex = hexEl?.textContent?.trim() ?? "";
@@ -1420,6 +1756,13 @@
       syncBasketPinUi();
     });
 
+    paletteBasketConfigLink.addEventListener("click", (e) => {
+      if (hasSelectedColorsForConfig()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      showCopyToast("请先在主界面点击色卡，将颜色加入调色筐后再前往配置。");
+    });
+
     paletteBasketClear.addEventListener("click", (e) => {
       e.stopPropagation();
       basket = [];
@@ -1441,7 +1784,9 @@
     }
 
     function renderColors() {
-      const filtered = colors.filter((c) => matchesSearch(c) && matchesFilter(c));
+      const filtered = colors.filter(
+        (c) => matchesSearch(c) && matchesFilter(c) && matchesFavoritesFilter(c)
+      );
       const rows = sortColorRows(filtered);
       const total = rows.length;
       const totalPages = total === 0 ? 0 : Math.ceil(total / CATALOG_PAGE_SIZE);
@@ -1462,11 +1807,37 @@
       pageRows.forEach((color) => {
         const card = document.createElement("article");
         card.className = "card";
-        card.innerHTML = `
-          <div class="card-preview" style="background:${color.hex};"></div>
-          <h3 class="card-name">${color.name}</h3>
-          <p class="card-hex" title="复制">${color.hex}</p>
-        `;
+        const wrap = document.createElement("div");
+        wrap.className = "card-preview-wrap";
+        const preview = document.createElement("div");
+        preview.className = "card-preview";
+        preview.style.background = color.hex;
+        const favBtn = document.createElement("button");
+        favBtn.type = "button";
+        favBtn.className = "card-favorite";
+        const isFav = favorites.has(colorKey(color));
+        if (isFav) favBtn.classList.add("is-on");
+        favBtn.setAttribute("aria-pressed", String(isFav));
+        favBtn.setAttribute("aria-label", isFav ? "取消收藏" : "加入收藏");
+        favBtn.dataset.name = color.name;
+        favBtn.dataset.hex = color.hex;
+        favBtn.innerHTML =
+          '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+          '<path class="card-favorite-star-fill" fill="currentColor" d="M12 3l2.45 4.95 5.48.8-3.97 3.87.94 5.47L12 15.9l-4.9 2.57.94-5.47-3.97-3.87 5.48-.8L12 3z"/>' +
+          '<path class="card-favorite-star-stroke" fill="none" stroke-width="1.5" stroke-linejoin="round" d="M12 3l2.45 4.95 5.48.8-3.97 3.87.94 5.47L12 15.9l-4.9 2.57.94-5.47-3.97-3.87 5.48-.8L12 3z"/>' +
+          "</svg>";
+        wrap.appendChild(preview);
+        wrap.appendChild(favBtn);
+        const nameEl = document.createElement("h3");
+        nameEl.className = "card-name";
+        nameEl.textContent = color.name;
+        const hexEl = document.createElement("p");
+        hexEl.className = "card-hex";
+        hexEl.setAttribute("title", "复制");
+        hexEl.textContent = color.hex;
+        card.appendChild(wrap);
+        card.appendChild(nameEl);
+        card.appendChild(hexEl);
         grid.appendChild(card);
       });
       colorGrid.appendChild(grid);
@@ -1627,6 +1998,14 @@
       toggleFilterPanel();
     });
 
+    favoritesFilterBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      showFavoritesOnly = !showFavoritesOnly;
+      syncFavoritesFilterBtn();
+      catalogPage = 1;
+      renderColors();
+    });
+
     document.getElementById("filter-select-all").addEventListener("click", (e) => {
       e.stopPropagation();
       familyOptions.forEach((f) => selectedFamilies.add(f.title));
@@ -1680,6 +2059,8 @@
     });
 
     applyCatalogCols(readStoredCatalogCols());
+    loadFavoritesFromStorage();
+    syncFavoritesFilterBtn();
     colsSlider.addEventListener("input", () => {
       applyCatalogCols(colsSlider.value);
     });
