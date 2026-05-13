@@ -34,16 +34,20 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    .sub-nav {
+    .top-shell {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
+      z-index: 35;
+    }
+
+    .sub-nav {
+      position: relative;
       height: 52px;
       backdrop-filter: saturate(180%) blur(20px);
       background: rgba(245, 245, 247, 0.8);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      z-index: 35;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -51,17 +55,315 @@
     }
 
     .sub-nav-inner {
+      position: relative;
       width: min(1440px, 100%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      min-height: 52px;
+    }
+
+    .sub-nav-lead,
+    .sub-nav-actions {
+      position: relative;
+      z-index: 2;
+    }
+
+    .sub-nav-search-wrap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(420px, calc(100vw - 220px));
+      max-width: 100%;
+      box-sizing: border-box;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .sub-nav-search-wrap .search-input {
+      pointer-events: auto;
+    }
+
+    .palette-basket-panel {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.28s ease;
+      backdrop-filter: saturate(180%) blur(20px);
+      background: rgba(250, 250, 252, 0.92);
+    }
+
+    .palette-basket-panel.is-open {
+      max-height: min(280px, 45vh);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .palette-basket-panel-inner {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 12px 16px 14px;
+      max-height: min(280px, 45vh);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .palette-basket-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .palette-basket-footer {
+      flex-shrink: 0;
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      gap: 14px;
+      padding-top: 10px;
+      margin-top: 2px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .palette-basket-config-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      line-height: 1.2;
+      border-radius: 9999px;
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .palette-basket-config-link:hover {
+      background: var(--primary-focus);
+      border-color: var(--primary-focus);
+    }
+
+    .palette-basket-config-link:active {
+      transform: scale(0.95);
+    }
+
+    .palette-basket-config-link:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .palette-basket-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .palette-basket-toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .palette-basket-pin {
+      padding: 6px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      line-height: 1.2;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      background: var(--canvas);
+      color: #555;
+      cursor: pointer;
+    }
+
+    .palette-basket-pin:hover {
+      background: rgba(0, 102, 204, 0.06);
+      border-color: rgba(0, 102, 204, 0.25);
+      color: var(--primary);
+    }
+
+    .palette-basket-pin.is-pinned {
+      background: rgba(0, 102, 204, 0.12);
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .palette-basket-pin:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .palette-basket-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #555;
+    }
+
+    .palette-basket-clear {
+      padding: 6px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      line-height: 1.2;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .palette-basket-clear:hover {
+      background: rgba(0, 102, 204, 0.08);
+    }
+
+    .palette-basket-clear:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .palette-basket-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .palette-basket-empty {
+      margin: 0;
+      font-size: 14px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .palette-basket-empty[hidden] {
+      display: none;
+    }
+
+    .palette-basket-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      padding: 6px 8px 6px 6px;
+      border-radius: 10px;
+      background: var(--canvas);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .palette-basket-chip-swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+    }
+
+    .palette-basket-chip-text {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .palette-basket-chip-name {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 12rem;
+    }
+
+    .palette-basket-chip-hex {
+      margin: 0;
+      font-size: 12px;
+      font-family: Consolas, "Courier New", monospace;
+      color: #666;
+    }
+
+    .palette-basket-chip-remove {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      margin-left: 2px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #888;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .palette-basket-chip-remove:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--ink);
+    }
+
+    .palette-basket-chip-remove:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 1px;
     }
 
     .sub-nav-actions {
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    .palette-basket-toggle {
+      display: inline-flex;
+      align-items: baseline;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .palette-basket-badge {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .palette-basket-pop {
+      display: inline-block;
+      transform-origin: center 60%;
+    }
+
+    @keyframes palette-basket-badge-pop {
+      0% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.14);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .palette-basket-pop.is-pop {
+      animation: palette-basket-badge-pop 0.3s cubic-bezier(0.33, 1.12, 0.32, 1) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .palette-basket-pop.is-pop {
+        animation: none;
+      }
     }
 
     .button-primary,
@@ -122,12 +424,13 @@
     }
 
     main {
-      margin-top: 52px;
+      margin-top: var(--top-shell-h, 52px);
+      transition: margin-top 0.28s ease;
     }
 
     .catalog-section {
       background: var(--canvas-parchment);
-      padding: 64px 24px 80px;
+      padding: 24px 24px 80px;
     }
 
     .catalog-inner {
@@ -135,11 +438,54 @@
       margin: 0 auto;
     }
 
+    .catalog-density {
+      display: flex;
+      align-items: center;
+      gap: 10px 14px;
+      flex-wrap: nowrap;
+      min-width: 0;
+      /* 占满剩余宽度；空间不足时整块先于右侧工具条收缩 */
+      flex: 1 1 0;
+    }
+
+    .catalog-density-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .catalog-density-slider {
+      /* 优先收缩：flex-shrink 大于标签与数值 */
+      flex: 1 6 0;
+      min-width: 72px;
+      max-width: 280px;
+      height: 6px;
+      border-radius: 9999px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .catalog-density-slider:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 4px;
+    }
+
+    .catalog-density-value {
+      font-size: 15px;
+      font-variant-numeric: tabular-nums;
+      color: #555;
+      min-width: 1.25em;
+      flex: 0 0 auto;
+    }
+
     .catalog-head {
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
+      gap: 10px 16px;
       margin-bottom: 24px;
       width: 100%;
       min-width: 0;
@@ -149,8 +495,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex: 0 0 auto;
       margin-left: auto;
-      flex-shrink: 0;
     }
 
     .filter-wrap {
@@ -267,9 +613,7 @@
     }
 
     .search-input {
-      flex: 1 1 auto;
-      min-width: 0;
-      max-width: 340px;
+      display: block;
       width: 100%;
       height: 44px;
       border: 1px solid rgba(0, 0, 0, 0.08);
@@ -285,10 +629,87 @@
       outline-offset: 2px;
     }
 
+    .color-catalog {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      scroll-margin-top: var(--top-shell-h, 52px);
+    }
+
+    .catalog-pagination {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px 16px;
+      margin-top: 28px;
+      padding-top: 8px;
+    }
+
+    .catalog-pagination[hidden] {
+      display: none !important;
+    }
+
+    .catalog-pagination-jump {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      font-size: 15px;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .catalog-page-input {
+      box-sizing: border-box;
+      width: 2.5rem;
+      min-width: 0;
+      height: 36px;
+      padding: 0 4px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .catalog-page-input:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .catalog-page-input::-webkit-outer-spin-button,
+    .catalog-page-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .catalog-page-input[type="number"] {
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .catalog-pagination .button-secondary {
+      flex-shrink: 0;
+    }
+
+    #color-grid {
+      --catalog-cols: 4;
+      --card-name-font-size: 17px;
+      --card-hex-font-size: 17px;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(var(--catalog-cols, 4), minmax(0, 1fr));
       gap: 20px;
+      align-items: stretch;
     }
 
     .card {
@@ -297,18 +718,54 @@
       border-radius: 0;
       padding: 0 0 10px;
       display: grid;
-      gap: 8px;
+      grid-template-rows: auto auto auto minmax(0, 1fr);
+      gap: 0;
+      min-height: 0;
+      height: 100%;
+      align-content: start;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .card-preview {
       aspect-ratio: 2 / 1;
       border-radius: 10px;
       box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 12px 0;
+      margin-bottom: 8px;
+      transform-origin: center center;
+      transition: transform 0.14s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover:not(.card--pressing) .card-preview {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 16px 0;
+      }
+    }
+
+    .card.card--pressing .card-preview {
+      transform: scale(0.98);
+      box-shadow: rgba(0, 0, 0, 0.16) 1px 2px 8px 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-preview {
+        transition: none;
+      }
+
+      .card:hover:not(.card--pressing) .card-preview,
+      .card.card--pressing .card-preview {
+        transform: none;
+      }
+
+      .card.card--pressing .card-preview {
+        box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 12px 0;
+      }
     }
 
     .card-name {
-      margin: 0;
-      font-size: 17px;
+      margin: 0 0 4px;
+      font-size: var(--card-name-font-size, 17px);
       font-weight: 600;
       letter-spacing: -0.37px;
       line-height: 1.24;
@@ -316,12 +773,52 @@
 
     .card-hex {
       margin: 0;
-      font-size: 17px;
+      font-size: var(--card-hex-font-size, 17px);
       font-weight: 400;
       letter-spacing: -0.37px;
       line-height: 1.47;
       color: #333;
       font-family: Consolas, "Courier New", monospace;
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 2px 4px;
+      margin-left: -4px;
+      width: fit-content;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+
+    .card-hex:hover {
+      background: rgba(0, 102, 204, 0.08);
+      color: var(--primary);
+    }
+
+    .card-hex:active {
+      background: rgba(0, 102, 204, 0.14);
+    }
+
+    .copy-toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      z-index: 100;
+      transform: translateX(-50%) translateY(12px);
+      padding: 12px 20px;
+      border-radius: 9999px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+      background: rgba(29, 29, 31, 0.92);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.12);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+    }
+
+    .copy-toast.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
     }
 
     .footer {
@@ -338,19 +835,9 @@
       line-height: 1.7;
     }
 
-    @media (max-width: 1068px) {
-      .grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
     @media (max-width: 833px) {
       :root {
         --section-padding: 56px;
-      }
-
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .button-primary,
@@ -364,20 +851,80 @@
         padding: 0 14px;
         font-size: 14px;
       }
-    }
 
-    @media (max-width: 640px) {
-      .grid {
-        grid-template-columns: 1fr;
+      .sub-nav-search-wrap {
+        width: min(320px, calc(100vw - 160px));
+      }
+
+      .search-input {
+        height: 42px;
+        font-size: 15px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="sub-nav">
-    <div class="sub-nav-inner">
-      <div class="sub-nav-actions">
-        <button id="go-catalog-btn" class="button-primary" type="button">查看色库</button>
+  <div class="top-shell" id="top-shell">
+    <div class="sub-nav">
+      <div class="sub-nav-inner">
+        <div class="sub-nav-lead">
+          <button
+            id="palette-basket-toggle"
+            class="button-secondary palette-basket-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="palette-basket-panel"
+            aria-label="调色筐"
+          >
+            <span class="palette-basket-toggle-title">调色筐</span><span id="palette-basket-badge" class="palette-basket-badge" hidden><span id="palette-basket-pop" class="palette-basket-pop"><span class="palette-basket-paren" aria-hidden="true">（</span><span id="palette-basket-count">0</span><span class="palette-basket-paren" aria-hidden="true">）</span></span></span>
+          </button>
+        </div>
+        <div class="sub-nav-search-wrap">
+          <input
+            id="search-input"
+            class="search-input"
+            type="search"
+            placeholder="搜索色名或 HEX"
+            aria-label="搜索色名或 HEX"
+            autocomplete="off"
+          />
+        </div>
+        <div class="sub-nav-actions">
+          <button id="go-catalog-btn" class="button-primary" type="button">查看色库</button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="palette-basket-panel"
+      class="palette-basket-panel"
+      role="region"
+      aria-label="调色筐"
+      aria-hidden="true"
+    >
+      <div class="palette-basket-panel-inner">
+        <div class="palette-basket-toolbar">
+          <p class="palette-basket-title">已选色卡</p>
+          <div class="palette-basket-toolbar-actions">
+            <button type="button" id="palette-basket-clear" class="palette-basket-clear" hidden>清空</button>
+            <button
+              type="button"
+              id="palette-basket-pin"
+              class="palette-basket-pin"
+              aria-pressed="false"
+              aria-label="固定调色筐面板"
+              title="固定后，滚动页面或点击空白处不会收起调色筐"
+            >
+              Pin
+            </button>
+          </div>
+        </div>
+        <div class="palette-basket-scroll">
+          <div id="palette-basket-list" class="palette-basket-list" aria-live="polite"></div>
+          <p id="palette-basket-empty" class="palette-basket-empty">点击色卡可将颜色加入此处</p>
+        </div>
+        <div class="palette-basket-footer">
+          <a href="config.html" class="palette-basket-config-link">前往配置</a>
+        </div>
       </div>
     </div>
   </div>
@@ -386,7 +933,21 @@
     <section class="catalog-section" id="catalog">
       <div class="catalog-inner">
         <div class="catalog-head">
-          <input id="search-input" class="search-input" type="search" placeholder="搜索色名或 HEX">
+          <div class="catalog-density">
+            <label id="cols-slider-label" class="catalog-density-label" for="cols-slider">列数</label>
+            <input
+              id="cols-slider"
+              class="catalog-density-slider"
+              type="range"
+              min="1"
+              max="8"
+              step="1"
+              value="4"
+              aria-labelledby="cols-slider-label"
+              aria-valuetext="4"
+            >
+            <span id="cols-slider-value" class="catalog-density-value" aria-hidden="true">4</span>
+          </div>
           <div class="catalog-toolbar-right">
             <div class="filter-wrap" id="filter-wrap">
               <button
@@ -410,16 +971,20 @@
               </div>
             </div>
             <select id="sort-select" class="sort-select" aria-label="排序">
-              <option value="default">默认顺序</option>
-              <option value="light-to-dark">由浅至深</option>
+              <option value="light-to-dark" selected>由浅至深</option>
               <option value="dark-to-light">由深至浅</option>
             </select>
           </div>
         </div>
-        <section class="grid" id="color-grid"></section>
+        <div class="color-catalog" id="color-catalog">
+          <div id="color-grid" aria-live="polite"></div>
+          <nav id="catalog-pagination" class="catalog-pagination" aria-label="色卡库分页" hidden></nav>
+        </div>
       </div>
     </section>
   </main>
+
+  <div id="copy-toast" class="copy-toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <footer class="footer">
     <div class="footer-inner">
@@ -432,33 +997,214 @@
     const DATA_FILE = "colors.json";
     let colors = [];
     let searchKeyword = "";
-    /** @type {"default" | "light-to-dark" | "dark-to-light"} */
-    let sortMode = "default";
+    /** @type {"light-to-dark" | "dark-to-light"} */
+    let sortMode = "light-to-dark";
 
-    const FAMILIES = [
-      { id: "red", label: "红", swatch: "#c41e3a" },
-      { id: "orange", label: "橙", swatch: "#e07020" },
-      { id: "yellow", label: "黄", swatch: "#e6b800" },
-      { id: "green", label: "绿", swatch: "#2d8640" },
-      { id: "cyan", label: "青", swatch: "#0d9488" },
-      { id: "blue", label: "蓝", swatch: "#2563eb" },
-      { id: "purple", label: "紫", swatch: "#6d28d9" },
-      { id: "pink", label: "粉", swatch: "#db2777" },
-      { id: "brown", label: "棕", swatch: "#7c4a32" },
-      { id: "gray", label: "灰", swatch: "#9ca3af" },
-      { id: "white", label: "白", swatch: "#f5f5f5", light: true },
-      { id: "black", label: "黑", swatch: "#1a1a1a" },
-    ];
+    const GROUP_SWATCH_META = {
+      "红色系": { swatch: "#c41e3a" },
+      "蓝色系": { swatch: "#2563eb" },
+      "紫色系": { swatch: "#6d28d9" },
+      "黄色系": { swatch: "#e6b800" },
+      "绿色系": { swatch: "#2d8640" },
+      "青色系": { swatch: "#3d8e86" },
+      "黑色系": { swatch: "#1a1a1a" },
+      "白色系": { swatch: "#f5f5f5", light: true },
+      "褐色系": { swatch: "#7c4a32" },
+      "粉色系": { swatch: "#db2777" },
+      "橙色系": { swatch: "#ea6b2f" },
+      "灰色系": { swatch: "#8a9399" },
+      "玉色系": { swatch: "#c4cbb8" },
+    };
+    /** @type {string[]} */
+    let familyOptions = [];
 
     const selectedFamilies = new Set();
 
+    const COLS_STORAGE_KEY = "traditional-color-catalog-cols";
+    const COLS_MIN = 1;
+    const COLS_MAX = 8;
+    const COLS_DEFAULT = 4;
+    /** 色卡库每页最多条数 */
+    const CATALOG_PAGE_SIZE = 100;
+    let catalogPage = 1;
+    /** 列数最多时（色卡最窄）对应的最小字号 */
+    const CARD_NAME_FS_MIN = 12;
+    const CARD_HEX_FS_MIN = 11;
+    /** 列数最少时（色卡最宽）对应的最大字号 */
+    const CARD_NAME_FS_MAX = 20;
+    const CARD_HEX_FS_MAX = 18;
+
     const searchInput = document.getElementById("search-input");
+    const subNavEl = document.querySelector(".sub-nav");
     const colorGrid = document.getElementById("color-grid");
+    const catalogPagination = document.getElementById("catalog-pagination");
+    const colsSlider = document.getElementById("cols-slider");
+    const colsSliderValue = document.getElementById("cols-slider-value");
     const catalogSection = document.getElementById("catalog");
+    const colorCatalog = document.getElementById("color-catalog");
     const filterWrap = document.getElementById("filter-wrap");
     const filterBtn = document.getElementById("filter-btn");
     const filterPanel = document.getElementById("filter-panel");
     const filterSwatches = document.getElementById("filter-swatches");
+    const copyToast = document.getElementById("copy-toast");
+    const topShell = document.getElementById("top-shell");
+    const paletteBasketToggle = document.getElementById("palette-basket-toggle");
+    const paletteBasketBadge = document.getElementById("palette-basket-badge");
+    const paletteBasketPop = document.getElementById("palette-basket-pop");
+    const paletteBasketCount = document.getElementById("palette-basket-count");
+    const paletteBasketPanel = document.getElementById("palette-basket-panel");
+    const paletteBasketList = document.getElementById("palette-basket-list");
+    const paletteBasketEmpty = document.getElementById("palette-basket-empty");
+    const paletteBasketClear = document.getElementById("palette-basket-clear");
+    const paletteBasketPin = document.getElementById("palette-basket-pin");
+    /** @type {ReturnType<typeof setTimeout> | null} */
+    let copyToastHideTimer = null;
+    /** 色卡按压态（article 上 :active 在点击子元素时不稳定，用 pointer 驱动） */
+    /** @type {HTMLElement | null} */
+    let pressedCatalogCard = null;
+
+    function clearCatalogCardPress() {
+      if (pressedCatalogCard) {
+        pressedCatalogCard.classList.remove("card--pressing");
+        pressedCatalogCard = null;
+      }
+    }
+
+    /** @type {{ name: string; hex: string }[]} */
+    let basket = [];
+    /** 用于判断本次渲染是否「条数增加」，以触发调色筐数字弹跳 */
+    let prevBasketLength = 0;
+    let basketPanelOpen = false;
+    let basketPinned = false;
+
+    function syncTopShellHeight() {
+      document.documentElement.style.setProperty("--top-shell-h", `${topShell.offsetHeight}px`);
+    }
+
+    if (typeof ResizeObserver !== "undefined") {
+      const shellRo = new ResizeObserver(() => syncTopShellHeight());
+      shellRo.observe(topShell);
+    }
+    syncTopShellHeight();
+
+    function syncBasketPinUi() {
+      paletteBasketPin.setAttribute("aria-pressed", String(basketPinned));
+      paletteBasketPin.classList.toggle("is-pinned", basketPinned);
+      paletteBasketPin.title = basketPinned
+        ? "已固定：点击可取消固定；仍可按顶栏「调色筐」收起面板"
+        : "固定后，滚动页面或点击空白处不会收起调色筐";
+      paletteBasketPin.setAttribute("aria-label", basketPinned ? "取消固定调色筐面板" : "固定调色筐面板");
+    }
+
+    function closeBasketPanel() {
+      if (!basketPanelOpen) return;
+      basketPanelOpen = false;
+      basketPinned = false;
+      syncBasketPinUi();
+      paletteBasketPanel.classList.remove("is-open");
+      paletteBasketToggle.setAttribute("aria-expanded", "false");
+      paletteBasketPanel.setAttribute("aria-hidden", "true");
+      requestAnimationFrame(() => syncTopShellHeight());
+    }
+
+    function toggleBasketPanel() {
+      if (basketPanelOpen) {
+        closeBasketPanel();
+        return;
+      }
+      basketPanelOpen = true;
+      basketPinned = true;
+      syncBasketPinUi();
+      paletteBasketPanel.classList.add("is-open");
+      paletteBasketToggle.setAttribute("aria-expanded", "true");
+      paletteBasketPanel.setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => syncTopShellHeight());
+    }
+
+    /**
+     * 未固定时：因点击页面空白或滚轮而收起。
+     * @param {Event} e
+     */
+    function maybeAutoDismissBasketOnWheel(e) {
+      if (!basketPanelOpen || basketPinned) return;
+      const t = e.target;
+      if (t instanceof Node && paletteBasketPanel.contains(t)) return;
+      if (subNavEl && t instanceof Node && subNavEl.contains(t)) return;
+      closeBasketPanel();
+    }
+
+    /**
+     * @param {MouseEvent} e
+     */
+    function maybeAutoDismissBasketOnClickOutside(e) {
+      if (!basketPanelOpen || basketPinned) return;
+      const t = e.target;
+      if (!(t instanceof Node)) return;
+      if (paletteBasketPanel.contains(t)) return;
+      if (subNavEl && subNavEl.contains(t)) return;
+      closeBasketPanel();
+    }
+
+    function renderBasket() {
+      paletteBasketList.innerHTML = "";
+      const n = basket.length;
+      const grew = n > prevBasketLength;
+      prevBasketLength = n;
+      paletteBasketEmpty.hidden = n > 0;
+      paletteBasketClear.hidden = n === 0;
+      paletteBasketBadge.hidden = n === 0;
+      paletteBasketCount.textContent = String(n);
+      paletteBasketToggle.setAttribute("aria-label", n > 0 ? `调色筐，已选 ${n} 项` : "调色筐");
+      if (n === 0) {
+        paletteBasketPop.classList.remove("is-pop");
+      } else if (grew) {
+        paletteBasketPop.classList.remove("is-pop");
+        void paletteBasketPop.offsetWidth;
+        paletteBasketPop.classList.add("is-pop");
+      }
+
+      basket.forEach((item) => {
+        const chip = document.createElement("div");
+        chip.className = "palette-basket-chip";
+        const sw = document.createElement("div");
+        sw.className = "palette-basket-chip-swatch";
+        sw.style.background = item.hex;
+        const text = document.createElement("div");
+        text.className = "palette-basket-chip-text";
+        const nameP = document.createElement("p");
+        nameP.className = "palette-basket-chip-name";
+        nameP.textContent = item.name;
+        const hexP = document.createElement("p");
+        hexP.className = "palette-basket-chip-hex";
+        hexP.textContent = item.hex;
+        const rm = document.createElement("button");
+        rm.type = "button";
+        rm.className = "palette-basket-chip-remove";
+        rm.dataset.hex = item.hex;
+        rm.setAttribute("aria-label", "从调色筐移除");
+        rm.textContent = "\u00d7";
+        text.appendChild(nameP);
+        text.appendChild(hexP);
+        chip.appendChild(sw);
+        chip.appendChild(text);
+        chip.appendChild(rm);
+        paletteBasketList.appendChild(chip);
+      });
+      requestAnimationFrame(() => syncTopShellHeight());
+    }
+
+    /**
+     * @param {{ name: string; hex: string }} entry
+     */
+    function addToBasket(entry) {
+      const hex = entry.hex.trim();
+      const name = entry.name.trim();
+      if (!hex) return;
+      const key = hex.toLowerCase();
+      basket = basket.filter((x) => x.hex.trim().toLowerCase() !== key);
+      basket.push({ name, hex });
+      renderBasket();
+    }
 
     function matchesSearch(color) {
       if (!searchKeyword) return true;
@@ -476,53 +1222,49 @@
       return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
     }
 
-    function rgbToHsv(r, g, b) {
-      const rn = r / 255;
-      const gn = g / 255;
-      const bn = b / 255;
-      const max = Math.max(rn, gn, bn);
-      const min = Math.min(rn, gn, bn);
-      const d = max - min;
-      let h = 0;
-      if (d !== 0) {
-        if (max === rn) {
-          h = ((gn - bn) / d + (gn < bn ? 6 : 0)) / 6;
-        } else if (max === gn) {
-          h = ((bn - rn) / d + 2) / 6;
-        } else {
-          h = ((rn - gn) / d + 4) / 6;
-        }
-      }
-      h *= 360;
-      const s = max === 0 ? 0 : d / max;
-      const v = max;
-      return { h, s, v };
-    }
-
-    /** 将 HEX 归入与筛选色圈一致的色系 id */
-    function hexToFamily(hex) {
-      const rgb = parseHexToRgb(hex);
-      if (!rgb) return null;
-      const { h, s, v } = rgbToHsv(rgb.r, rgb.g, rgb.b);
-      if (v < 0.1) return "black";
-      if (s < 0.08 && v > 0.9) return "white";
-      if (s < 0.12) return "gray";
-      if (h >= 15 && h <= 48 && s > 0.18 && v < 0.62 && v > 0.1) return "brown";
-      if (h < 22 || h >= 340) return "red";
-      if (h < 48) return "orange";
-      if (h < 72) return "yellow";
-      if (h < 158) return "green";
-      if (h < 185) return "cyan";
-      if (h < 258) return "blue";
-      if (h < 292) return "purple";
-      if (h < 340) return "pink";
-      return "red";
-    }
-
     function matchesFilter(color) {
       if (selectedFamilies.size === 0) return true;
-      const fam = hexToFamily(color.hex);
-      return fam !== null && selectedFamilies.has(fam);
+      return selectedFamilies.has(color.groupTitle);
+    }
+
+    function buildFamilyOptions(groups) {
+      return groups
+        .filter((group) => group && group.groupTitle && Array.isArray(group.colors))
+        .map((group) => {
+          const meta = GROUP_SWATCH_META[group.groupTitle] || {};
+          const fallbackSwatch = group.colors[0]?.hex || "#cccccc";
+          return {
+            title: group.groupTitle,
+            swatch: meta.swatch || fallbackSwatch,
+            light: Boolean(meta.light),
+          };
+        });
+    }
+
+    function renderFilterSwatches() {
+      filterSwatches.innerHTML = "";
+      familyOptions.forEach((f) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "filter-swatch" + (f.light ? " filter-swatch--light" : "");
+        btn.dataset.family = f.title;
+        btn.title = f.title;
+        btn.setAttribute("aria-label", f.title);
+        btn.setAttribute("aria-pressed", "false");
+        btn.style.background = f.swatch;
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (selectedFamilies.has(f.title)) {
+            selectedFamilies.delete(f.title);
+          } else {
+            selectedFamilies.add(f.title);
+          }
+          syncFilterSwatchUi();
+          catalogPage = 1;
+          renderColors();
+        });
+        filterSwatches.appendChild(btn);
+      });
     }
 
     /** WCAG 2.1 relative luminance (sRGB), 0–1 */
@@ -536,28 +1278,281 @@
       return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
     }
 
+    function sortColorRows(rows) {
+      return rows.slice().sort((a, b) => {
+        const la = relativeLuminance(a.hex);
+        const lb = relativeLuminance(b.hex);
+        /* 由浅至深：亮度高在前；由深至浅：亮度低在前 */
+        return sortMode === "dark-to-light" ? la - lb : lb - la;
+      });
+    }
+
+    function clampCatalogCols(n) {
+      const v = Math.round(Number(n));
+      if (!Number.isFinite(v)) return COLS_DEFAULT;
+      return Math.min(COLS_MAX, Math.max(COLS_MIN, v));
+    }
+
+    function readStoredCatalogCols() {
+      try {
+        const raw = localStorage.getItem(COLS_STORAGE_KEY);
+        if (raw == null) return COLS_DEFAULT;
+        return clampCatalogCols(parseInt(raw, 10));
+      } catch {
+        return COLS_DEFAULT;
+      }
+    }
+
+    /**
+     * 列数从少到多（卡片由宽变窄）时，字号从 max 线性降到 min。
+     * @param {number} cols
+     * @param {number} minPx
+     * @param {number} maxPx
+     */
+    function cardFontSizePxForCols(cols, minPx, maxPx) {
+      const span = COLS_MAX - COLS_MIN;
+      const t = span > 0 ? (cols - COLS_MIN) / span : 0;
+      const px = maxPx + (minPx - maxPx) * t;
+      const clamped = Math.min(maxPx, Math.max(minPx, px));
+      return `${Math.round(clamped * 4) / 4}px`;
+    }
+
+    function applyCatalogCols(cols) {
+      const c = clampCatalogCols(cols);
+      colorGrid.style.setProperty("--catalog-cols", String(c));
+      colorGrid.style.setProperty(
+        "--card-name-font-size",
+        cardFontSizePxForCols(c, CARD_NAME_FS_MIN, CARD_NAME_FS_MAX)
+      );
+      colorGrid.style.setProperty(
+        "--card-hex-font-size",
+        cardFontSizePxForCols(c, CARD_HEX_FS_MIN, CARD_HEX_FS_MAX)
+      );
+      colsSlider.value = String(c);
+      colsSliderValue.textContent = String(c);
+      colsSlider.setAttribute("aria-valuetext", String(c));
+      try {
+        localStorage.setItem(COLS_STORAGE_KEY, String(c));
+      } catch {
+        /* ignore quota / private mode */
+      }
+    }
+
+    /**
+     * @param {string} message
+     */
+    function showCopyToast(message) {
+      copyToast.textContent = message;
+      copyToast.classList.add("is-visible");
+      if (copyToastHideTimer != null) {
+        clearTimeout(copyToastHideTimer);
+      }
+      copyToastHideTimer = setTimeout(() => {
+        copyToast.classList.remove("is-visible");
+        copyToastHideTimer = null;
+      }, 2000);
+    }
+
+    /**
+     * @param {string} hex
+     */
+    async function copyHexToClipboard(hex) {
+      const text = hex.trim();
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+        showCopyToast("已复制 " + text);
+      } catch {
+        showCopyToast("复制失败，请手动复制");
+      }
+    }
+
+    colorGrid.addEventListener("pointerdown", (e) => {
+      const card = e.target.closest(".card");
+      if (!card || !colorGrid.contains(card)) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      clearCatalogCardPress();
+      pressedCatalogCard = card;
+      card.classList.add("card--pressing");
+    });
+
+    document.addEventListener("pointerup", clearCatalogCardPress);
+    document.addEventListener("pointercancel", clearCatalogCardPress);
+
+    colorGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".card");
+      if (!card || !colorGrid.contains(card)) return;
+      const hexEl = card.querySelector(".card-hex");
+      const nameEl = card.querySelector(".card-name");
+      const hex = hexEl?.textContent?.trim() ?? "";
+      const name = nameEl?.textContent?.trim() ?? "";
+      if (!hex) return;
+      addToBasket({ name, hex });
+      if (e.target.closest(".card-hex")) {
+        e.preventDefault();
+        void copyHexToClipboard(hex);
+      }
+    });
+
+    paletteBasketToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleBasketPanel();
+    });
+
+    paletteBasketPanel.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    paletteBasketPin.addEventListener("click", (e) => {
+      e.stopPropagation();
+      basketPinned = !basketPinned;
+      syncBasketPinUi();
+    });
+
+    paletteBasketClear.addEventListener("click", (e) => {
+      e.stopPropagation();
+      basket = [];
+      renderBasket();
+    });
+
+    paletteBasketList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".palette-basket-chip-remove");
+      if (!btn || !paletteBasketList.contains(btn)) return;
+      const hex = btn.dataset.hex;
+      if (hex == null) return;
+      const key = hex.trim().toLowerCase();
+      basket = basket.filter((x) => x.hex.trim().toLowerCase() !== key);
+      renderBasket();
+    });
+
+    function scrollToColorCatalogTop() {
+      colorCatalog.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     function renderColors() {
       const filtered = colors.filter((c) => matchesSearch(c) && matchesFilter(c));
-      const rows =
-        sortMode === "default"
-          ? filtered.slice()
-          : filtered.slice().sort((a, b) => {
-              const la = relativeLuminance(a.hex);
-              const lb = relativeLuminance(b.hex);
-              return sortMode === "light-to-dark" ? lb - la : la - lb;
-            });
-      colorGrid.innerHTML = "";
+      const rows = sortColorRows(filtered);
+      const total = rows.length;
+      const totalPages = total === 0 ? 0 : Math.ceil(total / CATALOG_PAGE_SIZE);
+      if (totalPages === 0) {
+        catalogPage = 1;
+      } else {
+        catalogPage = Math.min(Math.max(1, catalogPage), totalPages);
+      }
+      const start = (catalogPage - 1) * CATALOG_PAGE_SIZE;
+      const pageRows = rows.slice(start, start + CATALOG_PAGE_SIZE);
 
-      rows.forEach((color) => {
+      colorGrid.innerHTML = "";
+      pressedCatalogCard = null;
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+
+      pageRows.forEach((color) => {
         const card = document.createElement("article");
         card.className = "card";
         card.innerHTML = `
           <div class="card-preview" style="background:${color.hex};"></div>
           <h3 class="card-name">${color.name}</h3>
-          <p class="card-hex">${color.hex}</p>
+          <p class="card-hex" title="复制">${color.hex}</p>
         `;
-        colorGrid.appendChild(card);
+        grid.appendChild(card);
       });
+      colorGrid.appendChild(grid);
+
+      catalogPagination.innerHTML = "";
+      if (totalPages <= 1) {
+        catalogPagination.hidden = true;
+        return;
+      }
+      catalogPagination.hidden = false;
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "button-secondary";
+      prevBtn.textContent = "上一页";
+      prevBtn.disabled = catalogPage <= 1;
+      prevBtn.addEventListener("click", () => {
+        if (catalogPage > 1) {
+          catalogPage -= 1;
+          renderColors();
+          scrollToColorCatalogTop();
+        }
+      });
+
+      const jumpWrap = document.createElement("div");
+      jumpWrap.className = "catalog-pagination-jump";
+      const jumpPrefix = document.createElement("span");
+      jumpPrefix.textContent = "第";
+      const pageInput = document.createElement("input");
+      pageInput.type = "number";
+      pageInput.className = "catalog-page-input";
+      pageInput.min = "1";
+      pageInput.max = String(totalPages);
+      pageInput.value = String(catalogPage);
+      pageInput.setAttribute("inputmode", "numeric");
+      pageInput.setAttribute(
+        "aria-label",
+        `页码，1～${totalPages}。输入后离开输入框或按 Enter 即跳转`
+      );
+      const jumpSuffix = document.createElement("span");
+      jumpSuffix.textContent = `/ ${totalPages} 页`;
+
+      function commitCatalogPageFromInput() {
+        const parsed = parseInt(pageInput.value, 10);
+        if (!Number.isFinite(parsed)) {
+          pageInput.value = String(catalogPage);
+          return;
+        }
+        const p = Math.min(Math.max(1, parsed), totalPages);
+        pageInput.value = String(p);
+        if (p === catalogPage) return;
+        catalogPage = p;
+        renderColors();
+        scrollToColorCatalogTop();
+      }
+
+      pageInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          commitCatalogPageFromInput();
+        }
+      });
+      pageInput.addEventListener("blur", () => {
+        commitCatalogPageFromInput();
+      });
+
+      jumpWrap.appendChild(jumpPrefix);
+      jumpWrap.appendChild(pageInput);
+      jumpWrap.appendChild(jumpSuffix);
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "button-secondary";
+      nextBtn.textContent = "下一页";
+      nextBtn.disabled = catalogPage >= totalPages;
+      nextBtn.addEventListener("click", () => {
+        if (catalogPage < totalPages) {
+          catalogPage += 1;
+          renderColors();
+          scrollToColorCatalogTop();
+        }
+      });
+
+      catalogPagination.appendChild(prevBtn);
+      catalogPagination.appendChild(jumpWrap);
+      catalogPagination.appendChild(nextBtn);
     }
 
     async function loadColors() {
@@ -565,10 +1560,38 @@
         const response = await fetch(DATA_FILE);
         if (!response.ok) throw new Error("读取 colors.json 失败");
         const data = await response.json();
-        if (!Array.isArray(data) || !data[0] || !Array.isArray(data[0].colors)) {
+        if (!Array.isArray(data) || data.length === 0) {
           throw new Error("colors.json 格式不正确");
         }
-        colors = data[0].colors;
+        colors = [];
+        familyOptions = buildFamilyOptions(data);
+        /** 名字与 hex 均相同（忽略 hex 大小写）时只保留第一次出现 */
+        const seenNameHex = new Set();
+        for (const group of data) {
+          if (!group || !Array.isArray(group.colors)) continue;
+          const groupTitle = group.groupTitle || "";
+          for (const item of group.colors) {
+            if (!item || typeof item !== "object") continue;
+            const name = String(item.name ?? "").trim();
+            const hex = String(item.hex ?? "").trim();
+            const dedupeKey = `${name}\0${hex.toLowerCase()}`;
+            if (seenNameHex.has(dedupeKey)) continue;
+            seenNameHex.add(dedupeKey);
+            colors.push({
+              ...item,
+              name,
+              hex,
+              groupTitle,
+            });
+          }
+        }
+        if (colors.length === 0) {
+          throw new Error("colors.json 中没有任何色卡");
+        }
+        catalogPage = 1;
+        selectedFamilies.clear();
+        renderFilterSwatches();
+        syncFilterSwatchUi();
       } catch (error) {
         alert(`加载色卡失败：${error.message}`);
       }
@@ -596,28 +1619,6 @@
       filterBtn.classList.toggle("is-active", selectedFamilies.size > 0);
     }
 
-    FAMILIES.forEach((f) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "filter-swatch" + (f.light ? " filter-swatch--light" : "");
-      btn.dataset.family = f.id;
-      btn.title = f.label;
-      btn.setAttribute("aria-label", `${f.label}色系`);
-      btn.setAttribute("aria-pressed", "false");
-      btn.style.background = f.swatch;
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (selectedFamilies.has(f.id)) {
-          selectedFamilies.delete(f.id);
-        } else {
-          selectedFamilies.add(f.id);
-        }
-        syncFilterSwatchUi();
-        renderColors();
-      });
-      filterSwatches.appendChild(btn);
-    });
-
     filterWrap.addEventListener("click", (e) => {
       e.stopPropagation();
     });
@@ -628,8 +1629,9 @@
 
     document.getElementById("filter-select-all").addEventListener("click", (e) => {
       e.stopPropagation();
-      FAMILIES.forEach((f) => selectedFamilies.add(f.id));
+      familyOptions.forEach((f) => selectedFamilies.add(f.title));
       syncFilterSwatchUi();
+      catalogPage = 1;
       renderColors();
     });
 
@@ -637,16 +1639,23 @@
       e.stopPropagation();
       selectedFamilies.clear();
       syncFilterSwatchUi();
+      catalogPage = 1;
       renderColors();
     });
 
-    document.addEventListener("click", () => {
+    document.addEventListener("click", (e) => {
       closeFilterPanel();
+      maybeAutoDismissBasketOnClickOutside(e);
     });
+
+    document.addEventListener("wheel", maybeAutoDismissBasketOnWheel, { passive: true });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeFilterPanel();
+        if (basketPanelOpen) {
+          closeBasketPanel();
+        }
       }
     });
 
@@ -656,16 +1665,23 @@
 
     searchInput.addEventListener("input", (event) => {
       searchKeyword = event.target.value.trim().toLowerCase();
+      catalogPage = 1;
       renderColors();
     });
 
     const sortSelect = document.getElementById("sort-select");
     sortSelect.addEventListener("change", () => {
       const v = sortSelect.value;
-      if (v === "light-to-dark" || v === "dark-to-light" || v === "default") {
+      if (v === "light-to-dark" || v === "dark-to-light") {
         sortMode = v;
+        catalogPage = 1;
         renderColors();
       }
+    });
+
+    applyCatalogCols(readStoredCatalogCols());
+    colsSlider.addEventListener("input", () => {
+      applyCatalogCols(colsSlider.value);
     });
 
     loadColors();

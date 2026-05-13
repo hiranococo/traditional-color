@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>配置 · 传统色卡</title>
+  <style>
+    :root {
+      --primary: #0066cc;
+      --primary-focus: #0071e3;
+      --canvas-parchment: #f5f5f7;
+      --canvas: #ffffff;
+      --ink: #1d1d1f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--canvas-parchment);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .top-shell {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 35;
+    }
+
+    .sub-nav {
+      height: 52px;
+      backdrop-filter: saturate(180%) blur(20px);
+      background: rgba(245, 245, 247, 0.8);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+    }
+
+    .sub-nav-inner {
+      width: min(1440px, 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .sub-nav-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      border-radius: 9999px;
+      border: 1px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(0, 102, 204, 0.08);
+    }
+
+    .back-link:active {
+      transform: scale(0.95);
+    }
+
+    .back-link:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    main {
+      margin-top: 52px;
+      min-height: calc(100vh - 52px);
+      padding: 32px 24px 80px;
+    }
+
+    .page-inner {
+      width: min(720px, 100%);
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--canvas);
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 24px 22px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .card h1 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-shell">
+    <div class="sub-nav">
+      <div class="sub-nav-inner">
+        <h1 class="sub-nav-title">配置</h1>
+        <a class="back-link" href="index.html">返回色卡</a>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div class="page-inner">
+      <div class="card">
+        <h1>配置中心</h1>
+        <p>此处可扩展为导出配色、主题预设或数据源设置等选项。当前为独立页面骨架，便于后续接入功能。</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
