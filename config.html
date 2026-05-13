@@ -205,13 +205,290 @@
       outline-offset: 2px;
     }
 
-    .candidate-color-input-anchor {
-      position: fixed;
-      left: -9999px;
-      top: 0;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
+    .custom-candidate-confirm {
+      margin: 0 0 12px;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+
+    .custom-candidate-confirm[hidden] {
+      display: none !important;
+    }
+
+    .custom-candidate-picker-ui {
+      padding: 14px 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: var(--canvas-color);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      max-width: 420px;
+    }
+
+    .ccp-sv-wrap {
+      margin-top: 0;
+    }
+
+    .ccp-sv {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      max-height: min(280px, 52vw);
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      cursor: crosshair;
+      touch-action: none;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .ccp-sv:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .ccp-sv-thumb {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+      box-sizing: border-box;
+    }
+
+    .ccp-hue-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .ccp-eyedropper {
+      flex: 0 0 auto;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      border-radius: 8px;
+      background: var(--canvas-parchment);
+      color: #444;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .ccp-eyedropper:hover {
+      border-color: rgba(0, 0, 0, 0.26);
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .ccp-eyedropper:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .ccp-eyedropper[hidden] {
+      display: none !important;
+    }
+
+    .ccp-eyedropper-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .ccp-disc {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+    }
+
+    .ccp-hue-slider-wrap {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    #ccp-hue {
+      display: block;
+      width: 100%;
+      height: 14px;
+      margin: 0;
+      border-radius: 7px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: linear-gradient(
+        to right,
+        #f00,
+        #ff0,
+        #0f0,
+        #0ff,
+        #00f,
+        #f0f,
+        #f00
+      );
+      cursor: pointer;
+    }
+
+    #ccp-hue::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+      background: transparent;
+    }
+
+    #ccp-hue::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+      background: transparent;
+    }
+
+    .ccp-rgb-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      align-items: stretch;
+    }
+
+    .ccp-rgb-cell {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .ccp-rgb-cell.ccp-hex-cell {
+      flex: 1.35 1 0;
+      min-width: 6.5rem;
+    }
+
+    .ccp-hex-input {
+      font-family: Consolas, "Courier New", monospace;
+      letter-spacing: 0.03em;
+    }
+
+    .ccp-rgb-input {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 8px 6px;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      border-radius: 8px;
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      font-family: inherit;
+      color: var(--ink-color);
+      background: var(--canvas-parchment);
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .ccp-rgb-input::-webkit-outer-spin-button,
+    .ccp-rgb-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .ccp-rgb-input:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 1px;
+    }
+
+    .ccp-rgb-caption {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .ccp-bottom-actions {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .ccp-bottom-actions .custom-candidate-confirm-submit,
+    .ccp-bottom-actions .custom-candidate-confirm-cancel {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .custom-candidate-confirm-submit {
+      margin: 0;
+      border: 1px solid var(--primary-color);
+      background: var(--primary-color);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: filter 0.15s ease, transform 0.12s ease;
+    }
+
+    .custom-candidate-confirm-submit:hover {
+      filter: brightness(1.05);
+    }
+
+    .custom-candidate-confirm-submit:active {
+      transform: scale(0.98);
+    }
+
+    .custom-candidate-confirm-submit:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .custom-candidate-confirm-cancel {
+      margin: 0;
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      background: transparent;
+      color: #555;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+    }
+
+    .custom-candidate-confirm-cancel:hover {
+      border-color: rgba(0, 0, 0, 0.28);
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .custom-candidate-confirm-cancel:active {
+      transform: scale(0.98);
+    }
+
+    .custom-candidate-confirm-cancel:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
     }
 
     .candidate-alert {
@@ -226,6 +503,26 @@
     }
 
     .candidate-alert[hidden] {
+      display: none !important;
+    }
+
+    .candidate-pool-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .candidate-pool-actions {
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .candidate-pool-actions[hidden] {
       display: none !important;
     }
 
@@ -312,6 +609,37 @@
       line-height: var(--mapping-chip-hex-line-height);
       font-family: Consolas, "Courier New", monospace;
       color: #666;
+    }
+
+    .candidate-chip--launcher {
+      margin: 0;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .candidate-chip--launcher:active {
+      cursor: pointer;
+    }
+
+    .candidate-chip-swatch--spectrum {
+      background: linear-gradient(
+        90deg,
+        rgb(255, 0, 0) 0%,
+        rgb(255, 255, 0) 16.66%,
+        rgb(0, 255, 0) 33.33%,
+        rgb(0, 255, 255) 50%,
+        rgb(0, 0, 255) 66.66%,
+        rgb(255, 0, 255) 83.33%,
+        rgb(255, 0, 0) 100%
+      );
+    }
+
+    .candidate-chip-hex--hint {
+      font-family: inherit;
+      font-weight: 500;
+      color: #888;
     }
 
     .candidate-chip--custom .candidate-chip-hex {
@@ -481,6 +809,7 @@
       align-items: stretch;
       gap: 10px;
       margin-top: 12px;
+      width: 100%;
     }
 
     .mapping-trash-slot {
@@ -794,20 +1123,113 @@
         <div class="candidate-section">
           <div class="candidate-section-head">
             <h2 class="candidate-heading">颜色候选池</h2>
-            <input
-              id="add-custom-candidate-picker"
-              class="candidate-color-input-anchor"
-              type="color"
-              value="#4488cc"
-              aria-label="选择要加入候选池的自定义颜色"
-              tabindex="-1"
-            />
-            <button type="button" class="add-custom-candidate-btn" id="add-custom-candidate-btn">
+            <button type="button" class="add-custom-candidate-btn" id="open-custom-candidate-panel-btn">
               添加自定义颜色
             </button>
           </div>
+          <div
+            id="custom-candidate-confirm"
+            class="custom-candidate-confirm"
+            hidden
+            role="region"
+            aria-label="自定义颜色：在同一面板内选色并确认"
+          >
+            <div class="custom-candidate-picker-ui" id="custom-color-picker-ui">
+              <div class="ccp-sv-wrap">
+                <div
+                  id="ccp-sv"
+                  class="ccp-sv"
+                  tabindex="0"
+                  role="application"
+                  aria-label="饱和度与明度，点击或拖动选取"
+                >
+                  <div id="ccp-sv-thumb" class="ccp-sv-thumb"></div>
+                </div>
+              </div>
+              <div class="ccp-hue-row">
+                <button type="button" class="ccp-eyedropper" id="ccp-eyedropper" title="吸取屏幕颜色" aria-label="吸取屏幕颜色">
+                  <svg class="ccp-eyedropper-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.5 13.5 4 20v2h2l6.5-6.5" />
+                    <path d="m15 9 3-3c.8-.8 2.1-.8 2.8 0l.7.7c.8.8.8 2.1 0 2.8l-3 3" />
+                    <path d="m12 12 6 6" />
+                    <path d="m9 15 3-3" />
+                  </svg>
+                </button>
+                <div id="ccp-disc" class="ccp-disc" aria-hidden="true"></div>
+                <div class="ccp-hue-slider-wrap">
+                  <input id="ccp-hue" type="range" min="0" max="359" value="210" step="1" aria-label="色相" />
+                </div>
+              </div>
+              <div class="ccp-rgb-row">
+                <label class="ccp-rgb-cell ccp-hex-cell">
+                  <input
+                    id="ccp-hex-input"
+                    class="ccp-rgb-input ccp-hex-input"
+                    type="text"
+                    value="#4488CC"
+                    maxlength="9"
+                    spellcheck="false"
+                    autocomplete="off"
+                    aria-label="十六进制颜色值，如 #RRGGBB"
+                  />
+                  <span class="ccp-rgb-caption">HEX</span>
+                </label>
+                <label class="ccp-rgb-cell">
+                  <input id="ccp-r" class="ccp-rgb-input" type="number" min="0" max="255" value="68" />
+                  <span class="ccp-rgb-caption">R</span>
+                </label>
+                <label class="ccp-rgb-cell">
+                  <input id="ccp-g" class="ccp-rgb-input" type="number" min="0" max="255" value="136" />
+                  <span class="ccp-rgb-caption">G</span>
+                </label>
+                <label class="ccp-rgb-cell">
+                  <input id="ccp-b" class="ccp-rgb-input" type="number" min="0" max="255" value="204" />
+                  <span class="ccp-rgb-caption">B</span>
+                </label>
+              </div>
+              <div class="ccp-bottom-actions">
+                <button type="button" class="custom-candidate-confirm-submit" id="custom-candidate-confirm-btn">
+                  确认加入
+                </button>
+                <button type="button" class="custom-candidate-confirm-cancel" id="custom-candidate-cancel-btn">
+                  取消
+                </button>
+              </div>
+            </div>
+          </div>
           <p id="candidate-alert" class="candidate-alert" hidden role="status"></p>
-          <div id="candidate-pool" class="candidate-pool" hidden aria-label="候选池中的颜色"></div>
+          <div class="candidate-pool-wrap" role="group" aria-label="颜色候选池">
+            <div id="candidate-pool" class="candidate-pool" hidden aria-label="候选池中的颜色">
+              <button
+                type="button"
+                class="candidate-chip candidate-chip--launcher"
+                id="custom-candidate-launcher-chip"
+                aria-label="自定义：打开选色面板，确认后加入候选池"
+              >
+                <span class="candidate-chip-swatch candidate-chip-swatch--spectrum" aria-hidden="true"></span>
+                <div class="candidate-chip-text">
+                  <p class="candidate-chip-name">自定义</p>
+                  <p class="candidate-chip-hex candidate-chip-hex--hint">点击选色</p>
+                </div>
+              </button>
+            </div>
+          </div>
+          <div class="candidate-pool-actions" id="candidate-pool-actions" hidden>
+            <div
+              id="candidate-pool-trash-slot"
+              class="mapping-trash-slot"
+              role="img"
+              title="将候选池中的色块拖入此处即可从候选池删除"
+              aria-label="垃圾桶：将候选池中的色块拖入此处，可从颜色候选池删除该色卡"
+            >
+              <svg class="mapping-trash-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18" />
+                <path d="M8 6V4h8v2" />
+                <path d="M19 6l-1 14H6L5 6" />
+                <path d="M10 11v6M14 11v6" />
+              </svg>
+            </div>
+          </div>
         </div>
         <div class="mapping-section">
           <h2 class="candidate-heading">颜色映射</h2>
@@ -966,6 +1388,7 @@
             </div>
           </div>
           <div class="mapping-actions">
+            <button class="reset-preview-btn" id="reset-preview-btn" type="button">重置预览</button>
             <div
               id="mapping-trash-slot"
               class="mapping-trash-slot"
@@ -979,7 +1402,6 @@
                 <path d="M10 11v6M14 11v6" />
               </svg>
             </div>
-            <button class="reset-preview-btn" id="reset-preview-btn" type="button">重置预览</button>
           </div>
           <p id="mapping-status" class="mapping-status" role="status"></p>
         </div>
@@ -1119,6 +1541,40 @@
       } catch {
         return [];
       }
+    }
+
+    /**
+     * @param {{ name: string; hex: string }[]} list
+     */
+    function saveSelectedColorsToSession(list) {
+      const normalized = normalizeSelectedColors(list);
+      sessionStorage.setItem(SELECTED_COLORS_SESSION_KEY, JSON.stringify(normalized));
+    }
+
+    /**
+     * 从 session 的调色筐或自定义候选列表中移除一项（与 parseColorFromDataTransfer 解析结果一致）
+     * @param {MappedColor} color
+     */
+    function removeColorFromCandidateStores(color) {
+      const hexNorm = normalizeHexToFullUpper(color.hex) || String(color.hex).trim().toUpperCase();
+      if (!hexNorm) return;
+      if (color.customCandidate) {
+        const list = loadCustomCandidatesFromSession().filter((h) => h !== hexNorm);
+        saveCustomCandidatesToSession(list);
+        return;
+      }
+      const palette = loadSelectedColorsFromSession();
+      let next = palette.filter((c) => {
+        const ch = normalizeHexToFullUpper(c.hex) || c.hex.toUpperCase();
+        return !(c.name === color.name && ch === hexNorm);
+      });
+      if (next.length === palette.length) {
+        next = palette.filter((c) => {
+          const ch = normalizeHexToFullUpper(c.hex) || c.hex.toUpperCase();
+          return ch !== hexNorm;
+        });
+      }
+      saveSelectedColorsToSession(next);
     }
 
     const PREVIEW_THEME_VARS = [
@@ -1337,33 +1793,50 @@
       });
       const trashEl = document.getElementById("mapping-trash-slot");
       if (trashEl) trashEl.classList.remove("is-drag-over");
+      const poolTrashEl = document.getElementById("candidate-pool-trash-slot");
+      if (poolTrashEl) poolTrashEl.classList.remove("is-drag-over");
     }
 
     function renderCandidatePool() {
       const alertEl = document.getElementById("candidate-alert");
       const poolEl = document.getElementById("candidate-pool");
+      const poolActionsEl = document.getElementById("candidate-pool-actions");
+      const launcher = document.getElementById("custom-candidate-launcher-chip");
       const paletteColors = loadSelectedColorsFromSession();
       const customHexList = loadCustomCandidatesFromSession();
 
-      poolEl.innerHTML = "";
+      poolEl.querySelectorAll(".candidate-chip:not(.candidate-chip--launcher)").forEach((el) => {
+        el.remove();
+      });
+      if (launcher instanceof HTMLElement && launcher.parentElement !== poolEl) {
+        poolEl.appendChild(launcher);
+      }
 
       if (paletteColors.length === 0 && customHexList.length === 0) {
         alertEl.hidden = false;
         alertEl.textContent =
-          "候选池为空。请返回色卡页将颜色加入调色筐，或点击「添加自定义颜色」从拾色器选取颜色。";
-        poolEl.hidden = true;
+          "候选池为空。请返回色卡页将颜色加入调色筐，或点击「自定义」色块 / 「添加自定义颜色」打开选色面板添加颜色。";
+        poolEl.hidden = false;
+        if (launcher instanceof HTMLElement) poolEl.appendChild(launcher);
+        if (poolActionsEl instanceof HTMLElement) poolActionsEl.hidden = true;
+        poolEl.setAttribute("role", "group");
         return;
       }
 
       alertEl.hidden = true;
       poolEl.hidden = false;
-      poolEl.setAttribute("role", "list");
-      poolEl.setAttribute("aria-label", "候选池中的颜色，可拖入下方映射槽位");
+      if (poolActionsEl instanceof HTMLElement) poolActionsEl.hidden = false;
+      poolEl.setAttribute("role", "group");
+      poolEl.setAttribute(
+        "aria-label",
+        "候选池中的颜色，可拖入下方映射槽位，或拖入下方垃圾桶从候选池移除；末尾为自定义选色"
+      );
+
+      if (!(launcher instanceof HTMLElement)) return;
 
       paletteColors.forEach((c) => {
         const chip = document.createElement("div");
         chip.className = "candidate-chip";
-        chip.setAttribute("role", "listitem");
         chip.draggable = true;
         chip.title = `拖动 ${c.name} ${c.hex} 到左侧任意映射槽位`;
         const sw = document.createElement("div");
@@ -1395,13 +1868,12 @@
           chip.classList.remove("is-dragging");
           finishColorDrag();
         });
-        poolEl.appendChild(chip);
+        poolEl.insertBefore(chip, launcher);
       });
 
       customHexList.forEach((hex) => {
         const chip = document.createElement("div");
         chip.className = "candidate-chip candidate-chip--custom";
-        chip.setAttribute("role", "listitem");
         chip.draggable = true;
         chip.title = `拖动 ${hex} 到左侧任意映射槽位`;
         const sw = document.createElement("div");
@@ -1429,22 +1901,297 @@
           chip.classList.remove("is-dragging");
           finishColorDrag();
         });
-        poolEl.appendChild(chip);
+        poolEl.insertBefore(chip, launcher);
       });
+
+      poolEl.appendChild(launcher);
     }
 
     function bindAddCustomCandidateControl() {
-      const btn = document.getElementById("add-custom-candidate-btn");
-      const picker = document.getElementById("add-custom-candidate-picker");
-      const statusEl = document.getElementById("mapping-status");
-      if (!(btn instanceof HTMLButtonElement) || !(picker instanceof HTMLInputElement)) return;
+      const CUSTOM_PICKER_LAST_HEX_KEY = "configCustomPickerLastHex";
+      const DEFAULT_OPEN_HEX = "#4488CC";
 
-      btn.addEventListener("click", () => {
-        picker.click();
+      const openBtn = document.getElementById("open-custom-candidate-panel-btn");
+      const launcherChip = document.getElementById("custom-candidate-launcher-chip");
+      const statusEl = document.getElementById("mapping-status");
+      const panel = document.getElementById("custom-candidate-confirm");
+      const hexInput = document.getElementById("ccp-hex-input");
+      const confirmBtn = document.getElementById("custom-candidate-confirm-btn");
+      const cancelBtn = document.getElementById("custom-candidate-cancel-btn");
+      const svEl = document.getElementById("ccp-sv");
+      const svThumb = document.getElementById("ccp-sv-thumb");
+      const discEl = document.getElementById("ccp-disc");
+      const hueInput = document.getElementById("ccp-hue");
+      const rInput = document.getElementById("ccp-r");
+      const gInput = document.getElementById("ccp-g");
+      const bInput = document.getElementById("ccp-b");
+      const eyeBtn = document.getElementById("ccp-eyedropper");
+      if (
+        !(openBtn instanceof HTMLButtonElement) ||
+        !(panel instanceof HTMLElement) ||
+        !(hexInput instanceof HTMLInputElement) ||
+        !(confirmBtn instanceof HTMLButtonElement) ||
+        !(cancelBtn instanceof HTMLButtonElement) ||
+        !(svEl instanceof HTMLElement) ||
+        !(svThumb instanceof HTMLElement) ||
+        !(discEl instanceof HTMLElement) ||
+        !(hueInput instanceof HTMLInputElement) ||
+        !(rInput instanceof HTMLInputElement) ||
+        !(gInput instanceof HTMLInputElement) ||
+        !(bInput instanceof HTMLInputElement) ||
+        !(eyeBtn instanceof HTMLButtonElement)
+      ) {
+        return;
+      }
+
+      /**
+       * @param {number} n
+       */
+      function clamp255(n) {
+        if (Number.isNaN(n)) return 0;
+        return Math.max(0, Math.min(255, Math.round(n)));
+      }
+
+      /**
+       * @param {number} r
+       * @param {number} g
+       * @param {number} b
+       */
+      function rgbToHex(r, g, b) {
+        const x = (v) => clamp255(v).toString(16).padStart(2, "0");
+        return `#${x(r)}${x(g)}${x(b)}`.toUpperCase();
+      }
+
+      /**
+       * @param {string} hex
+       */
+      function hexToRgbChannels(hex) {
+        const f = normalizeHexToFullUpper(hex);
+        if (!f) return null;
+        const h = f.slice(1);
+        return {
+          r: parseInt(h.slice(0, 2), 16),
+          g: parseInt(h.slice(2, 4), 16),
+          b: parseInt(h.slice(4, 6), 16),
+        };
+      }
+
+      /**
+       * @param {number} h
+       * @param {number} s
+       * @param {number} v
+       */
+      function hsvToRgb(h, s, v) {
+        const hh = ((h % 360) + 360) % 360;
+        const c = v * s;
+        const x = c * (1 - Math.abs(((hh / 60) % 2) - 1));
+        const m = v - c;
+        let rp = 0;
+        let gp = 0;
+        let bp = 0;
+        if (hh < 60) {
+          rp = c;
+          gp = x;
+        } else if (hh < 120) {
+          rp = x;
+          gp = c;
+        } else if (hh < 180) {
+          gp = c;
+          bp = x;
+        } else if (hh < 240) {
+          gp = x;
+          bp = c;
+        } else if (hh < 300) {
+          rp = x;
+          bp = c;
+        } else {
+          rp = c;
+          bp = x;
+        }
+        return {
+          r: Math.round((rp + m) * 255),
+          g: Math.round((gp + m) * 255),
+          b: Math.round((bp + m) * 255),
+        };
+      }
+
+      /**
+       * @param {number} r
+       * @param {number} g
+       * @param {number} b
+       */
+      function rgbToHsv(r, g, b) {
+        const rn = r / 255;
+        const gn = g / 255;
+        const bn = b / 255;
+        const max = Math.max(rn, gn, bn);
+        const min = Math.min(rn, gn, bn);
+        const d = max - min;
+        let h = 0;
+        const s = max === 0 ? 0 : d / max;
+        const v = max;
+        if (d < 1e-10) return { h: 0, s: 0, v };
+        if (max === rn) h = ((gn - bn) / d + (gn < bn ? 6 : 0)) * 60;
+        else if (max === gn) h = ((bn - rn) / d + 2) * 60;
+        else h = ((rn - gn) / d + 4) * 60;
+        return { h, s, v };
+      }
+
+      let cpHue = 210;
+      let cpS = 0.5;
+      let cpV = 1;
+      /** @type {string | null} */
+      let pendingCustomHex = null;
+      let programmaticUpdate = false;
+      let draggingSv = false;
+
+      function syncUiFromHsv() {
+        const { r, g, b } = hsvToRgb(cpHue, cpS, cpV);
+        const hex = rgbToHex(r, g, b);
+        pendingCustomHex = hex;
+        discEl.style.background = hex;
+        svEl.style.background = `linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, hsl(${cpHue}, 100%, 50%))`;
+        svThumb.style.left = `${cpS * 100}%`;
+        svThumb.style.top = `${(1 - cpV) * 100}%`;
+        programmaticUpdate = true;
+        hueInput.value = String(Math.round(((cpHue % 360) + 360) % 360));
+        rInput.value = String(r);
+        gInput.value = String(g);
+        bInput.value = String(b);
+        hexInput.value = hex;
+        programmaticUpdate = false;
+        try {
+          sessionStorage.setItem(CUSTOM_PICKER_LAST_HEX_KEY, hex);
+        } catch {
+          /* ignore */
+        }
+      }
+
+      /**
+       * @param {string} hex
+       */
+      function setFromHex(hex) {
+        const full = normalizeHexToFullUpper(hex);
+        if (!full) return;
+        const rgb = hexToRgbChannels(full);
+        if (!rgb) return;
+        const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+        cpHue = hsv.h;
+        cpS = hsv.s;
+        cpV = hsv.v;
+        syncUiFromHsv();
+      }
+
+      function hideCustomConfirmPanel() {
+        pendingCustomHex = null;
+        panel.hidden = true;
+      }
+
+      function openPanelWithInitialColor() {
+        let start = DEFAULT_OPEN_HEX;
+        try {
+          const s = sessionStorage.getItem(CUSTOM_PICKER_LAST_HEX_KEY);
+          const n = s ? normalizeHexToFullUpper(s) : null;
+          if (n) start = n;
+        } catch {
+          /* ignore */
+        }
+        setFromHex(start);
+        panel.hidden = false;
+      }
+
+      function toggleOpenCustomPanel() {
+        if (!panel.hidden) {
+          hideCustomConfirmPanel();
+          return;
+        }
+        openPanelWithInitialColor();
+      }
+
+      function setSvFromPointer(clientX, clientY) {
+        const rect = svEl.getBoundingClientRect();
+        const s = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        const v = Math.max(0, Math.min(1, 1 - (clientY - rect.top) / rect.height));
+        cpS = s;
+        cpV = v;
+        syncUiFromHsv();
+      }
+
+      openBtn.addEventListener("click", toggleOpenCustomPanel);
+      if (launcherChip instanceof HTMLButtonElement) {
+        launcherChip.addEventListener("click", toggleOpenCustomPanel);
+      }
+
+      hueInput.addEventListener("input", () => {
+        if (programmaticUpdate) return;
+        cpHue = Number(hueInput.value) || 0;
+        syncUiFromHsv();
       });
 
-      picker.addEventListener("change", () => {
-        const hex = normalizeHexToFullUpper(picker.value);
+      function onRgbInput() {
+        if (programmaticUpdate) return;
+        const r = clamp255(Number(rInput.value));
+        const g = clamp255(Number(gInput.value));
+        const b = clamp255(Number(bInput.value));
+        const hsv = rgbToHsv(r, g, b);
+        cpHue = hsv.h;
+        cpS = hsv.s;
+        cpV = hsv.v;
+        syncUiFromHsv();
+      }
+      rInput.addEventListener("input", onRgbInput);
+      gInput.addEventListener("input", onRgbInput);
+      bInput.addEventListener("input", onRgbInput);
+
+      svEl.addEventListener("pointerdown", (e) => {
+        if (e.button !== 0) return;
+        draggingSv = true;
+        try {
+          svEl.setPointerCapture(e.pointerId);
+        } catch {
+          /* ignore */
+        }
+        setSvFromPointer(e.clientX, e.clientY);
+      });
+      svEl.addEventListener("pointermove", (e) => {
+        if (!draggingSv) return;
+        setSvFromPointer(e.clientX, e.clientY);
+      });
+      function endSvDrag(e) {
+        if (!draggingSv) return;
+        draggingSv = false;
+        try {
+          svEl.releasePointerCapture(e.pointerId);
+        } catch {
+          /* ignore */
+        }
+      }
+      svEl.addEventListener("pointerup", endSvDrag);
+      svEl.addEventListener("pointercancel", (e) => {
+        draggingSv = false;
+        try {
+          svEl.releasePointerCapture(e.pointerId);
+        } catch {
+          /* ignore */
+        }
+      });
+
+      if (typeof EyeDropper !== "undefined") {
+        eyeBtn.addEventListener("click", async () => {
+          try {
+            const res = await new EyeDropper().open();
+            const h = normalizeHexToFullUpper(res.sRGBHex);
+            if (h) setFromHex(h);
+          } catch {
+            /* user cancelled */
+          }
+        });
+      } else {
+        eyeBtn.hidden = true;
+      }
+
+      confirmBtn.addEventListener("click", () => {
+        const hex = pendingCustomHex;
         if (!hex) return;
         const palette = loadSelectedColorsFromSession();
         const existingCustom = loadCustomCandidatesFromSession();
@@ -1452,11 +2199,17 @@
         const inCustom = existingCustom.includes(hex);
         if (inPalette || inCustom) {
           if (statusEl) statusEl.textContent = "该颜色已在候选池中。";
+          hideCustomConfirmPanel();
           return;
         }
         saveCustomCandidatesToSession([...existingCustom, hex]);
+        hideCustomConfirmPanel();
         renderCandidatePool();
         if (statusEl) statusEl.textContent = `已将 ${hex} 加入候选池。`;
+      });
+
+      cancelBtn.addEventListener("click", () => {
+        hideCustomConfirmPanel();
       });
     }
 
@@ -1590,10 +2343,49 @@
       });
     }
 
+    function bindCandidatePoolTrash() {
+      const trash = document.getElementById("candidate-pool-trash-slot");
+      if (!trash) return;
+      trash.addEventListener("dragenter", (e) => {
+        e.preventDefault();
+        if (activeDragColor && !activeDragSlotCssVar) trash.classList.add("is-drag-over");
+      });
+      trash.addEventListener("dragleave", (e) => {
+        const rel = /** @type {Node | null} */ (e.relatedTarget);
+        if (!rel || !trash.contains(rel)) trash.classList.remove("is-drag-over");
+      });
+      trash.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        if (activeDragColor && !activeDragSlotCssVar) {
+          e.dataTransfer.dropEffect = "copy";
+          trash.classList.add("is-drag-over");
+        } else {
+          e.dataTransfer.dropEffect = "none";
+        }
+      });
+      trash.addEventListener("drop", (e) => {
+        e.preventDefault();
+        trash.classList.remove("is-drag-over");
+        if (activeDragSlotCssVar) return;
+        const parsed = parseColorFromDataTransfer(e.dataTransfer);
+        /** @type {MappedColor | null} */
+        const color = parsed || activeDragColor;
+        if (!color || !color.hex) return;
+        removeColorFromCandidateStores(color);
+        const statusEl = document.getElementById("mapping-status");
+        if (statusEl) {
+          const tail = color.customCandidate ? color.hex : `${color.name} ${color.hex}`;
+          statusEl.textContent = `已从候选池移除：${tail}`;
+        }
+        renderCandidatePool();
+      });
+    }
+
     bindPreviewBorderSlider();
     bindColorSlots();
     bindMappedSlotDragSource();
     bindTrashSlot();
+    bindCandidatePoolTrash();
     bindAddCustomCandidateControl();
     const resetBtn = document.getElementById("reset-preview-btn");
     if (resetBtn) resetBtn.addEventListener("click", () => resetPreviewTheme());
