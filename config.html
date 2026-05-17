@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>配置 · 传统色卡</title>
+  <title>?? ? ????</title>
   <style>
     :root {
       --primary-color: #0066cc;
@@ -11,18 +11,43 @@
       --canvas-color: #ffffff;
       --ink-color: #1d1d1f;
       --canvas-parchment: #f5f5f7;
-      /* 与预览槽位一致：{colors.*} 令牌默认值 */
+      /* ???????????? CSS ????? */
       --colors-primary: #0066cc;
       --colors-primary-variant: #0071e3;
+      --colors-primary-button-text: #ffffff;
       --colors-link: #0066cc;
+      --colors-secondary-button: #6e6e73;
+      --colors-secondary-button-variant: #1d1d1f;
+      --colors-secondary-button-bg: #f5f5f7;
       --colors-canvas-primary: #ffffff;
       --colors-canvas-secondary: #f5f5f7;
       --colors-component-bg: #f5f5f7;
-      --colors-ink-main: #1d1d1f;
+      --colors-ink-title: #1d1d1f;
+      --colors-ink-body: #1d1d1f;
       --colors-ink-secondary: #6e6e73;
       --colors-border: rgba(0, 0, 0, 0.12);
-      --colors-overlay-alpha: rgba(0, 0, 0, 0.45);
-      /* 候选池色卡与映射槽共用，改一处即可两边对齐 */
+      --colors-panel-border: rgba(0, 0, 0, 0.12);
+      --colors-textfield-border: rgba(0, 0, 0, 0.12);
+      --colors-textfield-text: #1d1d1f;
+      --colors-primary-button-border: #4d94db;
+      --colors-secondary-button-border: #6e6e73;
+      --preview-panel-border-width: 1px;
+      --preview-panel-border-radius: 10px;
+      --preview-primary-btn-border-width: 1px;
+      --preview-primary-btn-border-radius: 10px;
+      --preview-ghost-btn-border-width: 1px;
+      --preview-ghost-btn-border-radius: 10px;
+      --preview-textfield-border-width: 1px;
+      --preview-textfield-border-radius: 10px;
+      --preview-panel-padding-x: 14px;
+      --preview-panel-padding-y: 14px;
+      --preview-primary-btn-padding-x: 16px;
+      --preview-primary-btn-padding-y: 9px;
+      --preview-ghost-btn-padding-x: 16px;
+      --preview-ghost-btn-padding-y: 9px;
+      --preview-textfield-padding-x: 12px;
+      --preview-textfield-padding-y: 10px;
+      /* ????????????????????? */
       --mapping-chip-swatch-size: 32px;
       --mapping-chip-swatch-radius: 8px;
       --mapping-chip-pad-y: 6px;
@@ -30,7 +55,7 @@
       --mapping-chip-pad-x-end: 10px;
       --mapping-chip-gap: 8px;
       --mapping-chip-name-max: 14rem;
-      /* 与两行文案行高一致，保证槽位总高与候选色卡 border-box 一致 */
+      /* ????????????????????? border-box ?? */
       --mapping-chip-border-w: 1px;
       --mapping-chip-name-line-height: 20px;
       --mapping-chip-hex-line-height: 16px;
@@ -133,6 +158,10 @@
       grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
       gap: 28px;
       align-items: start;
+    }
+
+    .page-inner > .card.config-main-panel {
+      align-self: start;
     }
 
     .card {
@@ -636,6 +665,21 @@
       );
     }
 
+    .candidate-chip-swatch--light {
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ?????????????????????? */
+    .candidate-chip-swatch--transparent-bg,
+    .color-slot-swatch--transparent-bg {
+      background-color: #fafafa;
+      background-image: linear-gradient(45deg, #ddd 25%, transparent 25%),
+        linear-gradient(-45deg, #ddd 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ddd 75%),
+        linear-gradient(-45deg, transparent 75%, #ddd 75%);
+      background-size: 8px 8px;
+      background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+    }
+
     .candidate-chip-hex--hint {
       font-family: inherit;
       font-weight: 500;
@@ -662,6 +706,62 @@
       border-top: 1px solid rgba(0, 0, 0, 0.08);
     }
 
+    .mapping-section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .mapping-section-head .candidate-heading {
+      margin: 0;
+      flex: 0 0 auto;
+    }
+
+    .mapping-target-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .mapping-target-btn {
+      margin: 0;
+      padding: 6px 11px;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      border-radius: 999px;
+      background: var(--canvas-parchment);
+      color: var(--ink-color);
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
+      line-height: 1.2;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+    }
+
+    .mapping-target-btn:hover {
+      border-color: rgba(0, 0, 0, 0.26);
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .mapping-target-btn:active {
+      transform: scale(0.98);
+    }
+
+    .mapping-target-btn:focus-visible {
+      outline: 2px solid var(--primary-focus);
+      outline-offset: 2px;
+    }
+
+    .mapping-target-btn[aria-pressed="true"] {
+      border-color: color-mix(in srgb, var(--primary-color) 55%, rgba(0, 0, 0, 0.2));
+      background: color-mix(in srgb, var(--primary-color) 14%, var(--canvas-parchment));
+    }
+
     .mapping-slots {
       display: flex;
       flex-direction: column;
@@ -679,6 +779,59 @@
       margin-top: 18px;
       padding-top: 18px;
       border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+
+    /* hidden ??? flex ???????????? */
+    .color-slot[hidden],
+    .mapping-slot-group[hidden],
+    .mapping-metric[hidden] {
+      display: none !important;
+    }
+
+    .mapping-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 10px;
+      flex: 0 0 100%;
+      width: 100%;
+    }
+
+    .mapping-metrics-grid .mapping-metric {
+      min-width: 0;
+    }
+
+    .mapping-metric {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: min(100%, 220px);
+      flex: 1 1 200px;
+    }
+
+    .mapping-metric-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .mapping-metric-value {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .mapping-metric input[type="range"] {
+      display: block;
+      width: 100%;
+      margin: 0;
+      accent-color: var(--primary-color);
     }
 
     .mapping-slot-group-title {
@@ -715,10 +868,10 @@
     }
 
     .color-slot-drop {
-      /* 与候选色卡同宽：随内容收缩，不占满一栏 */
+      /* ??????????????????? */
       width: fit-content;
       max-width: 100%;
-      /* 与候选色卡同高（border-box，含 1px 边框） */
+      /* ????????border-box?? 1px ??? */
       height: var(--mapping-chip-outer-min-h);
       border-radius: 10px;
       border: var(--mapping-chip-border-w) dashed rgba(0, 0, 0, 0.18);
@@ -876,39 +1029,26 @@
     }
 
     .preview-card {
-      --preview-border-width: 1px;
-      position: sticky;
-      top: 84px;
-    }
-
-    /* 右侧预览卡片外框：与通用 .card 区分，边框粗细由变量控制 */
-    .card.preview-card {
-      border: var(--preview-border-width) solid rgba(0, 0, 0, 0.08);
-    }
-
-    .preview-title {
-      margin: 0 0 14px;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+      position: static;
     }
 
     .preview-surface {
       border-radius: 12px;
       padding: 22px 18px;
-      border: var(--preview-border-width) solid var(--colors-border);
+      border: none;
       background: var(--colors-canvas-primary);
-      color: var(--colors-ink-main);
+      color: var(--colors-ink-body);
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
     .preview-panel {
-      border: var(--preview-border-width) solid var(--colors-border);
-      border-radius: 10px;
-      padding: 14px 14px 16px;
-      background: var(--colors-canvas-primary);
+      border: var(--preview-panel-border-width) solid var(--colors-panel-border);
+      border-radius: var(--preview-panel-border-radius);
+      padding: var(--preview-panel-padding-y) var(--preview-panel-padding-x);
+      background: var(--colors-canvas-secondary);
+      color: var(--colors-ink-body);
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -920,7 +1060,7 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.2;
-      color: var(--colors-ink-main);
+      color: var(--colors-ink-title);
     }
 
     .preview-lead {
@@ -934,7 +1074,7 @@
       margin: 0;
       font-size: 14px;
       line-height: 1.65;
-      color: var(--colors-ink-main);
+      color: var(--colors-ink-body);
     }
 
     .preview-body .preview-link {
@@ -959,22 +1099,20 @@
     }
 
     .preview-btn-primary {
-      border: var(--preview-border-width) solid color-mix(in srgb, #ffffff 40%, var(--colors-primary));
-      border-radius: 10px;
-      padding: 9px 16px;
+      border: var(--preview-primary-btn-border-width) solid var(--colors-primary-button-border);
+      border-radius: var(--preview-primary-btn-border-radius);
+      padding: var(--preview-primary-btn-padding-y) var(--preview-primary-btn-padding-x);
       font-size: 14px;
       font-weight: 600;
       font-family: inherit;
-      color: #fff;
+      color: var(--colors-primary-button-text);
       background: var(--colors-primary);
-      box-shadow: 0 2px 8px color-mix(in srgb, var(--colors-primary) 28%, transparent);
       cursor: pointer;
-      transition: background 0.15s ease, box-shadow 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .preview-btn-primary:hover {
       background: var(--colors-primary-variant);
-      box-shadow: 0 3px 10px color-mix(in srgb, var(--colors-primary-variant) 32%, transparent);
     }
 
     .preview-btn-primary:focus-visible {
@@ -983,32 +1121,46 @@
     }
 
     .preview-btn-ghost {
-      border: var(--preview-border-width) solid var(--colors-border);
-      border-radius: 10px;
-      padding: 9px 16px;
+      border: var(--preview-ghost-btn-border-width) solid var(--colors-secondary-button-border);
+      border-radius: var(--preview-ghost-btn-border-radius);
+      padding: var(--preview-ghost-btn-padding-y) var(--preview-ghost-btn-padding-x);
       font-size: 14px;
       font-weight: 600;
       font-family: inherit;
-      color: var(--colors-ink-main);
-      background: var(--colors-component-bg);
+      color: var(--colors-secondary-button);
+      background: var(--colors-secondary-button-bg);
       cursor: pointer;
-      transition: border-color 0.15s ease, background 0.15s ease;
+      transition:
+        border-color 0.15s ease,
+        color 0.15s ease,
+        background 0.15s ease;
     }
 
     .preview-btn-ghost:hover {
-      background: color-mix(in srgb, var(--colors-component-bg) 88%, var(--colors-ink-main));
+      border-color: var(--colors-secondary-button-variant);
+      color: var(--colors-secondary-button-variant);
+      background: color-mix(
+        in srgb,
+        var(--colors-secondary-button-bg) 88%,
+        var(--colors-secondary-button-variant)
+      );
+    }
+
+    .preview-btn-ghost:focus-visible {
+      outline: 2px solid var(--colors-secondary-button-variant);
+      outline-offset: 2px;
     }
 
     .preview-search {
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
-      border: var(--preview-border-width) solid var(--colors-border);
-      border-radius: 10px;
-      padding: 10px 12px;
+      border: var(--preview-textfield-border-width) solid var(--colors-textfield-border);
+      border-radius: var(--preview-textfield-border-radius);
+      padding: var(--preview-textfield-padding-y) var(--preview-textfield-padding-x);
       font-size: 14px;
       font-family: inherit;
-      color: var(--colors-ink-main);
+      color: var(--colors-textfield-text);
       background: var(--colors-component-bg);
     }
 
@@ -1016,115 +1168,409 @@
       color: var(--colors-ink-secondary);
     }
 
-    .preview-media {
-      position: relative;
-      border-radius: 10px;
+
+    @media (min-width: 981px) {
+      .config-right-column {
+        height: var(--config-left-panel-h, auto);
+        max-height: var(--config-left-panel-h, none);
+      }
+    }
+
+    .config-right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+      min-height: 0;
       overflow: hidden;
-      border: var(--preview-border-width) solid var(--colors-border);
-      min-height: 76px;
+      align-self: start;
     }
 
-    .preview-media-shim {
-      height: 76px;
-      background: linear-gradient(
-        125deg,
-        var(--colors-canvas-secondary),
-        color-mix(in srgb, var(--colors-primary) 22%, var(--colors-canvas-secondary))
-      );
+    .preview-card {
+      flex-shrink: 0;
     }
 
-    .preview-media-floating {
-      position: absolute;
-      inset: 0;
+    .config-catalog-panel {
+      flex: 1 1 0;
+      min-height: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 22px 18px 28px;
     }
 
-    .preview-media-floating .preview-overlay-btn {
-      pointer-events: auto;
-      border: none;
-      border-radius: 9999px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      color: #fff;
-      background: var(--colors-overlay-alpha);
-      cursor: pointer;
-      backdrop-filter: blur(6px);
+    .config-catalog-panel > .candidate-heading {
+      margin: 0 0 14px;
+      flex-shrink: 0;
     }
 
-    .preview-footer {
-      margin: 0 -18px -22px;
-      padding: 12px 18px 14px;
-      border-top: var(--preview-border-width) solid var(--colors-border);
-      background: var(--colors-canvas-secondary);
-      border-radius: 0 0 11px 11px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: var(--colors-ink-secondary);
+    .config-catalog-body {
+      flex: 1 1 0;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
     }
 
-    @media (max-width: 980px) {
-      .page-inner {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .preview-card {
-        position: static;
-      }
-    }
-
-    .border-slider-section {
-      margin-top: 28px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .border-slider-label {
+    .config-catalog-head {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin: 0 0 12px;
-      font-size: 14px;
-      color: #444;
+      gap: 10px 12px;
+      margin-bottom: 18px;
+      flex-shrink: 0;
     }
 
-    .border-slider-value {
-      font-family: Consolas, "Courier New", monospace;
+    .config-catalog-density {
+      display: flex;
+      align-items: center;
+      gap: 8px 10px;
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .config-catalog-density-label {
       font-size: 13px;
-      color: #666;
+      font-weight: 500;
       white-space: nowrap;
     }
 
-    #preview-border-slider {
-      display: block;
-      width: 100%;
-      margin: 0;
+    .config-catalog-density-slider {
+      flex: 1 6 0;
+      min-width: 56px;
+      max-width: 200px;
       accent-color: var(--primary-color);
     }
+
+    .config-catalog-density-value {
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      color: #555;
+    }
+
+    .config-catalog-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+
+    .config-catalog .catalog-btn-secondary {
+      border-radius: 9999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      border: 1px solid var(--primary-color);
+      background: transparent;
+      color: var(--primary-color);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .config-catalog .catalog-sort-select {
+      height: 36px;
+      min-width: 7.5rem;
+      padding: 0 12px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-family: inherit;
+      border: 1px solid var(--primary-color);
+      background: transparent;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    .config-catalog-filter-wrap {
+      position: relative;
+    }
+
+    .config-catalog-filter-btn.is-active {
+      background: rgba(0, 102, 204, 0.08);
+    }
+
+    .config-catalog-filter-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 50;
+      min-width: 220px;
+      padding: 14px 16px 16px;
+      background: var(--canvas-color);
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .config-catalog-filter-panel[hidden] {
+      display: none !important;
+    }
+
+    .config-catalog-filter-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .config-catalog-filter-swatch {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .config-catalog-filter-swatch--light {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .config-catalog-filter-swatch.is-selected {
+      box-shadow: 0 0 0 2px var(--canvas-color), 0 0 0 4px var(--primary-color);
+    }
+
+    .config-catalog-filter-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .config-catalog-filter-action {
+      flex: 1;
+      min-height: 36px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--primary-color);
+      background: var(--primary-color);
+      color: #fff;
+    }
+
+    .config-catalog-filter-action--ghost {
+      background: transparent;
+      color: var(--primary-color);
+    }
+
+    .config-catalog-favorites-btn {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .config-catalog-favorites-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .config-catalog-favorites-btn .favorites-filter-fill {
+      display: none;
+    }
+
+    .config-catalog-favorites-btn.is-active {
+      color: #9a7b0d;
+      background: rgba(201, 162, 39, 0.16);
+    }
+
+    .config-catalog-favorites-btn.is-active .favorites-filter-fill {
+      display: block;
+    }
+
+    #config-catalog-color-grid {
+      --catalog-cols: 3;
+      --card-name-font-size: 14px;
+      --card-hex-font-size: 13px;
+    }
+
+    .config-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--catalog-cols, 3), minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .swatch-card {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .swatch-card-preview-wrap {
+      position: relative;
+      margin-bottom: 6px;
+      transition: transform 0.14s ease;
+    }
+
+    .swatch-card-preview {
+      aspect-ratio: 2 / 1;
+      border-radius: 8px;
+      box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 10px 0;
+    }
+
+    .swatch-card-favorite {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.16s ease;
+    }
+
+    .swatch-card-favorite svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .swatch-card-favorite .card-favorite-star-fill {
+      display: none;
+    }
+
+    .swatch-card-favorite.is-on {
+      color: #f4dd8f;
+    }
+
+    .swatch-card-favorite.is-on .card-favorite-star-fill {
+      display: block;
+    }
+
+    .swatch-card-favorite .card-favorite-star-stroke {
+      stroke: rgba(0, 0, 0, 0.45);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .swatch-card-preview-wrap:hover .swatch-card-favorite,
+      .swatch-card:focus-within .swatch-card-favorite {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .swatch-card-favorite.is-on {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .swatch-card:not(.swatch-card--pressing) .swatch-card-preview-wrap:hover {
+        transform: translateY(-2px) scale(1.02);
+      }
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .swatch-card-favorite {
+        opacity: 0.55;
+        pointer-events: auto;
+      }
+
+      .swatch-card-favorite.is-on {
+        opacity: 1;
+      }
+    }
+
+    .swatch-card-name {
+      margin: 0 0 2px;
+      font-size: var(--card-name-font-size, 14px);
+      font-weight: 600;
+    }
+
+    .swatch-card-hex {
+      margin: 0;
+      font-size: var(--card-hex-font-size, 13px);
+      font-family: Consolas, "Courier New", monospace;
+      color: #333;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 2px 4px;
+      margin-left: -4px;
+      width: fit-content;
+    }
+
+    .swatch-card-hex:hover {
+      background: rgba(0, 102, 204, 0.08);
+      color: var(--primary-color);
+    }
+
+.config-copy-toast {
+      position: fixed;
+      top: calc(52px + 12px);
+      left: 50%;
+      z-index: 100;
+      transform: translateX(-50%) translateY(-20px);
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+      background: rgba(29, 29, 31, 0.92);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+    }
+
+    .config-copy-toast.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+    @media (max-width: 980px) {
+      .page-inner {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .config-right-column {
+        min-height: auto;
+        overflow: visible;
+      }
+
+      .config-catalog-panel {
+        flex: none;
+        min-height: auto;
+        overflow: visible;
+      }
+
+      .config-catalog-body {
+        flex: none;
+        min-height: auto;
+        overflow: visible;
+      }
+    }
+
   </style>
 </head>
 <body>
   <div class="top-shell">
     <div class="sub-nav">
       <div class="sub-nav-inner">
-        <h1 class="sub-nav-title">配置</h1>
-        <a class="back-link" href="index.html">返回色卡</a>
+        <h1 class="sub-nav-title">??</h1>
+        <a class="back-link" href="index.html">????</a>
       </div>
     </div>
   </div>
   <main>
     <div class="page-inner">
-      <div class="card">
+      <div class="card config-main-panel" id="config-main-panel">
         <div class="candidate-section">
           <div class="candidate-section-head">
-            <h2 class="candidate-heading">颜色候选池</h2>
+            <h2 class="candidate-heading">?????</h2>
             <button type="button" class="add-custom-candidate-btn" id="open-custom-candidate-panel-btn">
-              添加自定义颜色
+              ???????
             </button>
           </div>
           <div
@@ -1132,7 +1578,7 @@
             class="custom-candidate-confirm"
             hidden
             role="region"
-            aria-label="自定义颜色：在同一面板内选色并确认"
+            aria-label="?????????????????"
           >
             <div class="custom-candidate-picker-ui" id="custom-color-picker-ui">
               <div class="ccp-sv-wrap">
@@ -1141,13 +1587,13 @@
                   class="ccp-sv"
                   tabindex="0"
                   role="application"
-                  aria-label="饱和度与明度，点击或拖动选取"
+                  aria-label="??????????????"
                 >
                   <div id="ccp-sv-thumb" class="ccp-sv-thumb"></div>
                 </div>
               </div>
               <div class="ccp-hue-row">
-                <button type="button" class="ccp-eyedropper" id="ccp-eyedropper" title="吸取屏幕颜色" aria-label="吸取屏幕颜色">
+                <button type="button" class="ccp-eyedropper" id="ccp-eyedropper" title="??????" aria-label="??????">
                   <svg class="ccp-eyedropper-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10.5 13.5 4 20v2h2l6.5-6.5" />
                     <path d="m15 9 3-3c.8-.8 2.1-.8 2.8 0l.7.7c.8.8.8 2.1 0 2.8l-3 3" />
@@ -1157,7 +1603,7 @@
                 </button>
                 <div id="ccp-disc" class="ccp-disc" aria-hidden="true"></div>
                 <div class="ccp-hue-slider-wrap">
-                  <input id="ccp-hue" type="range" min="0" max="359" value="210" step="1" aria-label="色相" />
+                  <input id="ccp-hue" type="range" min="0" max="359" value="210" step="1" aria-label="??" />
                 </div>
               </div>
               <div class="ccp-rgb-row">
@@ -1170,7 +1616,7 @@
                     maxlength="9"
                     spellcheck="false"
                     autocomplete="off"
-                    aria-label="十六进制颜色值，如 #RRGGBB"
+                    aria-label="????????? #RRGGBB"
                   />
                   <span class="ccp-rgb-caption">HEX</span>
                 </label>
@@ -1189,27 +1635,27 @@
               </div>
               <div class="ccp-bottom-actions">
                 <button type="button" class="custom-candidate-confirm-submit" id="custom-candidate-confirm-btn">
-                  确认加入
+                  ????
                 </button>
                 <button type="button" class="custom-candidate-confirm-cancel" id="custom-candidate-cancel-btn">
-                  取消
+                  ??
                 </button>
               </div>
             </div>
           </div>
           <p id="candidate-alert" class="candidate-alert" hidden role="status"></p>
-          <div class="candidate-pool-wrap" role="group" aria-label="颜色候选池">
-            <div id="candidate-pool" class="candidate-pool" hidden aria-label="候选池中的颜色">
+          <div class="candidate-pool-wrap" role="group" aria-label="?????">
+            <div id="candidate-pool" class="candidate-pool" hidden aria-label="???????">
               <button
                 type="button"
                 class="candidate-chip candidate-chip--launcher"
                 id="custom-candidate-launcher-chip"
-                aria-label="自定义：打开选色面板，确认后加入候选池"
+                aria-label="???????????????????"
               >
                 <span class="candidate-chip-swatch candidate-chip-swatch--spectrum" aria-hidden="true"></span>
                 <div class="candidate-chip-text">
-                  <p class="candidate-chip-name">自定义</p>
-                  <p class="candidate-chip-hex candidate-chip-hex--hint">点击选色</p>
+                  <p class="candidate-chip-name">???</p>
+                  <p class="candidate-chip-hex candidate-chip-hex--hint">????</p>
                 </div>
               </button>
             </div>
@@ -1219,8 +1665,8 @@
               id="candidate-pool-trash-slot"
               class="mapping-trash-slot"
               role="img"
-              title="将候选池中的色块拖入此处即可从候选池删除"
-              aria-label="垃圾桶：将候选池中的色块拖入此处，可从颜色候选池删除该色卡"
+              title="????????????????????"
+              aria-label="?????????????????????????????"
             >
               <svg class="mapping-trash-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 6h18" />
@@ -1232,168 +1678,263 @@
           </div>
         </div>
         <div class="mapping-section">
-          <h2 class="candidate-heading">颜色映射</h2>
-          <div class="mapping-slots" id="mapping-slots">
-            <div class="mapping-slot-group">
-              <h3 class="mapping-slot-group-title">品牌与交互</h3>
-              <div class="color-slot" data-css-var="--colors-primary">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">主品牌色</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="主品牌色槽位，从候选池拖入颜色"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
-                </div>
-              </div>
-              <div class="color-slot" data-css-var="--colors-primary-variant">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">主色变体</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="主色变体槽位，用于悬停、聚焦等"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
-                </div>
-              </div>
-              <div class="color-slot" data-css-var="--colors-link">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">链接色</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="链接色槽位"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
-                </div>
-              </div>
+          <div class="mapping-section-head">
+            <h2 class="candidate-heading">????</h2>
+            <div
+              class="mapping-target-toolbar"
+              id="mapping-target-toolbar"
+              role="group"
+              aria-label="????"
+            >
+              <button type="button" class="mapping-target-btn" data-mapping-focus="panel" aria-pressed="true">
+                ??
+                </button>
+              <button type="button" class="mapping-target-btn" data-mapping-focus="button" aria-pressed="false">
+                ??
+                </button>
+              <button type="button" class="mapping-target-btn" data-mapping-focus="text-field" aria-pressed="false">
+                ???
+                </button>
             </div>
-            <div class="mapping-slot-group">
-              <h3 class="mapping-slot-group-title">表面与背景</h3>
+          </div>
+          <div class="mapping-slots" id="mapping-slots">
+            <div class="mapping-slot-group" data-mapping-tab="panel">
+              <h3 class="mapping-slot-group-title">??</h3>
               <div class="color-slot" data-css-var="--colors-canvas-primary">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">第一背景</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="第一背景槽位"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                <span class="color-slot-title"><span class="color-slot-label">????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="???????????????">
+                  <p class="color-slot-placeholder">??????</p>
                 </div>
               </div>
               <div class="color-slot" data-css-var="--colors-canvas-secondary">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">第二背景</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="第二背景槽位"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                <span class="color-slot-title"><span class="color-slot-label">????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="???????????????">
+                  <p class="color-slot-placeholder">??????</p>
                 </div>
               </div>
-              <div class="color-slot" data-css-var="--colors-component-bg">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">组件背景</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="组件背景槽位"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
+
+              <div class="color-slot" data-css-var="--colors-panel-border">
+                <span class="color-slot-title"><span class="color-slot-label">????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="????????? hex ? rgba">
+                  <p class="color-slot-placeholder">??????</p>
                 </div>
+              </div>
+              <div class="mapping-metrics-grid">
+              <div class="mapping-metric" data-mapping-tab="panel" data-metric-var="--preview-panel-border-width" data-metric-default="1" data-metric-min="0" data-metric-max="8" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ????
+                  <span class="mapping-metric-value"><span data-metric-value-display>1</span> px</span>
+                </label>
+                <input type="range" min="0" max="8" step="1" value="1" aria-label="????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="panel" data-metric-var="--preview-panel-border-radius" data-metric-default="10" data-metric-min="0" data-metric-max="24" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ??
+                  <span class="mapping-metric-value"><span data-metric-value-display>10</span> px</span>
+                </label>
+                <input type="range" min="0" max="24" step="1" value="10" aria-label="??" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="panel" data-metric-var="--preview-panel-padding-x" data-metric-default="14" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>14</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="14" aria-label="?????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="panel" data-metric-var="--preview-panel-padding-y" data-metric-default="14" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>14</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="14" aria-label="?????" />
+              </div>
               </div>
             </div>
-            <div class="mapping-slot-group">
-              <h3 class="mapping-slot-group-title">文字系统</h3>
-              <div class="color-slot" data-css-var="--colors-ink-main">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">标题与正文</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="标题与正文槽位"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
+            <div class="mapping-slot-group" data-mapping-tab="panel">
+              <h3 class="mapping-slot-group-title">??</h3>
+              <div class="color-slot" data-css-var="--colors-ink-title">
+                <span class="color-slot-title"><span class="color-slot-label">???</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="??????????????">
+                  <p class="color-slot-placeholder">??????</p>
                 </div>
               </div>
               <div class="color-slot" data-css-var="--colors-ink-secondary">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">副文与描述</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="副文与描述槽位"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
+                <span class="color-slot-title"><span class="color-slot-label">????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="???????????????">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-ink-body">
+                <span class="color-slot-title"><span class="color-slot-label">???</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="??????????????">
+                  <p class="color-slot-placeholder">??????</p>
                 </div>
               </div>
             </div>
-            <div class="mapping-slot-group">
-              <h3 class="mapping-slot-group-title">功能线</h3>
-              <div class="color-slot" data-css-var="--colors-border">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">边框与分割线</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="边框与分割线槽位，可使用 hex 或 rgba"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
+            <div class="mapping-slot-group" data-mapping-tab="button">
+              <h3 class="mapping-slot-group-title">???</h3>
+              <div class="color-slot" data-css-var="--colors-primary">
+                <span class="color-slot-title"><span class="color-slot-label">????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="???????????????">
+                  <p class="color-slot-placeholder">??????</p>
                 </div>
               </div>
-              <div class="color-slot" data-css-var="--colors-overlay-alpha">
-                <span class="color-slot-title">
-                  <span class="color-slot-label">叠加层</span>
-                </span>
-                <div
-                  class="color-slot-drop is-empty"
-                  data-slot-role="drop"
-                  tabindex="0"
-                  role="group"
-                  aria-label="叠加层槽位，建议 rgba；拖入 hex 时自动生成半透明"
-                >
-                  <p class="color-slot-placeholder">拖入候选颜色</p>
+              <div class="color-slot" data-css-var="--colors-primary-button-text">
+                <span class="color-slot-title"><span class="color-slot-label">?????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="????????????????">
+                  <p class="color-slot-placeholder">??????</p>
                 </div>
+              </div>
+
+              <div class="color-slot" data-css-var="--colors-primary-button-border">
+                <span class="color-slot-title"><span class="color-slot-label">?????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="????????????????">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+              <div class="mapping-metrics-grid">
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-primary-btn-border-width" data-metric-default="1" data-metric-min="0" data-metric-max="8" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ????
+                  <span class="mapping-metric-value"><span data-metric-value-display>1</span> px</span>
+                </label>
+                <input type="range" min="0" max="8" step="1" value="1" aria-label="????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-primary-btn-border-radius" data-metric-default="10" data-metric-min="0" data-metric-max="24" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ??
+                  <span class="mapping-metric-value"><span data-metric-value-display>10</span> px</span>
+                </label>
+                <input type="range" min="0" max="24" step="1" value="10" aria-label="??" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-primary-btn-padding-x" data-metric-default="16" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>16</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="16" aria-label="?????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-primary-btn-padding-y" data-metric-default="9" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>9</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="9" aria-label="?????" />
+              </div>
+              </div>
+            </div>
+            <div class="mapping-slot-group" data-mapping-tab="button">
+              <h3 class="mapping-slot-group-title">????</h3>
+              <div class="color-slot" data-css-var="--colors-secondary-button-bg">
+                <span class="color-slot-title"><span class="color-slot-label">??????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="?????????????????">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-secondary-button">
+                <span class="color-slot-title"><span class="color-slot-label">????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="???????????????">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+
+              <div class="color-slot" data-css-var="--colors-secondary-button-border">
+                <span class="color-slot-title"><span class="color-slot-label">??????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="?????????????????">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+              <div class="mapping-metrics-grid">
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-ghost-btn-border-width" data-metric-default="1" data-metric-min="0" data-metric-max="8" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ????
+                  <span class="mapping-metric-value"><span data-metric-value-display>1</span> px</span>
+                </label>
+                <input type="range" min="0" max="8" step="1" value="1" aria-label="????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-ghost-btn-border-radius" data-metric-default="10" data-metric-min="0" data-metric-max="24" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ??
+                  <span class="mapping-metric-value"><span data-metric-value-display>10</span> px</span>
+                </label>
+                <input type="range" min="0" max="24" step="1" value="10" aria-label="??" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-ghost-btn-padding-x" data-metric-default="16" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>16</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="16" aria-label="?????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="button" data-metric-var="--preview-ghost-btn-padding-y" data-metric-default="9" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>9</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="9" aria-label="?????" />
+              </div>
+              </div>
+            </div>
+            <div class="mapping-slot-group" data-mapping-tab="text-field">
+              <h3 class="mapping-slot-group-title">???</h3>
+              <div class="color-slot" data-css-var="--colors-component-bg">
+                <span class="color-slot-title"><span class="color-slot-label">????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="???????????????">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+              <div class="color-slot" data-css-var="--colors-textfield-text">
+                <span class="color-slot-title"><span class="color-slot-label">?????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="????????????????">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+
+              <div class="color-slot" data-css-var="--colors-textfield-border">
+                <span class="color-slot-title"><span class="color-slot-label">?????</span></span>
+                <div class="color-slot-drop is-empty" data-slot-role="drop" tabindex="0" role="group" aria-label="?????????? hex ? rgba">
+                  <p class="color-slot-placeholder">??????</p>
+                </div>
+              </div>
+              <div class="mapping-metrics-grid">
+              <div class="mapping-metric" data-mapping-tab="text-field" data-metric-var="--preview-textfield-border-width" data-metric-default="1" data-metric-min="0" data-metric-max="8" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ????
+                  <span class="mapping-metric-value"><span data-metric-value-display>1</span> px</span>
+                </label>
+                <input type="range" min="0" max="8" step="1" value="1" aria-label="????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="text-field" data-metric-var="--preview-textfield-border-radius" data-metric-default="10" data-metric-min="0" data-metric-max="24" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ??
+                  <span class="mapping-metric-value"><span data-metric-value-display>10</span> px</span>
+                </label>
+                <input type="range" min="0" max="24" step="1" value="10" aria-label="??" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="text-field" data-metric-var="--preview-textfield-padding-x" data-metric-default="12" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>12</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="12" aria-label="?????" />
+              </div>
+              <div class="mapping-metric" data-mapping-tab="text-field" data-metric-var="--preview-textfield-padding-y" data-metric-default="10" data-metric-min="0" data-metric-max="32" data-metric-unit="px">
+                <label class="mapping-metric-label">
+                  ?????
+                  <span class="mapping-metric-value"><span data-metric-value-display>10</span> px</span>
+                </label>
+                <input type="range" min="0" max="32" step="1" value="10" aria-label="?????" />
+              </div>
               </div>
             </div>
           </div>
           <div class="mapping-actions">
-            <button class="reset-preview-btn" id="reset-preview-btn" type="button">重置预览</button>
+            <button class="reset-preview-btn" id="reset-preview-btn" type="button">????</button>
             <div
               id="mapping-trash-slot"
               class="mapping-trash-slot"
               role="img"
-              aria-label="垃圾桶：将已映射槽位中的色块拖到这里可移除该槽位"
+              aria-label="????????????????????????"
             >
               <svg class="mapping-trash-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 6h18" />
@@ -1405,67 +1946,109 @@
           </div>
           <p id="mapping-status" class="mapping-status" role="status"></p>
         </div>
-        <div class="border-slider-section">
-          <h2 class="candidate-heading">预览边框粗细</h2>
-          <label class="border-slider-label" for="preview-border-slider">
-            边框宽度
-            <span class="border-slider-value"><span id="preview-border-value">1</span> px</span>
-          </label>
-          <input
-            id="preview-border-slider"
-            type="range"
-            min="0"
-            max="8"
-            step="1"
-            value="1"
-            aria-valuemin="0"
-            aria-valuemax="8"
-            aria-valuenow="1"
-            aria-label="预览区域边框宽度"
-          />
-        </div>
       </div>
-      <aside class="card preview-card" aria-label="实时预览">
-        <h2 class="preview-title">实时预览</h2>
+
+      <div class="config-right-column">
+      <aside class="preview-card" aria-label="????">
+
         <div class="preview-surface">
           <div class="preview-panel">
-            <h1 class="preview-heading">传统色 · 标题与正文</h1>
-            <p class="preview-lead">副标题与描述文案预览，对应 {colors.ink-secondary}。</p>
-            <p class="preview-body">
-              正文与内联
-              <button type="button" class="preview-link">链接示例</button>
-              ，对应 {colors.link} 与 {colors.ink-main}。
-            </p>
+            <div class="preview-text-stack">
+              <h1 class="preview-heading">??? ? ??</h1>
+              <p class="preview-lead">???????????</p>
+              <p class="preview-body">
+                ?????
+                <button type="button" class="preview-link">????</button>
+                ?????????
+              </p>
+            </div>
             <div class="preview-actions">
-              <button type="button" class="preview-btn-primary">主行动按钮</button>
-              <button type="button" class="preview-btn-ghost">幽灵按钮</button>
+              <button type="button" class="preview-btn-primary">?????</button>
+              <button type="button" class="preview-btn-ghost">????</button>
             </div>
             <input
               class="preview-search"
               type="text"
               readonly
-              value="搜索框 / 输入框背景"
-              aria-label="组件背景与边框预览"
+              value="??? / ?????"
+              aria-label="?????????"
             />
-            <div class="preview-media" aria-hidden="true">
-              <div class="preview-media-shim"></div>
-              <div class="preview-media-floating">
-                <button type="button" class="preview-overlay-btn">叠加层按钮</button>
-              </div>
-            </div>
           </div>
-          <p class="preview-footer">页脚 / 次级表面：{colors.canvas-secondary} · 边框与分割：{colors.border}</p>
         </div>
       </aside>
+        <section class="config-catalog-panel card config-catalog" aria-label="???">
+          <h2 class="candidate-heading">???</h2>
+          <div class="config-catalog-head">
+            <div class="config-catalog-density">
+              <label id="config-catalog-cols-label" class="config-catalog-density-label" for="config-catalog-cols-slider">??</label>
+              <input
+                id="config-catalog-cols-slider"
+                class="config-catalog-density-slider"
+                type="range"
+                min="1"
+                max="8"
+                step="1"
+                value="3"
+                aria-labelledby="config-catalog-cols-label"
+                aria-valuetext="3"
+              />
+              <span id="config-catalog-cols-value" class="config-catalog-density-value" aria-hidden="true">3</span>
+            </div>
+            <div class="config-catalog-toolbar-right">
+              <button
+                type="button"
+                id="config-catalog-favorites-btn"
+                class="catalog-btn-secondary config-catalog-favorites-btn"
+                aria-pressed="false"
+                aria-label="????????"
+                title="??????"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="favorites-filter-fill" fill="currentColor" d="M12 3l2.45 4.95 5.48.8-3.97 3.87.94 5.47L12 15.9l-4.9 2.57.94-5.47-3.97-3.87 5.48-.8L12 3z"/>
+                  <path class="favorites-filter-stroke" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round" d="M12 3l2.45 4.95 5.48.8-3.97 3.87.94 5.47L12 15.9l-4.9 2.57.94-5.47-3.97-3.87 5.48-.8L12 3z"/>
+                </svg>
+              </button>
+              <div class="config-catalog-filter-wrap" id="config-catalog-filter-wrap">
+                <button id="config-catalog-filter-btn" class="catalog-btn-secondary config-catalog-filter-btn" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="config-catalog-filter-panel">??</button>
+                <div id="config-catalog-filter-panel" class="config-catalog-filter-panel" role="region" aria-label="?????" hidden>
+                  <div class="config-catalog-filter-swatches" id="config-catalog-filter-swatches" role="group" aria-label="????"></div>
+                  <div class="config-catalog-filter-footer">
+                    <button type="button" id="config-catalog-filter-select-all" class="config-catalog-filter-action">??</button>
+                    <button type="button" id="config-catalog-filter-clear-all" class="config-catalog-filter-action config-catalog-filter-action--ghost">????</button>
+                  </div>
+                </div>
+              </div>
+              <select id="config-catalog-sort-select" class="catalog-sort-select" aria-label="??">
+                <option value="light-to-dark" selected>????</option>
+                <option value="dark-to-light">????</option>
+              </select>
+            </div>
+          </div>
+          <div class="config-catalog-body">
+            <div id="config-catalog-color-grid" aria-live="polite"></div>
+          </div>
+        </section>
+      </div>
+
+
     </div>
   </main>
+  <div id="config-copy-toast" class="config-copy-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script src="config-catalog.js"></script>
   <script>
     const SELECTED_COLORS_SESSION_KEY = "selectedColors";
     const CONFIG_CUSTOM_CANDIDATES_SESSION_KEY = "configCustomCandidateHexes";
 
+    /** ????????????????? session?????????? */
+    const DEFAULT_CANDIDATE_POOL = [
+      { name: "\u9ed1", hex: "#000000" },
+      { name: "\u767d", hex: "#FFFFFF" },
+      { name: "\u900f\u660e", hex: "#808080", css: "transparent" },
+    ];
+
     /**
      * @param {string} hex
-     * @returns {string | null} 规范为 #RRGGBB 大写，非法则 null
+     * @returns {string | null} ??? #RRGGBB ?????? null
      */
     function normalizeHexToFullUpper(hex) {
       let h = String(hex).trim().replace("#", "").toUpperCase();
@@ -1552,10 +2135,11 @@
     }
 
     /**
-     * 从 session 的调色筐或自定义候选列表中移除一项（与 parseColorFromDataTransfer 解析结果一致）
+     * ? session ??????????????????? parseColorFromDataTransfer ???????
      * @param {MappedColor} color
      */
     function removeColorFromCandidateStores(color) {
+      if (/** @type {{ builtinCandidate?: boolean }} */ (color).builtinCandidate) return;
       const hexNorm = normalizeHexToFullUpper(color.hex) || String(color.hex).trim().toUpperCase();
       if (!hexNorm) return;
       if (color.customCandidate) {
@@ -1578,19 +2162,43 @@
     }
 
     const PREVIEW_THEME_VARS = [
-      "--colors-primary",
-      "--colors-primary-variant",
-      "--colors-link",
       "--colors-canvas-primary",
       "--colors-canvas-secondary",
-      "--colors-component-bg",
-      "--colors-ink-main",
+      "--colors-panel-border",
+      "--colors-ink-title",
       "--colors-ink-secondary",
-      "--colors-border",
-      "--colors-overlay-alpha",
+      "--colors-ink-body",
+      "--colors-primary",
+      "--colors-primary-button-text",
+      "--colors-primary-button-border",
+      "--colors-secondary-button-bg",
+      "--colors-secondary-button",
+      "--colors-secondary-button-border",
+      "--colors-component-bg",
+      "--colors-textfield-text",
+      "--colors-textfield-border",
     ];
 
-    /** @typedef {{ name: string; hex: string; css?: string; customCandidate?: boolean }} MappedColor */
+    const PREVIEW_METRIC_VARS = [
+      "--preview-panel-border-width",
+      "--preview-panel-border-radius",
+      "--preview-panel-padding-x",
+      "--preview-panel-padding-y",
+      "--preview-primary-btn-border-width",
+      "--preview-primary-btn-border-radius",
+      "--preview-primary-btn-padding-x",
+      "--preview-primary-btn-padding-y",
+      "--preview-ghost-btn-border-width",
+      "--preview-ghost-btn-border-radius",
+      "--preview-ghost-btn-padding-x",
+      "--preview-ghost-btn-padding-y",
+      "--preview-textfield-border-width",
+      "--preview-textfield-border-radius",
+      "--preview-textfield-padding-x",
+      "--preview-textfield-padding-y",
+    ];
+
+    /** @typedef {{ name: string; hex: string; css?: string; customCandidate?: boolean; builtinCandidate?: boolean }} MappedColor */
 
     /** @type {Record<string, MappedColor | null>} */
     const slotAssignments = Object.fromEntries(PREVIEW_THEME_VARS.map((v) => [v, null]));
@@ -1598,48 +2206,37 @@
     /** @type {MappedColor | null} */
     let activeDragColor = null;
 
-    /** 从映射槽位内拖出时为该槽的 CSS 变量名；从候选池拖出时为 null */
+    /** ???????????? CSS ??????? null */
     /** @type {string | null} */
     let activeDragSlotCssVar = null;
 
     const SLOT_LABELS = {
-      "--colors-primary": "主品牌色",
-      "--colors-primary-variant": "主色变体",
-      "--colors-link": "链接色",
-      "--colors-canvas-primary": "第一背景",
-      "--colors-canvas-secondary": "第二背景",
-      "--colors-component-bg": "组件背景",
-      "--colors-ink-main": "标题与正文",
-      "--colors-ink-secondary": "副文与描述",
-      "--colors-border": "边框与分割线",
-      "--colors-overlay-alpha": "叠加层",
+      "--colors-canvas-primary": "\u753b\u5e03\u4e3b\u8272",
+      "--colors-canvas-secondary": "\u753b\u5e03\u6b21\u8272",
+      "--colors-panel-border": "\u9762\u677f\u8fb9\u6846",
+      "--colors-ink-title": "\u6807\u9898\u8272",
+      "--colors-ink-secondary": "\u6b21\u8981\u6587\u5b57",
+      "--colors-ink-body": "\u6b63\u6587\u8272",
+      "--colors-primary": "\u4e3b\u54c1\u724c\u8272",
+      "--colors-primary-button-text": "\u4e3b\u6309\u94ae\u6587\u5b57",
+      "--colors-primary-button-border": "\u4e3b\u6309\u94ae\u8fb9\u6846",
+      "--colors-secondary-button-bg": "\u6b21\u8981\u6309\u94ae\u80cc\u666f",
+      "--colors-secondary-button": "\u6b21\u8981\u6309\u94ae",
+      "--colors-secondary-button-border": "\u6b21\u8981\u6309\u94ae\u8fb9\u6846",
+      "--colors-component-bg": "\u7ec4\u4ef6\u80cc\u666f",
+      "--colors-textfield-text": "\u8f93\u5165\u6846\u6587\u5b57",
+      "--colors-textfield-border": "\u8f93\u5165\u6846\u8fb9\u6846",
     };
-
-    /**
-     * @param {string} hex
-     * @param {number} alpha
-     */
-    function hexToRgba(hex, alpha) {
-      let h = hex.replace("#", "").toUpperCase();
-      if (h.length === 3) h = h.split("").map((ch) => ch + ch).join("");
-      if (!/^[0-9A-F]{6}$/.test(h)) return hex;
-      const n = parseInt(h, 16);
-      const r = (n >> 16) & 255;
-      const g = (n >> 8) & 255;
-      const b = n & 255;
-      return `rgba(${r},${g},${b},${alpha})`;
-    }
 
     /**
      * @param {string} cssVar
      * @param {MappedColor} color
      */
     function resolveSlotCssValue(cssVar, color) {
-      if (cssVar === "--colors-overlay-alpha") {
-        if (color.css && /^rgba?\(/i.test(color.css)) return color.css;
-        return hexToRgba(color.hex, 0.55);
-      }
-      if (color.css && /^rgba?\(/i.test(color.css)) return color.css;
+      const c = color.css != null ? String(color.css).trim() : "";
+      if (!c) return color.hex;
+      if (/^rgba?\(/i.test(c)) return c;
+      if (/^transparent$/i.test(c)) return "transparent";
       return color.hex;
     }
 
@@ -1650,7 +2247,7 @@
     function parseRgbFunctionColor(s) {
       const t = s.trim();
       if (!/^rgba?\(\s*[\d.]+\s*,/i.test(t) || !/\)\s*$/.test(t)) return null;
-      return { name: t.length > 56 ? `${t.slice(0, 53)}…` : t, hex: "#808080", css: t };
+      return { name: t.length > 56 ? `${t.slice(0, 53)}?` : t, hex: "#808080", css: t };
     }
 
     /**
@@ -1671,14 +2268,26 @@
               const full = normalizeHexToFullUpper(hex);
               if (full) return { name: full, hex: full, customCandidate: true };
             }
+            const builtinCandidate = /** @type {{ builtinCandidate?: unknown }} */ (o).builtinCandidate === true;
             if (css && /^rgba?\(/i.test(css)) {
               const goodHex = /^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(hex) ? hex : "#808080";
-              return { name: name || css.slice(0, 44), hex: goodHex, css };
+              /** @type {MappedColor} */
+              const mc = { name: name || css.slice(0, 44), hex: goodHex, css };
+              if (builtinCandidate) mc.builtinCandidate = true;
+              return mc;
+            }
+            if (css && /^transparent$/i.test(css)) {
+              const goodHex = /^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(hex) ? hex : "#808080";
+              /** @type {MappedColor} */
+              const mc = { name: name || "\u900f\u660e", hex: goodHex, css: "transparent" };
+              if (builtinCandidate) mc.builtinCandidate = true;
+              return mc;
             }
             if (name && /^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(hex)) {
               /** @type {MappedColor} */
               const mc = { name, hex };
               if (customCandidate) mc.customCandidate = true;
+              if (builtinCandidate) mc.builtinCandidate = true;
               return mc;
             }
           }
@@ -1706,14 +2315,18 @@
       if (!assignment) {
         const p = document.createElement("p");
         p.className = "color-slot-placeholder";
-        p.textContent = "拖入候选颜色";
+        p.textContent = "\u62d6\u5165\u5019\u9009\u989c\u8272";
         dropEl.appendChild(p);
         return;
       }
       const display = assignment.css || assignment.hex;
       const sw = document.createElement("div");
       sw.className = "color-slot-swatch";
-      sw.style.background = display;
+      if (/^transparent$/i.test(String(display).trim())) {
+        sw.classList.add("color-slot-swatch--transparent-bg");
+      } else {
+        sw.style.background = display;
+      }
       const meta = document.createElement("div");
       meta.className = "color-slot-meta";
       if (assignment.customCandidate) {
@@ -1758,13 +2371,14 @@
       if (color.css) stored.css = color.css;
       else if (value !== color.hex) stored.css = value;
       if (color.customCandidate) stored.customCandidate = true;
+      if (color.builtinCandidate) stored.builtinCandidate = true;
       slotAssignments[cssVar] = stored;
       previewSurfaceEl.style.setProperty(cssVar, value);
       refreshAllSlots();
-      const label = SLOT_LABELS[/** @type {keyof typeof SLOT_LABELS} */ (cssVar)] ?? "槽位";
+      const label = SLOT_LABELS[/** @type {keyof typeof SLOT_LABELS} */ (cssVar)] ?? "\u69fd\u4f4d";
       if (statusEl) {
         const tail = stored.customCandidate ? stored.css || stored.hex : `${stored.name} ${stored.css || stored.hex}`;
-        statusEl.textContent = `${label}：${tail}`;
+        statusEl.textContent = `${label}\uff1a${tail}`;
       }
     }
 
@@ -1778,8 +2392,8 @@
       slotAssignments[cssVar] = null;
       previewSurfaceEl.style.removeProperty(cssVar);
       refreshAllSlots();
-      const label = SLOT_LABELS[/** @type {keyof typeof SLOT_LABELS} */ (cssVar)] ?? "槽位";
-      if (statusEl) statusEl.textContent = `已移除「${label}」映射。`;
+      const label = SLOT_LABELS[/** @type {keyof typeof SLOT_LABELS} */ (cssVar)] ?? "\u69fd\u4f4d";
+      if (statusEl) statusEl.textContent = `\u5df2\u79fb\u9664\u300c${label}\u300d\u6620\u5c04`;
     }
 
     function finishColorDrag() {
@@ -1812,33 +2426,72 @@
         poolEl.appendChild(launcher);
       }
 
-      if (paletteColors.length === 0 && customHexList.length === 0) {
-        alertEl.hidden = false;
-        alertEl.textContent =
-          "候选池为空。请返回色卡页将颜色加入调色筐，或点击「自定义」色块 / 「添加自定义颜色」打开选色面板添加颜色。";
-        poolEl.hidden = false;
-        if (launcher instanceof HTMLElement) poolEl.appendChild(launcher);
-        if (poolActionsEl instanceof HTMLElement) poolActionsEl.hidden = true;
-        poolEl.setAttribute("role", "group");
-        return;
-      }
-
       alertEl.hidden = true;
       poolEl.hidden = false;
       if (poolActionsEl instanceof HTMLElement) poolActionsEl.hidden = false;
       poolEl.setAttribute("role", "group");
       poolEl.setAttribute(
         "aria-label",
-        "候选池中的颜色，可拖入下方映射槽位，或拖入下方垃圾桶从候选池移除；末尾为自定义选色"
+        "\u5019\u9009\u6c60\u4e2d\u7684\u989c\u8272\uff0c\u53ef\u62d6\u62fd\u5230\u4e0b\u65b9\u6620\u5c04\u69fd\u4f4d\uff0c\u6216\u62d6\u62fd\u5230\u5783\u573e\u6876\u5220\u9664"
       );
 
       if (!(launcher instanceof HTMLElement)) return;
+
+      DEFAULT_CANDIDATE_POOL.forEach((c) => {
+        const chip = document.createElement("div");
+        chip.className = "candidate-chip";
+        chip.draggable = true;
+        const isTransparentCss = Boolean(c.css && /^transparent$/i.test(c.css));
+        const plainLabel = isTransparentCss ? "transparent" : c.hex;
+        chip.title = `\u62d6\u5165 ${c.name} ${plainLabel} \u6620\u5c04\u5230\u69fd\u4f4d`;
+        const sw = document.createElement("div");
+        sw.className = "candidate-chip-swatch";
+        if (isTransparentCss) {
+          sw.classList.add("candidate-chip-swatch--transparent-bg");
+        } else {
+          const fullHex = normalizeHexToFullUpper(c.hex) || c.hex;
+          sw.style.background = fullHex;
+          if (fullHex === "#FFFFFF") sw.classList.add("candidate-chip-swatch--light");
+        }
+        const text = document.createElement("div");
+        text.className = "candidate-chip-text";
+        const nameP = document.createElement("p");
+        nameP.className = "candidate-chip-name";
+        nameP.textContent = c.name;
+        const hexP = document.createElement("p");
+        hexP.className = "candidate-chip-hex";
+        hexP.textContent = plainLabel;
+        text.appendChild(nameP);
+        text.appendChild(hexP);
+        chip.appendChild(sw);
+        chip.appendChild(text);
+        chip.addEventListener("dragstart", (e) => {
+          activeDragSlotCssVar = null;
+          /** @type {MappedColor} */
+          const dragPayload = { name: c.name, hex: c.hex, builtinCandidate: true };
+          if (c.css) dragPayload.css = c.css;
+          activeDragColor = dragPayload;
+          chip.classList.add("is-dragging");
+          const dt = e.dataTransfer;
+          if (!dt) return;
+          const json = /** @type {Record<string, unknown>} */ ({ name: c.name, hex: c.hex, builtinCandidate: true });
+          if (c.css) json.css = c.css;
+          dt.setData("application/json", JSON.stringify(json));
+          dt.setData("text/plain", plainLabel);
+          dt.effectAllowed = "copy";
+        });
+        chip.addEventListener("dragend", () => {
+          chip.classList.remove("is-dragging");
+          finishColorDrag();
+        });
+        poolEl.insertBefore(chip, launcher);
+      });
 
       paletteColors.forEach((c) => {
         const chip = document.createElement("div");
         chip.className = "candidate-chip";
         chip.draggable = true;
-        chip.title = `拖动 ${c.name} ${c.hex} 到左侧任意映射槽位`;
+        chip.title = `\u62d6\u5165 ${c.name} ${c.hex} \u6620\u5c04\u5230\u69fd\u4f4d`;
         const sw = document.createElement("div");
         sw.className = "candidate-chip-swatch";
         sw.style.background = normalizeHexToFullUpper(c.hex) || c.hex;
@@ -1875,7 +2528,7 @@
         const chip = document.createElement("div");
         chip.className = "candidate-chip candidate-chip--custom";
         chip.draggable = true;
-        chip.title = `拖动 ${hex} 到左侧任意映射槽位`;
+        chip.title = `\u62d6\u5165 ${hex} \u6620\u5c04\u5230\u69fd\u4f4d`;
         const sw = document.createElement("div");
         sw.className = "candidate-chip-swatch";
         sw.style.background = hex;
@@ -2198,14 +2851,14 @@
         const inPalette = palette.some((c) => (normalizeHexToFullUpper(c.hex) || c.hex.toUpperCase()) === hex);
         const inCustom = existingCustom.includes(hex);
         if (inPalette || inCustom) {
-          if (statusEl) statusEl.textContent = "该颜色已在候选池中。";
+          if (statusEl) statusEl.textContent = "\u8be5\u989c\u8272\u5df2\u5728\u5019\u9009\u6c60\u4e2d";
           hideCustomConfirmPanel();
           return;
         }
         saveCustomCandidatesToSession([...existingCustom, hex]);
         hideCustomConfirmPanel();
         renderCandidatePool();
-        if (statusEl) statusEl.textContent = `已将 ${hex} 加入候选池。`;
+        if (statusEl) statusEl.textContent = `\u5df2\u52a0\u5165 ${hex} \u5230\u5019\u9009\u6c60`;
       });
 
       cancelBtn.addEventListener("click", () => {
@@ -2213,47 +2866,55 @@
       });
     }
 
-    /** 与槽位映射一致：仅清除预览容器上的内联覆盖，恢复继承 :root 默认值 */
-    const PREVIEW_BORDER_VAR = "--preview-border-width";
-    const DEFAULT_PREVIEW_BORDER_PX = 1;
-
     function resetPreviewTheme() {
       const previewSurfaceEl = document.querySelector(".preview-surface");
-      const previewCardEl = document.querySelector(".preview-card");
       const statusEl = document.getElementById("mapping-status");
-      const slider = document.getElementById("preview-border-slider");
-      const borderValueEl = document.getElementById("preview-border-value");
       if (!previewSurfaceEl) return;
       PREVIEW_THEME_VARS.forEach((name) => previewSurfaceEl.style.removeProperty(name));
+      PREVIEW_METRIC_VARS.forEach((name) => previewSurfaceEl.style.removeProperty(name));
       PREVIEW_THEME_VARS.forEach((v) => {
         slotAssignments[v] = null;
       });
       refreshAllSlots();
-      if (previewCardEl) previewCardEl.style.removeProperty(PREVIEW_BORDER_VAR);
-      if (slider) {
-        slider.value = String(DEFAULT_PREVIEW_BORDER_PX);
-        slider.setAttribute("aria-valuenow", String(DEFAULT_PREVIEW_BORDER_PX));
-      }
-      if (borderValueEl) borderValueEl.textContent = String(DEFAULT_PREVIEW_BORDER_PX);
-      if (statusEl) statusEl.textContent = "预览已恢复为默认配色与边框。";
+      document.querySelectorAll(".mapping-metric").forEach((metricEl) => {
+        if (!(metricEl instanceof HTMLElement)) return;
+        const slider = metricEl.querySelector('input[type="range"]');
+        const display = metricEl.querySelector("[data-metric-value-display]");
+        const defaultVal = metricEl.dataset.metricDefault ?? "0";
+        if (slider instanceof HTMLInputElement) {
+          slider.value = defaultVal;
+          slider.setAttribute("aria-valuenow", defaultVal);
+        }
+        if (display) display.textContent = defaultVal;
+      });
+      if (statusEl) statusEl.textContent = "\u5df2\u91cd\u7f6e\u9884\u89c8\u6837\u5f0f";
     }
 
-    function bindPreviewBorderSlider() {
-      const slider = document.getElementById("preview-border-slider");
-      const previewCardEl = document.querySelector(".preview-card");
-      const borderValueEl = document.getElementById("preview-border-value");
-      if (!slider || !previewCardEl) return;
+    function bindMappingMetricSliders() {
+      const previewSurfaceEl = document.querySelector(".preview-surface");
+      if (!previewSurfaceEl) return;
 
-      function apply(px) {
-        previewCardEl.style.setProperty(PREVIEW_BORDER_VAR, `${px}px`);
-        if (borderValueEl) borderValueEl.textContent = String(px);
-        slider.setAttribute("aria-valuenow", String(px));
-      }
+      document.querySelectorAll(".mapping-metric").forEach((metricEl) => {
+        if (!(metricEl instanceof HTMLElement)) return;
+        const varName = metricEl.dataset.metricVar;
+        const unit = metricEl.dataset.metricUnit || "px";
+        const defaultVal = metricEl.dataset.metricDefault ?? "0";
+        const slider = metricEl.querySelector('input[type="range"]');
+        const display = metricEl.querySelector("[data-metric-value-display]");
+        if (!varName || !(slider instanceof HTMLInputElement)) return;
 
-      slider.addEventListener("input", () => {
-        apply(Number(slider.value));
+        /** @param {number} raw */
+        function apply(raw) {
+          previewSurfaceEl.style.setProperty(varName, `${raw}${unit}`);
+          if (display) display.textContent = String(raw);
+          slider.setAttribute("aria-valuenow", String(raw));
+        }
+
+        slider.addEventListener("input", () => {
+          apply(Number(slider.value));
+        });
+        apply(Number(defaultVal));
       });
-      apply(DEFAULT_PREVIEW_BORDER_PX);
     }
 
     function bindColorSlots() {
@@ -2371,17 +3032,199 @@
         /** @type {MappedColor | null} */
         const color = parsed || activeDragColor;
         if (!color || !color.hex) return;
+        if (color.builtinCandidate) {
+          const statusEl = document.getElementById("mapping-status");
+          if (statusEl) statusEl.textContent = "\u5185\u7f6e\u989c\u8272\u4e0d\u53ef\u5220\u9664";
+          renderCandidatePool();
+          return;
+        }
         removeColorFromCandidateStores(color);
         const statusEl = document.getElementById("mapping-status");
         if (statusEl) {
           const tail = color.customCandidate ? color.hex : `${color.name} ${color.hex}`;
-          statusEl.textContent = `已从候选池移除：${tail}`;
+          statusEl.textContent = `\u5df2\u4ece\u5019\u9009\u6c60\u5220\u9664${tail}`;
         }
         renderCandidatePool();
       });
     }
 
-    bindPreviewBorderSlider();
+    function bindMappingTargetToolbar() {
+      const toolbar = document.getElementById("mapping-target-toolbar");
+      const slotsRoot = document.getElementById("mapping-slots");
+      if (!toolbar) return;
+
+      /** @param {string} focus */
+      function applyMappingSlotFilter(focus) {
+        if (!slotsRoot) return;
+        slotsRoot.querySelectorAll(".mapping-slot-group").forEach((group) => {
+          if (!(group instanceof HTMLElement)) return;
+          group.hidden = group.getAttribute("data-mapping-tab") !== focus;
+        });
+      }
+
+      /** @param {string} value */
+      function setMappingFocus(value) {
+        toolbar.querySelectorAll(".mapping-target-btn").forEach((node) => {
+          if (!(node instanceof HTMLButtonElement)) return;
+          const v = node.getAttribute("data-mapping-focus");
+          node.setAttribute("aria-pressed", v === value ? "true" : "false");
+        });
+        applyMappingSlotFilter(value);
+      }
+
+      toolbar.addEventListener("click", (e) => {
+        const t = e.target;
+        if (!(t instanceof Element)) return;
+        const btn = t.closest(".mapping-target-btn");
+        if (!btn || !toolbar.contains(btn)) return;
+        const v = btn.getAttribute("data-mapping-focus");
+        if (!v) return;
+        setMappingFocus(v);
+      });
+
+      const initialBtn = toolbar.querySelector('.mapping-target-btn[aria-pressed="true"]');
+      const initial =
+        initialBtn instanceof HTMLElement
+          ? initialBtn.getAttribute("data-mapping-focus") || "panel"
+          : "panel";
+      setMappingFocus(initial);
+    }
+
+    function applyChineseUiLabels() {
+      const setText = (selector, value) => {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = value;
+      };
+      const setAttr = (selector, key, value) => {
+        const el = document.querySelector(selector);
+        if (el) el.setAttribute(key, value);
+      };
+
+      setText(".sub-nav-title", "\u914d\u7f6e");
+      setText(".back-link", "\u8fd4\u56de\u8272\u5361");
+      setText(".candidate-section .candidate-heading", "\u989c\u8272\u5019\u9009\u6c60");
+      setText("#open-custom-candidate-panel-btn", "\u6dfb\u52a0\u81ea\u5b9a\u4e49\u989c\u8272");
+      setAttr("#custom-candidate-confirm", "aria-label", "\u81ea\u5b9a\u4e49\u989c\u8272\uff1a\u5728\u540c\u4e00\u9762\u677f\u5185\u9009\u8272\u5e76\u786e\u8ba4");
+      setAttr("#ccp-sv", "aria-label", "\u9971\u548c\u5ea6\u4e0e\u660e\u5ea6\uff0c\u70b9\u51fb\u6216\u62d6\u52a8\u9009\u53d6");
+      setAttr("#ccp-eyedropper", "title", "\u5438\u53d6\u5c4f\u5e55\u989c\u8272");
+      setAttr("#ccp-eyedropper", "aria-label", "\u5438\u53d6\u5c4f\u5e55\u989c\u8272");
+      setAttr("#ccp-hue", "aria-label", "\u8272\u76f8");
+      setAttr("#ccp-hex-input", "aria-label", "\u5341\u516d\u8fdb\u5236\u989c\u8272\u503c\uff0c\u5982 #RRGGBB");
+      setText("#custom-candidate-confirm-btn", "\u786e\u8ba4\u52a0\u5165");
+      setText("#custom-candidate-cancel-btn", "\u53d6\u6d88");
+      setAttr(".candidate-pool-wrap", "aria-label", "\u989c\u8272\u5019\u9009\u6c60");
+      setAttr("#candidate-pool", "aria-label", "\u5019\u9009\u6c60\u4e2d\u7684\u989c\u8272");
+      setAttr("#custom-candidate-launcher-chip", "aria-label", "\u81ea\u5b9a\u4e49\uff1a\u6253\u5f00\u9009\u8272\u9762\u677f\uff0c\u786e\u8ba4\u540e\u52a0\u5165\u5019\u9009\u6c60");
+      setText("#custom-candidate-launcher-chip .candidate-chip-name", "\u81ea\u5b9a\u4e49");
+      setText("#custom-candidate-launcher-chip .candidate-chip-hex--hint", "\u70b9\u51fb\u9009\u8272");
+      setAttr("#candidate-pool-trash-slot", "title", "\u5c06\u5019\u9009\u6c60\u4e2d\u7684\u8272\u5757\u62d6\u5165\u6b64\u5904\u5373\u53ef\u4ece\u5019\u9009\u6c60\u5220\u9664");
+      setAttr("#candidate-pool-trash-slot", "aria-label", "\u5783\u573e\u6876\uff1a\u5c06\u5019\u9009\u6c60\u4e2d\u7684\u8272\u5757\u62d6\u5165\u6b64\u5904\uff0c\u53ef\u4ece\u989c\u8272\u5019\u9009\u6c60\u5220\u9664\u8be5\u8272\u5361");
+      setText(".mapping-section .candidate-heading", "\u989c\u8272\u6620\u5c04");
+      setAttr("#mapping-target-toolbar", "aria-label", "\u6620\u5c04\u76ee\u6807");
+      const focusMap = { panel: "\u9762\u677f", button: "\u6309\u94ae", "text-field": "\u6587\u672c\u6846" };
+      document.querySelectorAll(".mapping-target-btn").forEach((btn) => {
+        const k = btn.getAttribute("data-mapping-focus");
+        if (k && focusMap[k]) btn.textContent = focusMap[k];
+      });
+      setText("#reset-preview-btn", "\u91cd\u7f6e\u9884\u89c8");
+      setAttr("#mapping-trash-slot", "aria-label", "\u5783\u573e\u6876\uff1a\u5c06\u5df2\u6620\u5c04\u69fd\u4f4d\u4e2d\u7684\u8272\u5757\u62d6\u5230\u8fd9\u91cc\u53ef\u79fb\u9664\u8be5\u69fd\u4f4d");
+
+      const groupTitleMap = { panel: ["\u9762\u677f", "\u6587\u5b57"], button: ["\u4e3b\u6309\u94ae", "\u6b21\u8981\u6309\u94ae"], "text-field": ["\u6587\u672c\u6846"] };
+      const seen = { panel: 0, button: 0, "text-field": 0 };
+      document.querySelectorAll(".mapping-slot-group").forEach((group) => {
+        const tab = group.getAttribute("data-mapping-tab");
+        const titleEl = group.querySelector(".mapping-slot-group-title");
+        if (!tab || !titleEl || !groupTitleMap[tab]) return;
+        const idx = seen[tab]++;
+        const title = groupTitleMap[tab][Math.min(idx, groupTitleMap[tab].length - 1)];
+        titleEl.textContent = title;
+      });
+
+      const slotUi = {
+        "--colors-canvas-primary": ["\u753b\u5e03\u4e3b\u8272", "\u753b\u5e03\u4e3b\u8272\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-canvas-secondary": ["\u753b\u5e03\u6b21\u8272", "\u753b\u5e03\u6b21\u8272\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-panel-border": ["\u9762\u677f\u8fb9\u6846", "\u9762\u677f\u8fb9\u6846\u69fd\u4f4d\uff0c\u652f\u6301 hex \u6216 rgba"],
+        "--colors-ink-title": ["\u6807\u9898\u8272", "\u6807\u9898\u8272\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-ink-secondary": ["\u6b21\u8981\u6587\u5b57", "\u6b21\u8981\u6587\u5b57\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-ink-body": ["\u6b63\u6587\u8272", "\u6b63\u6587\u8272\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-primary": ["\u4e3b\u54c1\u724c\u8272", "\u4e3b\u54c1\u724c\u8272\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-primary-button-text": ["\u4e3b\u6309\u94ae\u6587\u5b57", "\u4e3b\u6309\u94ae\u6587\u5b57\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-primary-button-border": ["\u4e3b\u6309\u94ae\u8fb9\u6846", "\u4e3b\u6309\u94ae\u8fb9\u6846\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-secondary-button-bg": ["\u6b21\u8981\u6309\u94ae\u80cc\u666f", "\u6b21\u8981\u6309\u94ae\u80cc\u666f\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-secondary-button": ["\u6b21\u8981\u6309\u94ae", "\u6b21\u8981\u6309\u94ae\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-secondary-button-border": ["\u6b21\u8981\u6309\u94ae\u8fb9\u6846", "\u6b21\u8981\u6309\u94ae\u8fb9\u6846\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-component-bg": ["\u7ec4\u4ef6\u80cc\u666f", "\u7ec4\u4ef6\u80cc\u666f\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-textfield-text": ["\u8f93\u5165\u6846\u6587\u5b57", "\u8f93\u5165\u6846\u6587\u5b57\u69fd\u4f4d\uff0c\u4ece\u5019\u9009\u6c60\u62d6\u5165\u989c\u8272"],
+        "--colors-textfield-border": ["\u8f93\u5165\u6846\u8fb9\u6846", "\u8f93\u5165\u6846\u8fb9\u6846\u69fd\u4f4d\uff0c\u652f\u6301 hex \u6216 rgba"],
+      };
+      document.querySelectorAll(".color-slot").forEach((slot) => {
+        const cssVar = slot.getAttribute("data-css-var");
+        if (!cssVar || !slotUi[cssVar]) return;
+        const [label, aria] = slotUi[cssVar];
+        const labelEl = slot.querySelector(".color-slot-label");
+        if (labelEl) labelEl.textContent = label;
+        const dropEl = slot.querySelector("[data-slot-role='drop']");
+        if (dropEl) dropEl.setAttribute("aria-label", aria);
+        const placeholderEl = slot.querySelector(".color-slot-placeholder");
+        if (placeholderEl) placeholderEl.textContent = "\u62d6\u5165\u5019\u9009\u989c\u8272";
+      });
+
+      const metricMap = {
+        "border-width": "\u8fb9\u6846\u7c97\u7ec6",
+        "border-radius": "\u5706\u89d2",
+        "padding-x": "\u5de6\u53f3\u5185\u8fb9\u8ddd",
+        "padding-y": "\u4e0a\u4e0b\u5185\u8fb9\u8ddd",
+      };
+      document.querySelectorAll(".mapping-metric").forEach((metric) => {
+        const v = metric.getAttribute("data-metric-var") || "";
+        let label = "";
+        if (v.includes("border-width")) label = metricMap["border-width"];
+        else if (v.includes("border-radius")) label = metricMap["border-radius"];
+        else if (v.includes("padding-x")) label = metricMap["padding-x"];
+        else if (v.includes("padding-y")) label = metricMap["padding-y"];
+        if (!label) return;
+        const labelEl = metric.querySelector(".mapping-metric-label");
+        if (labelEl && labelEl.firstChild) labelEl.firstChild.nodeValue = `${label}\n                  `;
+        const input = metric.querySelector("input[type='range']");
+        if (input) input.setAttribute("aria-label", label);
+      });
+
+      setAttr(".preview-card", "aria-label", "\u5b9e\u65f6\u9884\u89c8");
+      setText(".preview-heading", "\u4f20\u7edf\u8272 \u00b7 \u6807\u9898");
+      setText(".preview-lead", "\u526f\u6807\u9898\u4e0e\u63cf\u8ff0\u6587\u6848\u9884\u89c8\u3002");
+      const previewBody = document.querySelector(".preview-body");
+      if (previewBody) {
+        previewBody.childNodes[0].nodeValue = "\u6b63\u6587\u4e0e\u5185\u8054\n                ";
+        const link = previewBody.querySelector(".preview-link");
+        if (link) link.textContent = "\u94fe\u63a5\u793a\u4f8b";
+        if (previewBody.lastChild) previewBody.lastChild.nodeValue = "\n                \uff0c\u5bf9\u5e94\u94fe\u63a5\u4e0e\u6b63\u6587\u3002";
+      }
+      setText(".preview-btn-primary", "\u4e3b\u884c\u52a8\u6309\u94ae");
+      setText(".preview-btn-ghost", "\u6b21\u8981\u6309\u94ae");
+      setAttr(".preview-search", "value", "\u641c\u7d22\u6846 / \u8f93\u5165\u6846\u80cc\u666f");
+      setAttr(".preview-search", "aria-label", "\u7ec4\u4ef6\u80cc\u666f\u4e0e\u8fb9\u6846\u9884\u89c8");
+
+      setAttr(".config-catalog-panel", "aria-label", "\u8272\u5361\u5e93");
+      setText(".config-catalog-panel > .candidate-heading", "\u8272\u5361\u5e93");
+      setText("#config-catalog-cols-label", "\u5217\u6570");
+      setAttr("#config-catalog-favorites-btn", "aria-label", "\u4ec5\u663e\u793a\u5df2\u6536\u85cf\u8272\u5361");
+      setAttr("#config-catalog-favorites-btn", "title", "\u4ec5\u663e\u793a\u5df2\u6536\u85cf");
+      setText("#config-catalog-filter-btn", "\u7b5b\u9009");
+      setAttr("#config-catalog-filter-panel", "aria-label", "\u6309\u8272\u7cfb\u7b5b\u9009");
+      setAttr("#config-catalog-filter-swatches", "aria-label", "\u8272\u7cfb\u591a\u9009");
+      setText("#config-catalog-filter-select-all", "\u5168\u9009");
+      setText("#config-catalog-filter-clear-all", "\u6e05\u7a7a\u9009\u9879");
+      setAttr("#config-catalog-sort-select", "aria-label", "\u6392\u5e8f");
+      const sortSelect = document.getElementById("config-catalog-sort-select");
+      if (sortSelect && sortSelect.options.length >= 2) {
+        sortSelect.options[0].text = "\u7531\u6d45\u81f3\u6df1";
+        sortSelect.options[1].text = "\u7531\u6df1\u81f3\u6d45";
+      }
+    }
+
+    applyChineseUiLabels();
+    bindMappingTargetToolbar();
+    bindMappingMetricSliders();
     bindColorSlots();
     bindMappedSlotDragSource();
     bindTrashSlot();
@@ -2390,6 +3233,11 @@
     const resetBtn = document.getElementById("reset-preview-btn");
     if (resetBtn) resetBtn.addEventListener("click", () => resetPreviewTheme());
     renderCandidatePool();
+    initConfigCatalog({
+      loadSelectedColorsFromSession,
+      saveSelectedColorsToSession,
+      renderCandidatePool,
+    });
   </script>
 </body>
 </html>

@@ -1066,7 +1066,7 @@
           />
         </div>
         <div class="sub-nav-actions">
-          <button id="go-catalog-btn" class="button-primary" type="button">查看色库</button>
+          <button id="go-config-btn" class="button-primary" type="button">前往配置</button>
         </div>
       </div>
     </div>
@@ -1368,9 +1368,35 @@
       closeBasketPanel();
     }
 
-    /** 与配置页读取逻辑一致：至少一条有效 name + hex */
-    function hasSelectedColorsForConfig() {
-      return basket.some((x) => String(x.name ?? "").trim() !== "" && String(x.hex ?? "").trim() !== "");
+    /**
+     * @param {unknown} raw
+     * @returns {{ name: string; hex: string }[]}
+     */
+    function normalizeSelectedColors(raw) {
+      if (!Array.isArray(raw)) return [];
+      const out = [];
+      for (const item of raw) {
+        if (!item || typeof item !== "object") continue;
+        const name = String(/** @type {{ name?: unknown }} */ (item).name ?? "").trim();
+        const hex = String(/** @type {{ hex?: unknown }} */ (item).hex ?? "").trim().toUpperCase();
+        if (!name || !hex) continue;
+        if (!/^#(?:[0-9A-F]{3}|[0-9A-F]{6})$/.test(hex)) continue;
+        out.push({ name, hex });
+      }
+      return out;
+    }
+
+    function loadBasketFromSession() {
+      try {
+        const s = sessionStorage.getItem(SELECTED_COLORS_SESSION_KEY);
+        if (s == null || s === "") {
+          basket = [];
+          return;
+        }
+        basket = normalizeSelectedColors(JSON.parse(s));
+      } catch {
+        basket = [];
+      }
     }
 
     function renderBasket() {
@@ -1756,13 +1782,6 @@
       syncBasketPinUi();
     });
 
-    paletteBasketConfigLink.addEventListener("click", (e) => {
-      if (hasSelectedColorsForConfig()) return;
-      e.preventDefault();
-      e.stopPropagation();
-      showCopyToast("请先在主界面点击色卡，将颜色加入调色筐后再前往配置。");
-    });
-
     paletteBasketClear.addEventListener("click", (e) => {
       e.stopPropagation();
       basket = [];
@@ -2038,8 +2057,8 @@
       }
     });
 
-    document.getElementById("go-catalog-btn").addEventListener("click", () => {
-      catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("go-config-btn").addEventListener("click", () => {
+      window.location.href = "config.html";
     });
 
     searchInput.addEventListener("input", (event) => {
@@ -2060,6 +2079,9 @@
 
     applyCatalogCols(readStoredCatalogCols());
     loadFavoritesFromStorage();
+    loadBasketFromSession();
+    prevBasketLength = basket.length;
+    renderBasket();
     syncFavoritesFilterBtn();
     colsSlider.addEventListener("input", () => {
       applyCatalogCols(colsSlider.value);
