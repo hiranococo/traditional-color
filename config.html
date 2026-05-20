@@ -116,6 +116,38 @@
       letter-spacing: -0.02em;
     }
 
+    .sub-nav-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .sub-nav-export-style-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 88px;
+      padding: 7px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      border-radius: 9999px;
+      border: 1px solid #d2d2d7;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+    }
+
+    .sub-nav-export-style-btn:hover {
+      background: #f5f5f7;
+      border-color: #c7c7cc;
+    }
+
+    .sub-nav-export-style-btn:active {
+      transform: scale(0.97);
+    }
+
     .back-link {
       display: inline-flex;
       align-items: center;
@@ -125,15 +157,16 @@
       font-family: inherit;
       border-radius: 9999px;
       border: 1px solid var(--primary-color);
-      background: transparent;
-      color: var(--primary-color);
+      background: var(--primary-color);
+      color: #fff;
       text-decoration: none;
       cursor: pointer;
       transition: transform 0.12s ease;
     }
 
     .back-link:hover {
-      background: rgba(0, 102, 204, 0.08);
+      background: var(--primary-focus);
+      border-color: var(--primary-focus);
     }
 
     .back-link:active {
@@ -1199,9 +1232,23 @@
       padding: 22px 18px 28px;
     }
 
-    .config-catalog-panel > .candidate-heading {
-      margin: 0 0 14px;
+    .config-catalog-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px 14px;
+      margin-bottom: 14px;
       flex-shrink: 0;
+    }
+
+    .config-catalog-title-row .candidate-heading {
+      margin: 0;
+      flex-shrink: 0;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .config-catalog-title-row > .back-link {
+      margin-left: auto;
     }
 
     .config-catalog-body {
@@ -1559,7 +1606,9 @@
     <div class="sub-nav">
       <div class="sub-nav-inner">
         <h1 class="sub-nav-title">??</h1>
-        <a class="back-link" href="index.html">????</a>
+        <div class="sub-nav-actions">
+          <button type="button" id="config-export-style-btn" class="sub-nav-export-style-btn">导出样式</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1977,7 +2026,10 @@
         </div>
       </aside>
         <section class="config-catalog-panel card config-catalog" aria-label="???">
-          <h2 class="candidate-heading">???</h2>
+          <div class="config-catalog-title-row">
+            <h2 class="candidate-heading">???</h2>
+            <a class="back-link" href="index.html">????</a>
+          </div>
           <div class="config-catalog-head">
             <div class="config-catalog-density">
               <label id="config-catalog-cols-label" class="config-catalog-density-label" for="config-catalog-cols-slider">??</label>
@@ -3090,6 +3142,155 @@
       setMappingFocus(initial);
     }
 
+    /**
+     * @param {unknown} value
+     * @returns {string}
+     */
+    function escapeMarkdownCell(value) {
+      return String(value ?? "")
+        .replace(/\|/g, "\\|")
+        .replace(/\n/g, "<br/>");
+    }
+
+    /**
+     * @param {MappedColor | null} assignment
+     * @returns {string}
+     */
+    function getMappingColorSource(assignment) {
+      if (!assignment) return "-";
+      if (assignment.customCandidate) return "自定义颜色";
+      if (assignment.builtinCandidate) return "内置颜色";
+      return "色卡库颜色";
+    }
+
+    /**
+     * @returns {string}
+     */
+    function buildExportStyleMarkdown() {
+      const tabLabelMap = { panel: "面板", button: "按钮", "text-field": "文本框" };
+      const now = new Date();
+      const exportedAt = now.toLocaleString("zh-CN", { hour12: false });
+      const assignedColorCount = PREVIEW_THEME_VARS.filter((key) => slotAssignments[key]).length;
+      const metricCount = document.querySelectorAll(".mapping-metric").length;
+      const previewSurfaceEl = document.querySelector(".preview-surface");
+      const computedStyle = previewSurfaceEl ? getComputedStyle(previewSurfaceEl) : null;
+
+      /** @type {string[]} */
+      const lines = [];
+      lines.push("# 样式导出（配置页映射面板）");
+      lines.push("");
+      lines.push("## 概览");
+      lines.push(`- 导出时间：${exportedAt}`);
+      lines.push(`- 颜色映射：${assignedColorCount}/${PREVIEW_THEME_VARS.length}`);
+      lines.push(`- 尺寸与形状参数：${metricCount} 项`);
+      lines.push("- 覆盖范围：文字颜色、背景色、边框、圆角、内边距等映射面板参数。");
+      lines.push("");
+
+      lines.push("## 颜色映射");
+      lines.push("");
+      document.querySelectorAll(".mapping-slot-group").forEach((groupEl) => {
+        if (!(groupEl instanceof HTMLElement)) return;
+        const tab = groupEl.getAttribute("data-mapping-tab") || "";
+        const tabLabel = tabLabelMap[tab] || tab || "未分类";
+        const groupTitle = (groupEl.querySelector(".mapping-slot-group-title")?.textContent || "未命名分组").trim();
+        lines.push(`### ${tabLabel} / ${groupTitle}`);
+        lines.push("");
+        lines.push("| 槽位 | CSS 变量 | 当前值 | 来源 | 颜色名 |");
+        lines.push("|---|---|---|---|---|");
+        groupEl.querySelectorAll(".color-slot").forEach((slotEl) => {
+          if (!(slotEl instanceof HTMLElement)) return;
+          const cssVar = slotEl.getAttribute("data-css-var") || "";
+          const slotLabel = (slotEl.querySelector(".color-slot-label")?.textContent || cssVar || "未命名槽位").trim();
+          const assignment = cssVar ? slotAssignments[cssVar] ?? null : null;
+          const defaultValue = cssVar && computedStyle ? computedStyle.getPropertyValue(cssVar).trim() : "";
+          const currentValue = assignment ? assignment.css || assignment.hex : defaultValue || "未设置";
+          const source = assignment ? getMappingColorSource(assignment) : "页面默认值";
+          const colorName = assignment ? assignment.name : "默认";
+          lines.push(
+            `| ${escapeMarkdownCell(slotLabel)} | ${escapeMarkdownCell(cssVar)} | ${escapeMarkdownCell(currentValue)} | ${escapeMarkdownCell(source)} | ${escapeMarkdownCell(colorName)} |`
+          );
+        });
+        lines.push("");
+      });
+
+      lines.push("## 尺寸与形状（边距、圆角、边框）");
+      lines.push("");
+      Object.keys(tabLabelMap).forEach((tab) => {
+        const tabMetrics = Array.from(document.querySelectorAll(`.mapping-metric[data-mapping-tab="${tab}"]`)).filter(
+          (node) => node instanceof HTMLElement
+        );
+        if (tabMetrics.length === 0) return;
+        lines.push(`### ${tabLabelMap[tab]}`);
+        lines.push("");
+        lines.push("| 参数 | CSS 变量 | 当前值 | 默认值 | 可调范围 |");
+        lines.push("|---|---|---|---|---|");
+        tabMetrics.forEach((metricNode) => {
+          if (!(metricNode instanceof HTMLElement)) return;
+          const varName = metricNode.getAttribute("data-metric-var") || "";
+          const unit = metricNode.getAttribute("data-metric-unit") || "px";
+          const slider = metricNode.querySelector('input[type="range"]');
+          const labelRaw = metricNode.querySelector(".mapping-metric-label")?.childNodes[0]?.nodeValue || varName;
+          const label = String(labelRaw).trim() || varName || "未命名参数";
+          const current = slider instanceof HTMLInputElement ? `${slider.value}${unit}` : "-";
+          const defaultVal = `${metricNode.getAttribute("data-metric-default") || "0"}${unit}`;
+          const min = metricNode.getAttribute("data-metric-min") || "0";
+          const max = metricNode.getAttribute("data-metric-max") || "0";
+          const range = `${min}${unit} ~ ${max}${unit}`;
+          lines.push(
+            `| ${escapeMarkdownCell(label)} | ${escapeMarkdownCell(varName)} | ${escapeMarkdownCell(current)} | ${escapeMarkdownCell(defaultVal)} | ${escapeMarkdownCell(range)} |`
+          );
+        });
+        lines.push("");
+      });
+
+      lines.push("## 给 AI 的使用建议");
+      lines.push("");
+      lines.push("- 你可以将本文件直接提供给 AI，要求其按照本文件中的颜色和尺寸变量生成页面样式。");
+      lines.push("- 若某个颜色槽位没有手动映射，导出结果会自动回退到当前页面默认颜色。");
+      lines.push("- 请优先使用“当前值”列；“默认值”仅作为兜底参考。");
+      lines.push("");
+
+      return lines.join("\n");
+    }
+
+    /**
+     * @param {string} filename
+     * @param {string} content
+     */
+    function downloadMarkdownFile(filename, content) {
+      const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    /**
+     * @returns {string}
+     */
+    function buildExportFilename() {
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const stamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+      return `config-style-export-${stamp}.md`;
+    }
+
+    function bindExportStyleButton() {
+      const exportBtn = document.getElementById("config-export-style-btn");
+      const statusEl = document.getElementById("mapping-status");
+      if (!(exportBtn instanceof HTMLButtonElement)) return;
+      exportBtn.addEventListener("click", () => {
+        const content = buildExportStyleMarkdown();
+        const filename = buildExportFilename();
+        downloadMarkdownFile(filename, content);
+        if (statusEl) statusEl.textContent = `已导出样式文件：${filename}`;
+      });
+    }
+
     function applyChineseUiLabels() {
       const setText = (selector, value) => {
         const el = document.querySelector(selector);
@@ -3101,7 +3302,7 @@
       };
 
       setText(".sub-nav-title", "\u914d\u7f6e");
-      setText(".back-link", "\u8fd4\u56de\u8272\u5361");
+      setText(".back-link", "\u8272\u5361\u5e93\u9875\u9762");
       setText(".candidate-section .candidate-heading", "\u989c\u8272\u5019\u9009\u6c60");
       setText("#open-custom-candidate-panel-btn", "\u6dfb\u52a0\u81ea\u5b9a\u4e49\u989c\u8272");
       setAttr("#custom-candidate-confirm", "aria-label", "\u81ea\u5b9a\u4e49\u989c\u8272\uff1a\u5728\u540c\u4e00\u9762\u677f\u5185\u9009\u8272\u5e76\u786e\u8ba4");
@@ -3205,7 +3406,8 @@
       setAttr(".preview-search", "aria-label", "\u7ec4\u4ef6\u80cc\u666f\u4e0e\u8fb9\u6846\u9884\u89c8");
 
       setAttr(".config-catalog-panel", "aria-label", "\u8272\u5361\u5e93");
-      setText(".config-catalog-panel > .candidate-heading", "\u8272\u5361\u5e93");
+      setText(".config-catalog-title-row .candidate-heading", "\u8272\u5361\u5e93");
+      setText("#config-export-style-btn", "\u5bfc\u51fa\u6837\u5f0f");
       setText("#config-catalog-cols-label", "\u5217\u6570");
       setAttr("#config-catalog-favorites-btn", "aria-label", "\u4ec5\u663e\u793a\u5df2\u6536\u85cf\u8272\u5361");
       setAttr("#config-catalog-favorites-btn", "title", "\u4ec5\u663e\u793a\u5df2\u6536\u85cf");
@@ -3230,6 +3432,7 @@
     bindTrashSlot();
     bindCandidatePoolTrash();
     bindAddCustomCandidateControl();
+    bindExportStyleButton();
     const resetBtn = document.getElementById("reset-preview-btn");
     if (resetBtn) resetBtn.addEventListener("click", () => resetPreviewTheme());
     renderCandidatePool();
